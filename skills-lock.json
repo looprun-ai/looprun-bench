@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "agentspec": {
+      "source": "looprun-ai/looprun",
+      "sourceType": "github",
+      "skillPath": "skills/agentspec/SKILL.md",
+      "computedHash": "17082d66cc6b4d99041dfc606d0c662ca5f61a46f607a8108f000b4be402a875"
+    }
+  }
+}
