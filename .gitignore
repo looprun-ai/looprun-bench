@@ -1,0 +1,27 @@
+# deps / build
+node_modules/
+dist/
+*.tgz
+
+# env / local
+.env
+.env.local
+.DS_Store
+
+# logs
+*.log
+
+# the τ²-bench harness is external — restored via `pnpm setup:tau2` (see scripts/setup-tau2.sh)
+vendor/
+
+# python (in case a venv lands anywhere)
+.venv/
+__pycache__/
+
+# installed skill is a dependency — restored via `pnpm setup:skill` (pinned by skills-lock.json)
+.agents/skills/
+.claude/skills/
+
+# benchmark scratch: keep results/**/results.json + summaries; ignore heavy per-turn traces
+results/**/*.jsonl
+results/**/messages.json

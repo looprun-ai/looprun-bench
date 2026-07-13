@@ -1,0 +1,27 @@
+{
+  "name": "@looprun-bench/shim",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "LoopRun Team",
+  "description": "τ² ⇄ looprun bridge: an OpenAI-compatible /chat/completions endpoint that governs one proposed assistant turn per τ² step (τ² owns tool execution). Built on looprun's public runtime primitives.",
+  "bin": {
+    "looprun-shim": "./src/server.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "serve": "tsx src/server.ts"
+  },
+  "dependencies": {
+    "@looprun-bench/telecom": "workspace:*",
+    "looprun": "^0.2.1",
+    "@looprun-ai/core": "^0.2.1",
+    "@mastra/core": "^1.42.0",
+    "ai": "^6.0.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  }
+}

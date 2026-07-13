@@ -1,0 +1,19 @@
+{
+  "name": "@looprun-bench/runner",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "LoopRun Team",
+  "description": "Orchestration: serve the subject via `looprun models serve`, run τ² raw vs governed on the same tasks + user-simulator, harvest the four metrics, emit result tables.",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@looprun-bench/shim": "workspace:*",
+    "@looprun-bench/telecom": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  }
+}
