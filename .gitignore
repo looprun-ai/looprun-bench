@@ -25,3 +25,7 @@ __pycache__/
 # benchmark scratch: keep results/**/results.json + summaries; ignore heavy per-turn traces
 results/**/*.jsonl
 results/**/messages.json
+
+# agentspec measured-loop run output — heavy per-run dumps; durable provenance lives in
+# packages/*/CERT.md + REVIEW.md + EVALS.md (the cert bundle is regenerable via `looprun-eval certify`)
+eval-results/

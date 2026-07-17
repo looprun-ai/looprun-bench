@@ -184,6 +184,18 @@ export function buildWorldAdapter(referenceNow: Date, toolRecords: ToolRecord[])
       }
       return seenAny ? false : null;
     },
+    customerHasBillAwaitingPayment: (customerId: string) => {
+      // Backs the "only ONE bill in AWAITING PAYMENT status at a time" gate. Replay semantics: `null`
+      // = no bills for this customer observed yet; a successful send_payment_request sets a bill to
+      // 'Awaiting Payment' in `state.bills` (see the replay switch above), so this reflects it.
+      let seenAny = false;
+      for (const bill of state.bills.values()) {
+        if (bill.customerId !== customerId) continue;
+        seenAny = true;
+        if (bill.status === 'Awaiting Payment') return true;
+      }
+      return seenAny ? false : null;
+    },
   };
 
   return world;
