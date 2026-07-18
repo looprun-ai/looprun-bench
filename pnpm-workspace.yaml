@@ -1,3 +1,2 @@
 packages:
   - 'benchmarks/tau2-telecom/harness/*'
-  - 'benchmarks/atlas/harness'

@@ -28,7 +28,7 @@ docs, and its versioned result editions. There is no shared top-level `packages/
 
 | path | what |
 |---|---|
-| `benchmarks/atlas/` | the **atlas** governance-vs-traditional benchmark — thin index README (editions + LAW) over self-contained editions `v0.6.0/` and `v0.6.1/`, each with its subject, specs, control arm, curated results, docs |
+| `benchmarks/atlas/` | the **atlas** governance-vs-traditional benchmark — thin index README (editions + LAW) over **standalone** editions `v0.6.0/` and `v0.6.1/`, each its own npm package (`cd` in + install; not in the root workspace) with a **frozen copy of the harness** (`vX.Y.Z/harness/`), exact-pinned `package.json` + lockfile, subject, specs, control arm, curated results, docs |
 | `benchmarks/tau2-telecom/` | the **τ² telecom** benchmark — front-door README + `reference/` (policy + tool schemas), `harness/` (the pnpm-workspace packages `shim`/`runner`/`telecom`), `vendor/tau2-bench` (external τ² harness, gitignored — `pnpm setup:tau2`), `docs/` (overview · methodology · pipeline · roadmap · guides/ · findings/), `scripts/`, `results/` |
 
 ## Setup

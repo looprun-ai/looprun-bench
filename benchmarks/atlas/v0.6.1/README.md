@@ -5,6 +5,52 @@
 > see [`../README.md`](../README.md). Per the never-retro-edit LAW, this edition does not touch any
 > v0.6.0 number.
 
+## Install & run
+
+This edition is a **standalone npm package** (`@looprun-bench/atlas-v0.6.1`, private) with its own
+exact-pinned `package.json` and a **frozen copy of the harness** under [`harness/`](harness/). It owns
+this edition's **P9-patched governed specs** ([`specs/atlas-r2/`](specs/atlas-r2/)); its **subject** and
+**ungoverned control arm** are **inherited from [`../v0.6.0/`](../v0.6.0/)** (not duplicated — the
+harness resolves them across the sibling dir by default, which works from this edition's own install).
+
+> **Pins target the `looprun@0.6.1` release (publishing imminently).** The two runtime deps
+> (`@looprun-ai/core` / `@looprun-ai/mastra`) are pinned to **exact `0.6.1`**. The maintainers verified
+> this edition end-to-end against the **packed `0.6.1` runtime** on 2026-07-18 (typecheck + governed +
+> ungoverned smokes + judge + score, artifact shapes matching [`results/`](results/)). Until `0.6.1`
+> is on npm, `pnpm install` here will not resolve those two deps — **the committed `pnpm-lock.yaml`
+> lands with the first post-publish install.**
+
+**Prerequisites:** Node ≥ 22, pnpm 10.33.0.
+
+```bash
+cd benchmarks/atlas/v0.6.1
+pnpm install                      # resolves once looprun@0.6.1 is published; writes the lockfile
+cp .env.example .env              # fill in the subject + judge keys — see below
+
+# subject + judge (export before running; the scripts read process.env):
+export GOOGLE_GENERATIVE_AI_API_KEY=...   MODEL_ID=gemini-3.1-flash-lite   THINKING=off
+
+pnpm run:governed   --cases 01,07,68 --out runs/smoke     # 3-case smoke (incl. a two-step confirm)
+pnpm run:governed   --out runs/gov --reps 3               # governed arm, full 61, N=3
+pnpm run:ungoverned --out runs/van --reps 3               # ungoverned control arm
+
+export JUDGE_PROVIDER=openai \
+  JUDGE_OPENAI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai \
+  JUDGE_API_KEY=$GOOGLE_GENERATIVE_AI_API_KEY JUDGE_MODEL_ID=gemini-3.1-flash-lite
+pnpm judge --dir runs/gov         # the only quality verdict
+pnpm score --dir runs/gov         # pass-rate per rep + mean
+```
+
+The full var list (subject / judge / optional artifact overrides) is in [`.env.example`](.env.example).
+**Order-of-magnitude cost/time:** ~1–3 min + a few cents of subject-model spend per full-61 rep on a
+hosted flash-tier model (N=3 ≈ 3×); judging adds one judge call per non-autofail case.
+
+> **Judge-comparability warning.** The published anchors were scored by a **single held-constant judge**
+> ("ruler-v2", a frontier coding agent). A reproduction on a **different judge model** (e.g. Gemini as
+> judge above) is **informative, not directly comparable**, and a lightweight judge can be noisy (it may
+> occasionally return an empty verdict). Read the headline figures from [`results/`](results/) and diff
+> your `runs/**/…verdicts.jsonl` against them case by case.
+
 ## What changed
 
 Runtime **P9** in **`looprun@0.6.1`** — two guard-tune fixes, promoted after a per-case forensic campaign:

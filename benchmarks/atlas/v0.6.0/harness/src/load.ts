@@ -4,18 +4,16 @@
  * is pulled in by a RUNTIME-resolved path so the type checker never has to reach into the frozen
  * files (they carry their own build-time type imports); the harness's own source stays public-only.
  *
- * Before any spec bundle is imported, we register a module-resolution hook that maps the editions'
- * embedded runtime specifier onto the public `@looprun-ai/core`, so the frozen artifacts load
- * unchanged.
+ * The harness now lives INSIDE the edition (`v<edition>/harness/`), so the frozen spec files —
+ * which import the governance runtime as a bare `@looprun-ai/core` — resolve it by Node's natural
+ * node_modules walk-up from the spec's own directory up to the edition-local install. No module
+ * resolution hook is needed.
  */
-import { register } from 'node:module';
 import { pathToFileURL } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { editionPath, DEFAULTS } from './config.js';
 import type { CaseSpec } from './types.js';
-
-register(new URL('./edition-runtime-alias.mjs', import.meta.url));
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 async function importAbs(absPath: string): Promise<any> {

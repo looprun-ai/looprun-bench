@@ -1,0 +1,7 @@
+# edition-local install + run output — regenerable; never committed
+node_modules/
+runs/
+
+# env (keys) — never commit
+.env
+.env.local

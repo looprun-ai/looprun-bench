@@ -1,0 +1,4 @@
+# This edition is a STANDALONE pnpm project (its own lockfile + node_modules). This file marks the
+# edition as its own workspace root so `pnpm install` here does not walk up to the repo-root
+# workspace. It has no member packages — the edition's own package.json is the single project.
+packages: []

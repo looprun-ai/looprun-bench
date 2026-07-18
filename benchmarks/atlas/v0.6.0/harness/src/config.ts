@@ -22,14 +22,15 @@ export function editionPath(envVar: string, defaultRelToHere: string): string {
   return fileURLToPath(new URL(defaultRelToHere, import.meta.url));
 }
 
-/** Default edition artifact locations (relative to `src/`). All overridable by env. */
+/** Default edition artifact locations (relative to `src/`, i.e. `v0.6.0/harness/src/`). This
+ *  edition owns its subject, specs, and ungoverned control arm. All overridable by env. */
 export const DEFAULTS = {
-  // Governed spec bundle (exports SPECS + THEME). Defaults to the v0.6.1 governed anchor bundle.
-  SPECS_BUNDLE: '../../v0.6.1/specs/atlas-r2/index.ts',
+  // Governed spec bundle (exports SPECS + THEME) — this edition's own certified anchor bundle.
+  SPECS_BUNDLE: '../../specs/atlas-r2/index.ts',
   // The subject (world + tools + presets + cases + judge prompt).
-  SUBJECT_DIR: '../../v0.6.0/subject',
+  SUBJECT_DIR: '../../subject',
   // The ungoverned control-arm bundle (exports AGENTS).
-  VANILLA_BUNDLE: '../../v0.6.0/vanilla/agents-generated/atlas/index.ts',
+  VANILLA_BUNDLE: '../../vanilla/agents-generated/atlas/index.ts',
 } as const;
 
 /** Pick the provider: explicit `PROVIDER` wins; else infer from which key/base URL is present. */

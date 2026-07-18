@@ -1,0 +1,30 @@
+{
+  "name": "@looprun-bench/atlas-v0.6.0",
+  "version": "0.6.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "LoopRun Team",
+  "description": "Atlas benchmark — edition v0.6.0 (looprun@0.6.0). Standalone: the frozen per-edition harness plays the exported subject (world + 61 cases) through the governed (looprun) and ungoverned (Mastra) arms, then judges + scores — reproducible from this directory alone.",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "run:governed": "tsx harness/src/run-governed.ts",
+    "run:ungoverned": "tsx harness/src/run-ungoverned.ts",
+    "judge": "tsx harness/src/judge.ts",
+    "score": "tsx harness/src/score.ts"
+  },
+  "dependencies": {
+    "@looprun-ai/core": "0.6.0",
+    "@looprun-ai/mastra": "0.6.0",
+    "@mastra/core": "1.50.1",
+    "@ai-sdk/google": "^3.0.29",
+    "@ai-sdk/openai": "^3.0.30",
+    "ai": "^6.0.184",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
