@@ -7,7 +7,7 @@ the benchmark measures the skill's output.
 | stage | name | what | here |
 |---|---|---|---|
 | **A** | ASK | one purpose question + missing-input asks | ⬜ purpose ≈ "telecom customer-support agent bound by the telecom policy" |
-| **G1** | tools | tool genesis | ✅ tools already exist (τ² provides 13, in `reference/telecom/`) → skip |
+| **G1** | tools | tool genesis | ✅ tools already exist (τ² provides 13, in `benchmarks/tau2-telecom/reference/`) → skip |
 | **G2** | world | synthetic world + presets + config wiring (so the spec is runnable for T) | ⬜ `references/new-subject.md` |
 | **G3** | evals | generate the eval set, validated by debate | ⬜ `references/eval-generation.md` |
 | **E** | ENGINEER | decompose (≤15 tools → 1 agent) + draft the spec + theme | ⬜ `references/decompose-and-draft.md` |

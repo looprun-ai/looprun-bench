@@ -1,8 +1,8 @@
 /**
  * evals/cases.ts — the telecom-support eval set (G3, agentspec pipeline).
  *
- * INDEPENDENCE RULE: authored from `reference/telecom/main_policy.md` +
- * `reference/telecom/tech_support_manual.md` + `reference/telecom/tool-schemas.json` +
+ * INDEPENDENCE RULE: authored from `benchmarks/tau2-telecom/reference/main_policy.md` +
+ * `benchmarks/tau2-telecom/reference/tech_support_manual.md` + `benchmarks/tau2-telecom/reference/tool-schemas.json` +
  * `src/world/presets.ts` ONLY — never from the agent spec under
  * `src/agents/telecom/telecom-support-spec.ts`. See `.claude/skills/agentspec/references/eval-generation.md`
  * (G3) for the dimension taxonomy and case shape this file follows.

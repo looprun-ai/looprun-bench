@@ -2,7 +2,7 @@
 
 **Status: no valid results yet.** The benchmark has not been run on the **certified** spec. This file will
 hold the headline table (raw vs +looprun per subject × the four metrics + delta) once the roadmap's
-G2→G3→T→benchmark path is complete. `results/` is empty by design.
+G2→G3→T→benchmark path is complete. `benchmarks/tau2-telecom/results/` is empty by design.
 
 ## Throwaway runs (discarded) — kept only as diagnostics
 An earlier exploratory pass ran a hand-authored, **uncertified** spec through the shim at the wrong step

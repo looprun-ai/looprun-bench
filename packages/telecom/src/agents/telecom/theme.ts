@@ -4,8 +4,8 @@
  * account-state render, and the honest-abstain closure. NO per-agent persona (the persona-on-spec
  * law: the role line lives on each spec's `persona` field, never here).
  *
- * Source: `reference/telecom/main_policy.md` (voice + invariants + suspension/resume rule) and
- * `reference/telecom/tech_support_manual.md` (technical-support scope). `stateBlock` reads ONLY
+ * Source: `benchmarks/tau2-telecom/reference/main_policy.md` (voice + invariants + suspension/resume rule) and
+ * `benchmarks/tau2-telecom/reference/tech_support_manual.md` (technical-support scope). `stateBlock` reads ONLY
  * `world.projection()` (`packages/telecom/src/world/world.ts`'s `TelecomProjection`) through
  * defensive helpers — never Date.now/Math.random/I/O — so an unrelated world never throws.
  */

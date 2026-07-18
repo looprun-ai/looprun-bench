@@ -4,7 +4,7 @@
  * cross-preset id collisions) covering ONE state combination the eval dimension plan needs.
  *
  * Purity: no `Date.now`/`Math.random`/`new Date`/network — every date is a hardcoded string literal.
- * The domain's fixed policy clock (`reference/telecom/main_policy.md`: "The current time is
+ * The domain's fixed policy clock (`benchmarks/tau2-telecom/reference/main_policy.md`: "The current time is
  * 2025-02-25 12:08:00 EST.") lives in `world.ts` as `REFERENCE_NOW_DATE`; presets only bake
  * `contract_end_date` values relative to that fixed date by inspection (a date string is either
  * before or after "2025-02-25", chosen by hand — never computed at runtime).

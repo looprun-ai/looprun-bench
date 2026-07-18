@@ -1,5 +1,5 @@
 /**
- * src/world/tools.ts — the 13 τ²-bench telecom **agent** tools (`reference/telecom/tool-schemas.json`
+ * src/world/tools.ts — the 13 τ²-bench telecom **agent** tools (`benchmarks/tau2-telecom/reference/tool-schemas.json`
  * → `agent_tools`), exported as `TOOL_DEFS: ToolDef[]` for the eval config's tool surface.
  *
  * The `user_tools` in tool-schemas.json (check_status_bar, toggle_airplane_mode, make_payment, …) are

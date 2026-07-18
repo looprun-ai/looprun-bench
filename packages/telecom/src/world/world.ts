@@ -18,7 +18,7 @@
  * `get_customer_by_phone` / `get_customer_by_id` / `get_customer_by_name` — exactly like the shim.
  *
  * Purity: no `Date.now`/`Math.random`/`new Date`/network. `REFERENCE_NOW_DATE` is the domain's own
- * FIXED policy clock (`reference/telecom/main_policy.md`: "The current time is 2025-02-25 12:08:00
+ * FIXED policy clock (`benchmarks/tau2-telecom/reference/main_policy.md`: "The current time is 2025-02-25 12:08:00
  * EST."), a hardcoded module constant — not a live clock read — exactly the shim's
  * `DEFAULT_REFERENCE_NOW` (`packages/shim/src/world-adapter.ts`), just narrowed to the date part
  * since `contract_end_date` is date-only.
@@ -54,7 +54,7 @@ export interface TelecomWorld extends AgentWorld {
   customerHasUnpaidOverdueBills(customerId: string): boolean | null;
   /** null = no bills seen for that customer; true = has >=1 bill with status 'Awaiting Payment';
    *  false = has bills, none awaiting payment. Backs the "only ONE bill in AWAITING PAYMENT status
-   *  at a time" rule (reference/telecom/main_policy.md:116) so a guard can gate a second
+   *  at a time" rule (benchmarks/tau2-telecom/reference/main_policy.md:116) so a guard can gate a second
    *  send_payment_request while one is already outstanding. */
   customerHasBillAwaitingPayment(customerId: string): boolean | null;
   /** OPTIONAL on the shared contract: the eval world (worldFactory → TelecomWorldImpl) always provides

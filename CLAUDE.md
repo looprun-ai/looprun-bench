@@ -29,7 +29,7 @@ on the identical tasks + user-simulator. See `docs/overview.md` and `docs/method
 - `packages/telecom` — the domain-under-test: the looprun AgentSpec (generated + adversarially validated
   by the `agentspec` skill). `packages/shim` — the τ²⇄looprun bridge. `packages/runner` — orchestration.
 - `docs/` — `overview`, `methodology`, `pipeline`, `roadmap` + `guides/` + `findings/`.
-- `reference/telecom/` — the τ² telecom policy + tools (source material for the spec).
+- `benchmarks/tau2-telecom/reference/` — the τ² telecom policy + tools (source material for the spec).
 - `vendor/tau2-bench/` — the external harness, gitignored; restore with `pnpm setup:tau2`.
 - `.agents/skills/agentspec` + `.claude/skills/agentspec` — the installed skill (gitignored;
   restore with `pnpm setup:skill`, pinned by `skills-lock.json`).

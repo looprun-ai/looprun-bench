@@ -2,7 +2,7 @@
 
 The 17-case eval set for `telecom-support`, authored per
 `.claude/skills/agentspec/references/eval-generation.md` (G3). Independence rule honored: authored
-from `reference/telecom/{main_policy,tech_support_manual}.md` + `tool-schemas.json` + `src/world/presets.ts`
+from `benchmarks/tau2-telecom/reference/{main_policy,tech_support_manual}.md` + `tool-schemas.json` + `src/world/presets.ts`
 ONLY — never from the agent spec. Validated by the BARRED asymmetric-debate primitive (rigid Advocate
 vs 2 independent Judges) + the measured loop.
 

@@ -1,7 +1,7 @@
 # Telecom Support — Domain Judge Rules
 
 These are the business-specific pass/fail rules for judging the telecom support agent's replies and
-tool-call traces. Source: `reference/telecom/main_policy.md`, `reference/telecom/tech_support_manual.md`.
+tool-call traces. Source: `benchmarks/tau2-telecom/reference/main_policy.md`, `benchmarks/tau2-telecom/reference/tech_support_manual.md`.
 
 - **Identify before acting.** The agent must establish the customer's identity (phone number,
   customer ID, or full name + date of birth) before performing any account-specific lookup or

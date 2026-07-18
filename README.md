@@ -1,52 +1,35 @@
 # looprun-bench
 
-**Does governance help?** A benchmark harness that measures [**looprun**](https://looprun.ai) — a
-governance layer for LLM agents — against the **raw** model, on **[τ²-bench](https://github.com/sierra-research/tau2-bench)**
-(the telecom domain).
-
-The unit of comparison is a **pair**, on the identical tasks + user-simulator:
-
-```
-        same τ² telecom tasks
-               │
-        ┌──────┴───────┐
-        ▼              ▼
-     raw model     model + looprun
-        │              │
-        ▼              ▼
-      score A        score B      →   B − A  =  what looprun added
-```
+**The benchmarks of [looprun](https://looprun.ai) — does governance help, measured.** Each benchmark
+pairs the *same* model, on the *same* tasks + judge, in two arms — **raw model** vs **model + looprun
+governance** — so the delta is exactly what the governance layer added.
 
 ## Benchmarks
 
-This repo hosts two governance-vs-traditional benchmarks. **looprun version used: `0.6.0`**
-(npm `looprun@0.6.0`, GitHub release `v0.6.0`) for both.
+| Benchmark | Question | Scale | Status | Headline | Dir |
+|---|---|---|---|---|---|
+| **atlas** | Does governance help across cloud models + a local band? | 5 agents · 61 cases · 54 tools · 13 cloud models N=3 | **LIVE** | **governed 96.5 × ungoverned 92.6** (anchors: flash-lite 100 · local-quantized 91.8) | [`benchmarks/atlas/`](benchmarks/atlas/README.md) |
+| **tau2-telecom** | Raw model vs model + looprun on the τ² telecom domain | τ² telecom tasks + user-simulator | **IN PROGRESS** — domain reset for native skill generation | — | [`benchmarks/tau2-telecom/`](benchmarks/tau2-telecom/README.md) |
 
-- **telecom (τ²-bench).** The paired protocol above, on the τ² telecom domain (raw model vs
-  model + looprun, identical tasks + user-simulator). The domain is **not yet generated** — it was
-  reset to a clean state so the `agentspec` skill can be run natively (see **Status** below). Lives
-  in `packages/` + `reference/telecom` + `vendor/tau2-bench`.
-- **atlas** ([`atlas/`](atlas/README.md)). Governance vs traditional on **Atlas Equipment Rentals &
-  Field Ops** — a 61-case, 5-agent, 54-tool business generated end-to-end from one purpose sentence by
-  the `agentspec` skill. Headline: **looprun (governed) 96.5 vs traditional (ungoverned) 92.6**
-  aggregate over **13 cloud models, N=3**; **100%** on the flash-lite cloud subject and a **91.8%**
-  local (quantized) band. Every verdict — both arms — is scored by the same held-constant LLM judge.
-  Measured on the external `neurono-bench` harness and exported here (subject + governed specs +
-  ungoverned control arm + curated verdicts + reports). See [`atlas/README.md`](atlas/README.md) and
-  [`atlas/docs/`](atlas/docs/).
+Every verdict — both arms, every benchmark — is scored by the same held-constant LLM judge. Never mix
+rulers; never compare numbers across benchmarks.
 
-## Structure
+## Versioning
+
+Benchmark results ship as **editions** pinned to a published **looprun release** (npm `looprun@X.Y.Z` +
+the matching GitHub tag). Published edition numbers are never retro-edited — a new edition is a new
+`results/vX.Y.Z/` directory pinned to its release. See
+[`benchmarks/atlas/VERSIONS.md`](benchmarks/atlas/VERSIONS.md).
+
+## Repo layout
 
 | path | what |
 |---|---|
-| `atlas/` | the **atlas** governance-vs-traditional benchmark (exported from `neurono-bench`) — subject, specs, control arm, curated results, docs |
-| `packages/telecom` | the domain-under-test — a looprun `AgentSpec` generated + adversarially validated by the `agentspec` skill |
-| `packages/shim` | the τ² ⇄ looprun bridge: an OpenAI-compatible endpoint that governs one proposed turn per τ² step (τ² owns tool execution) |
-| `packages/runner` | orchestration — serve the subject, run raw vs governed, harvest the four metrics |
-| `reference/telecom` | the τ² telecom policy + tool schemas (source material for the spec) |
-| `vendor/tau2-bench` | the external harness (gitignored — `pnpm setup:tau2`) |
-| `docs/` | `overview` · `methodology` · `pipeline` · `roadmap` · `guides/` · `findings/` |
-| `results/` | benchmark outputs (versioned) |
+| `benchmarks/atlas/` | the **atlas** governance-vs-traditional benchmark — subject, specs, control arm, curated results (versioned), docs |
+| `benchmarks/tau2-telecom/` | the **τ² telecom** benchmark — front-door README, `reference/` (policy + tool schemas), `results/` |
+| `packages/` | the **shared harness** (pnpm workspace): `shim` (τ² ⇄ looprun bridge), `runner` (orchestration), `telecom` (the telecom domain-under-test spec) |
+| `vendor/tau2-bench` | the external τ² harness (vendored upstream; gitignored — restore with `pnpm setup:tau2`) |
+| `docs/` | shared harness docs: `overview` · `methodology` · `pipeline` · `roadmap` · `guides/` · `findings/` |
 
 ## Setup
 
@@ -57,16 +40,14 @@ pnpm setup:skill              # restore the agentspec skill (pinned by skills-lo
 pnpm setup:tau2               # clone + uv sync the τ² harness into vendor/
 ```
 
-## Status
+## How this repo relates
 
-The telecom domain is **not yet generated** — it was reset to a clean state so the `agentspec` skill can be
-run **natively** (via the Skill tool, fresh session). `packages/telecom` is a placeholder contract; nothing
-is certified; the benchmark has not run. **Start at [`docs/roadmap.md`](docs/roadmap.md) → "START HERE".**
+Three repos, one flow:
 
-## Methodology & findings
+1. **`neurono-bench`** — the private R&D lab: the harness where benchmarks are authored, measured, and certified.
+2. **[`looprun`](https://github.com/looprun-ai/looprun)** — the public governance runtime + the `agentspec` skill.
+3. **`looprun-bench`** (this repo) — the exported, reproducible benchmark editions, pinned to looprun releases.
 
-- **[docs/methodology.md](docs/methodology.md)** — the paired protocol, the τ² ruler, user-simulator, `max_steps`, honest caveats.
-- **[docs/pipeline.md](docs/pipeline.md)** — the `agentspec` AGENTS pipeline (A→G→E→N→T) as run here.
-- **[docs/findings/](docs/findings/)** — serving/DYLD, shim architecture, guard agnosticism, adversarial review, results, lessons.
+Benchmarks are certified in the lab, run on the published runtime, and exported here as versioned editions.
 
 Apache-2.0 © LoopRun Team

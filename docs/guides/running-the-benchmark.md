@@ -41,5 +41,5 @@ the run die with it).
 
 ## 4. Harvest
 Read `vendor/tau2-bench/data/simulations/{raw,governed}_*/results.json` → the four metrics per arm (see
-`../methodology.md`) + the shim activity JSONL. Copy the `results.json` into `results/` and write the table
+`../methodology.md`) + the shim activity JSONL. Copy the `results.json` into `benchmarks/tau2-telecom/results/` and write the table
 into `../findings/results.md`. **Evaluate the result (root-cause any regression) before the next run.**

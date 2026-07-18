@@ -20,10 +20,10 @@ Then run the FULL AGENTS pipeline **through the skill** (do NOT hand-author — 
 
 ```
    agentspec pipeline (AGENTS):  A → G1 → G2 → G3 → E → N → T   then → benchmark
-                                 ▶    (G1: tools already exist in reference/telecom → skip)
+                                 ▶    (G1: tools already exist in benchmarks/tau2-telecom/reference → skip)
 ```
 
-Inputs the skill needs are in `reference/telecom/` (`main_policy.md`, `tech_support_manual.md`,
+Inputs the skill needs are in `benchmarks/tau2-telecom/reference/` (`main_policy.md`, `tech_support_manual.md`,
 `tool-schemas.json`). The generated artifacts land in `packages/telecom/`:
 `src/agents/telecom/{spec,theme,lexicon,index}.ts`, `src/world/` (world + presets), `evals/`,
 `looprun.eval.config.ts`, and — after the measured loop — `CERT.md`. They **replace** the current
@@ -36,7 +36,7 @@ shim consumes — keep that same export surface so `@looprun-bench/shim` keeps c
 subject.**
 
 ## DONE (this session)
-- Clean monorepo: pnpm workspaces, Apache-2.0, `docs/`, `CLAUDE.md`, `reference/telecom/`. Typechecks green.
+- Clean monorepo: pnpm workspaces, Apache-2.0, `docs/`, `CLAUDE.md`, `benchmarks/tau2-telecom/reference/`. Typechecks green.
 - The τ²⇄looprun **shim** (`packages/shim`) — the reusable bridge (transcript ledger, world-adapter,
   step-handler, server). Wired to the telecom package's **placeholder** contract; re-verify it against the
   regenerated world's field names.
@@ -46,7 +46,7 @@ subject.**
    NATIVE gemini (`geminiFlashLiteThinkOff()` from `looprun/models`) — the raw OpenAI-compat `fetch` path
    400s on Gemini-3 multi-turn tools (missing `thought_signature`). Local llama stays on fetch. (TODO in file.)
 2. **Benchmark** (`packages/runner`): serve each subject, run `tau2 run --domain telecom` raw vs governed
-   on the SAME split + user-sim, harvest the four metrics, commit `results/` + `docs/findings/results.md`.
+   on the SAME split + user-sim, harvest the four metrics, commit `benchmarks/tau2-telecom/results/` + `docs/findings/results.md`.
 
 ## The benchmark run (once the spec is certified)
 

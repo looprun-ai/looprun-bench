@@ -16,7 +16,7 @@ were all auto-authored, then iterated against a measured bar. It is the ruler fo
 Measured on the **neurono-bench** harness — the `s15` runtime there is the canonical source mirrored
 as **`@looprun-ai/core`** / npm **`looprun` 0.6.0**. This directory is an **export** of that research:
 the subject, the specs, the ungoverned control arm, curated result verdicts, and the internal reports.
-Raw per-run traces stay in the canonical repo; see [`results/README.md`](results/README.md).
+Raw per-run traces stay in the canonical repo; see [`results/v0.6.0/README.md`](results/v0.6.0/README.md).
 
 Every verdict in this benchmark — both arms — is scored by **the LLM judge (a frontier coding agent)**
 against a fixed rubric ("ruler-v2"). The subject-under-test model is varied (13 cloud models plus a
@@ -45,7 +45,7 @@ Cloud tier — **13 OpenRouter models, N=3**:
 | [`subject/`](subject/) | the ruler — `world.ts`, `tools.ts`/`.json`, `presets.ts`, the 61 cases (`cases-at-*.ts`), `judge-prompt.md`, `WORLD-MODEL.md`, `AGENT-MAP.md`, `EVALS*.md`, `G1-REVIEW.md` |
 | [`specs/`](specs/) | the governed (looprun) AgentSpec bundles: `atlas/` (base + `CASE-MAP.tsv`), `atlas-r2/`+`atlas-r2p/` (certified v2), `atlas-p-<model>/` (per-model form profiles), `atlas-band-p1..3/` (perturbed-band bundles for honest local cert) |
 | [`vanilla/`](vanilla/) | the ungoverned control arm (blind-authored traditional agent): `BRIEF.md`, `index.ts` (neutral adapter, reference only), `agents-generated/atlas/` (provenance + iteration ledger + `index.ts`/`v2` bundles + bug reports) |
-| [`results/`](results/) | curated verdicts/dumps per run family — see [`results/README.md`](results/README.md) |
+| [`results/`](results/) | curated verdicts/dumps per run family, versioned by looprun edition (`results/v0.6.0/`) — see [`results/v0.6.0/README.md`](results/v0.6.0/README.md) and [`VERSIONS.md`](VERSIONS.md) |
 | [`docs/`](docs/) | the internal research reports (verbatim, provenance-headed): GO/NO-GO, the cloud matrix, flip-root-cause, regen report, compaction A/B |
 
 ## How to re-run

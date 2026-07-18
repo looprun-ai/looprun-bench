@@ -2,7 +2,7 @@
  * src/agents/telecom/lexicon.ts — the business-owned, language-specific regexes for the
  * `telecom-support` agent (P8a domain-neutrality law: `@looprun-ai/core` carries NO linguistic
  * pattern of its own; every wording-keyed reply guard takes its regex as a REQUIRED injected
- * param). Derived from `reference/telecom/main_policy.md`'s action vocabulary — suspend/resume a
+ * param). Derived from `benchmarks/tau2-telecom/reference/main_policy.md`'s action vocabulary — suspend/resume a
  * line, pay/send a payment request for a bill, refuel data, enable/disable roaming — never from a
  * gold spec.
  *

@@ -27,7 +27,7 @@ The two `eval-logs` dirs (`2026-07-17-atlas-v2-optimized`, `2026-07-17-lote-a-re
 | `2026-07-16-atlas-vanilla-setfull*` / `…-v2-setfull*` / `2026-07-17-…-v3-setfull-ram24-MTPon` | 9 | **Traditional local/cloud arms** — v1/v2/v3 iterations of the ungoverned agent (v3 = ram24-optimized). |
 | `2026-07-17-atlas-vanilla-v{2,3}-case62fix*` | 2 | Single-case fix runs (case 62). |
 | `2026-07-17-atlasr2-s15-setfull*` | 6 | **Governed (looprun / s15) local cert** — `atlas-r2` bundle, full-61, cloud + ram24-MTPon, N=3 reps. |
-| `2026-07-17-atlasv2-band-ram24-mtpon-p1..3` | 3 | **Perturbed local band** — the honest local certification (K=3 inert-byte perturbations; see `../docs/flip-root-cause-2026-07-16.md` Part 8). |
+| `2026-07-17-atlasv2-band-ram24-mtpon-p1..3` | 3 | **Perturbed local band** — the honest local certification (K=3 inert-byte perturbations; see `../../docs/flip-root-cause-2026-07-16.md` Part 8). |
 | `2026-07-17-atlas-v2-optimized` | 1 | Curated verdict set: per-model optimized-form runs (D25). Copied whole. |
 | `2026-07-17-lote-a-recert-retest` | 1 | Curated verdict set: the Lote-A eval recert/retest. Copied whole. |
 

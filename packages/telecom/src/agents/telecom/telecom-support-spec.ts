@@ -1,8 +1,8 @@
 /**
  * src/agents/telecom/telecom-support-spec.ts — the single AgentSpec for the τ²-bench **telecom**
  * domain (E1 decomposition, human-approved: ONE agent, `telecom-support`, owning all 13 agent
- * tools from `reference/telecom/tool-schemas.json`). Derived from `reference/telecom/main_policy.md`
- * and `reference/telecom/tech_support_manual.md` — never from a gold spec.
+ * tools from `benchmarks/tau2-telecom/reference/tool-schemas.json`). Derived from `benchmarks/tau2-telecom/reference/main_policy.md`
+ * and `benchmarks/tau2-telecom/reference/tech_support_manual.md` — never from a gold spec.
  *
  * `destructiveTools` is deliberately **empty**: the τ² agent tools carry NO `confirmed` flag and
  * the shim exposes NO `askUser` tool, so an auto `confirmFirst`/`'prior-ask'` gate would be
