@@ -13,12 +13,12 @@ this edition's **P9-patched governed specs** ([`specs/atlas-r2/`](specs/atlas-r2
 **ungoverned control arm** are **inherited from [`../v0.6.0/`](../v0.6.0/)** (not duplicated — the
 harness resolves them across the sibling dir by default, which works from this edition's own install).
 
-> **Pins target the `looprun@0.6.1` release (publishing imminently).** The two runtime deps
-> (`@looprun-ai/core` / `@looprun-ai/mastra`) are pinned to **exact `0.6.1`**. The maintainers verified
-> this edition end-to-end against the **packed `0.6.1` runtime** on 2026-07-18 (typecheck + governed +
-> ungoverned smokes + judge + score, artifact shapes matching [`results/`](results/)). Until `0.6.1`
-> is on npm, `pnpm install` here will not resolve those two deps — **the committed `pnpm-lock.yaml`
-> lands with the first post-publish install.**
+> **Pins target [`looprun@0.6.1`](https://github.com/looprun-ai/looprun/releases/tag/v0.6.1)
+> (published 2026-07-18).** The two runtime deps (`@looprun-ai/core` / `@looprun-ai/mastra`) are
+> pinned to **exact `0.6.1`** and the committed `pnpm-lock.yaml` resolves them from npm. The
+> maintainers verified this edition end-to-end twice on 2026-07-18: against the packed `0.6.1`
+> runtime pre-publish, and against the published npm `0.6.1` post-publish (typecheck + governed +
+> ungoverned smokes + judge + score, artifact shapes matching [`results/`](results/)).
 
 **Prerequisites:** Node ≥ 22, pnpm 10.33.0.
 
