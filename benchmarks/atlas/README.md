@@ -35,9 +35,36 @@ and the curated result verdicts that produced its published numbers — everythi
 - An edition that only patches the runtime (e.g. v0.6.1) re-certifies its **anchors** and **explicitly
   inherits** any tier it did not re-measure — it never silently reuses another edition's numbers.
 
+## Reproduce
+
+The benchmark is **reproducible from this repo alone**. A standalone public runner lives in
+[`harness/`](harness/README.md): it plays the exported subject (world + 61 cases) through both arms —
+**governed** (the model driven through the public looprun runtime + guards) and **ungoverned** (the
+same model in a plain Mastra agent) — then judges and scores them. It depends only on published
+packages (`@looprun-ai/core`, `@looprun-ai/mastra`, `@mastra/core`, `ai`, `zod`, an AI-SDK provider)
+plus the edition artifacts in these `vX.Y.Z/` directories.
+
+```bash
+pnpm install
+cd benchmarks/atlas/harness
+export GOOGLE_GENERATIVE_AI_API_KEY=...        # or an OpenAI-compatible endpoint — see harness/README
+export MODEL_ID=gemini-3.1-flash-lite
+pnpm run:governed --cases 01,07,83 --out runs/smoke     # 3-case smoke
+pnpm run:governed --out runs/gov                        # full 61
+pnpm judge --dir runs/gov                               # set JUDGE_MODEL_ID + a key first
+pnpm score --dir runs/gov
+```
+
+See [`harness/README.md`](harness/README.md) for the full quickstart, the flag/env reference, and the
+output layout. Diff your `runs/**/…verdicts.jsonl` + `…autofail.json` against the published
+`vX.Y.Z/results/` to compare case by case.
+
 ## Provenance
 
-Measured on the canonical **neurono-bench** harness — its `s15` runtime is the source mirrored as
-**`@looprun-ai/core`** / npm **`looprun`**. Each edition here is an **export** of that research: the
-subject, the specs, the ungoverned control arm, curated verdicts, and the internal reports. Raw
-per-run traces stay in the canonical repo.
+Each edition here is a **measurement snapshot** — the subject, the specs, the ungoverned control arm,
+the curated per-case verdicts, and the internal reports that produced its published numbers. The
+published editions were produced **by the maintainers** on the pinned looprun release, measured with
+this harness against a single held-constant LLM judge ("ruler-v2"). The artifacts plus the
+[`harness/`](harness/README.md) let anyone reproduce the methodology and diff their run against the
+published verdicts; a reproduction on a different judge model (or a different runtime patch level) is
+informative, not a byte-for-byte match of a published figure.

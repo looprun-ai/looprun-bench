@@ -15,6 +15,40 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
+  benchmarks/atlas/harness:
+    dependencies:
+      '@ai-sdk/google':
+        specifier: ^3.0.29
+        version: 3.0.91(zod@3.25.76)
+      '@ai-sdk/openai':
+        specifier: ^3.0.30
+        version: 3.0.84(zod@3.25.76)
+      '@looprun-ai/core':
+        specifier: ^0.6.0
+        version: 0.6.0
+      '@looprun-ai/mastra':
+        specifier: ^0.6.0
+        version: 0.6.0(@mastra/core@1.50.1(ai@6.0.225(zod@3.25.76))(express@5.2.1)(zod@3.25.76))(ai@6.0.225(zod@3.25.76))(zod@3.25.76)
+      '@mastra/core':
+        specifier: ^1.42.0
+        version: 1.50.1(ai@6.0.225(zod@3.25.76))(express@5.2.1)(zod@3.25.76)
+      ai:
+        specifier: ^6.0.184
+        version: 6.0.225(zod@3.25.76)
+      zod:
+        specifier: ^3.24.0
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.1
+      tsx:
+        specifier: ^4.19.0
+        version: 4.23.1
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+
   benchmarks/tau2-telecom/harness/runner:
     dependencies:
       '@looprun-bench/shim':
@@ -333,6 +367,10 @@ packages:
     resolution: {integrity: sha512-P7kgSdzg9UtDuXl6ynA823rnXDVkhtM24mc4W8QMxqk0enmqWTuEV58P6fmGD0inEKYRvGRpr2OJk+wzjxx8ng==}
     engines: {node: '>=22'}
 
+  '@looprun-ai/core@0.6.0':
+    resolution: {integrity: sha512-Y7YBh2KU3M76szwh7Pqs8gI7iE2PqpaupLMQVD+GR6Qo60U1sp+JcUViNu4vu36Kr+5k2M37ySFmT0IdbDfsqg==}
+    engines: {node: '>=22'}
+
   '@looprun-ai/eval@0.2.0':
     resolution: {integrity: sha512-Nz0vhzQp2xvwOZyaHTR417XWjwF4s4ZGV/4j9fC6f9h6lEjPC/vq8lsVFaWmJFvO9W533KZE+s3KYRn7Z0r3xQ==}
     engines: {node: '>=22'}
@@ -344,6 +382,14 @@ packages:
 
   '@looprun-ai/mastra@0.2.0':
     resolution: {integrity: sha512-EyTg9jyE1HchOEvBlM45uHvTrL+3Ex0xj5yK2JFvLJ79hQw22vItMvzueEl20uHpVXNBosRpH9NHTXV8AJI6nw==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      '@mastra/core': ^1.42.0
+      ai: ^6.0.0
+      zod: ^3.24.0
+
+  '@looprun-ai/mastra@0.6.0':
+    resolution: {integrity: sha512-dhOTt+CmvcQbZIXPNUujtfFkWy3l+hg8FajO1cEErBTZ0nTd3zcT8SSjBzbbzW0mO/sk7Gwlj5nsX6BqZLK65A==}
     engines: {node: '>=22'}
     peerDependencies:
       '@mastra/core': ^1.42.0
@@ -1416,6 +1462,8 @@ snapshots:
 
   '@looprun-ai/core@0.2.1': {}
 
+  '@looprun-ai/core@0.6.0': {}
+
   '@looprun-ai/eval@0.2.0(@mastra/core@1.50.1(ai@6.0.225(zod@3.25.76))(express@5.2.1)(zod@3.25.76))(ai@6.0.225(zod@3.25.76))(zod@3.25.76)':
     dependencies:
       '@looprun-ai/core': 0.2.1
@@ -1429,6 +1477,13 @@ snapshots:
   '@looprun-ai/mastra@0.2.0(@mastra/core@1.50.1(ai@6.0.225(zod@3.25.76))(express@5.2.1)(zod@3.25.76))(ai@6.0.225(zod@3.25.76))(zod@3.25.76)':
     dependencies:
       '@looprun-ai/core': 0.2.1
+      '@mastra/core': 1.50.1(ai@6.0.225(zod@3.25.76))(express@5.2.1)(zod@3.25.76)
+      ai: 6.0.225(zod@3.25.76)
+      zod: 3.25.76
+
+  '@looprun-ai/mastra@0.6.0(@mastra/core@1.50.1(ai@6.0.225(zod@3.25.76))(express@5.2.1)(zod@3.25.76))(ai@6.0.225(zod@3.25.76))(zod@3.25.76)':
+    dependencies:
+      '@looprun-ai/core': 0.6.0
       '@mastra/core': 1.50.1(ai@6.0.225(zod@3.25.76))(express@5.2.1)(zod@3.25.76)
       ai: 6.0.225(zod@3.25.76)
       zod: 3.25.76
