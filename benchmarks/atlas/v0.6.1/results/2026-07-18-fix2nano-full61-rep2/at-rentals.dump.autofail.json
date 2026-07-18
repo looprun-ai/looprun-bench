@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "11-checkin-defers-deposit-release",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall checkInAsset({\"bookingId\":\"bk_1003\",\"conditionIn\":\"good\"}) missing — observed [getBooking, askUser]"
+  }
+]

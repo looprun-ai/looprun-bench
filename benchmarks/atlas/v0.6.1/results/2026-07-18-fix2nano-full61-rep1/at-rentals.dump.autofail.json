@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "02-dispatch-technician-happy",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall dispatchTechnician({\"bookingId\":\"bk_1001\",\"technicianId\":\"tech_01\"}) missing — observed [getTechnicianSchedule, listTechnicians, replyToUser]"
+  }
+]

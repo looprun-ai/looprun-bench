@@ -15,7 +15,7 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
-  packages/runner:
+  benchmarks/tau2-telecom/harness/runner:
     dependencies:
       '@looprun-bench/shim':
         specifier: workspace:*
@@ -28,7 +28,7 @@ importers:
         specifier: ^4.19.0
         version: 4.23.1
 
-  packages/shim:
+  benchmarks/tau2-telecom/harness/shim:
     dependencies:
       '@looprun-ai/core':
         specifier: ^0.2.1
@@ -53,7 +53,7 @@ importers:
         specifier: ^4.19.0
         version: 4.23.1
 
-  packages/telecom:
+  benchmarks/tau2-telecom/harness/telecom:
     dependencies:
       '@mastra/core':
         specifier: ^1.42.0
