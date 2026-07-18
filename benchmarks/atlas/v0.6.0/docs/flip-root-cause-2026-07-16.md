@@ -1,19 +1,19 @@
-> **Provenance:** exported verbatim from the canonical `neurono-bench` repo (internal research
-> doc). Internal vocabulary: "s15" = the runtime published as `looprun`/`@looprun-ai/core` 0.6.0;
-> "the Claude/Opus judge (D9, ruler-v2)" = the LLM judge used for every verdict in this benchmark
-> (both arms, same judge). Decision labels (D9/D24/D25...) refer to the bench's decision ledger.
+> **Provenance:** an internal research report, reproduced here as part of this benchmark edition.
+> Vocabulary: *governed* / *looprun* = the looprun runtime (`@looprun-ai/core` 0.6.0); *vanilla* = the
+> ungoverned control arm; "the Claude/Opus judge (D9, ruler-v2)" = the LLM judge used for every verdict
+> in this benchmark (both arms, same judge). Decision labels (D9/D24/D25...) are edition-internal.
 
 # Root cause of the "senseless" case flips on ram24 (minimal-repro, measured 2026-07-16)
 
 **Question.** Why do atlas-v1 cases flip pass/fail under same-config re-runs, inert (placebo) edits,
 and every ladder intervention — capping local iteration at ~82–90% no matter what we edit?
-(Context: set19 ladder + Q4-vs-IQ2 probe. The raw `bench/results/2026-07-16-atlas-s15-set19-*` dirs
+(Context: set19 ladder + Q4-vs-IQ2 probe. The raw `../results/2026-07-16-atlas-governed-set19-*` dirs
 were pruned from the working tree on 2026-07-17 — recover them from git history if needed.)
 
 **Method (minimal repro).** One always-flippy case (`31-quote-total-none-exists`, at-billing), replayed
 RAW against llama-server (ram24 alias, IQ2_XXS, temp 0) at its exact decision point: step 2, after the
 byte-identical `listAssets` call+result that both the PASS (ref61) and FAIL (recheck) runs produced.
-Prompt rendered offline byte-exactly (`bench/scripts/dump-s15-prompt.ts` mirrors `mastra.ts:534-554`);
+Prompt rendered offline byte-exactly (an offline prompt-dump script mirrors `mastra.ts:534-554`);
 `/apply-template` + `/completion` with `n_probs` (MTP off for full distributions) reads the top-k
 logprobs at the fork. Harness: session scratchpad `e_battery.py`.
 
@@ -95,7 +95,7 @@ margin toward the correct tool; acceptance = worst-case margin across the FULL n
 **Instrument** (packaged in `skills/agentspec-generator/scripts/`): `extract-fork.mjs` (finds the
 first divergent message between a real PASS and FAIL run of the same case; emits the replayable
 shared context + the two continuations) → `margin-probe.py measure|battery|pair` (renders the
-byte-exact prompt via `bench/scripts/dump-s15-prompt.ts` dumps + `/apply-template`, reads the
+byte-exact prompt via an offline prompt-dump script dumps + `/apply-template`, reads the
 top-k logprobs at the fork, runs the noise battery). Server: the target LOCAL model, speculative
 decoding OFF.
 
@@ -164,7 +164,7 @@ discipline for any full-run A/B, majority-of-3 judging for borderline rubrics.
 ## Part 5 — Etapa 1.4: the from-scratch regeneration (the real test of the process)
 
 `atlas-r1` = the WHOLE skill re-run E2→N→T from scratch (5 blind Opus drafters, corrected references,
-NO telegraphic restyle) on the FROZEN inputs (theme/tools/evals/judge/CASE-MAP) — the banana-to-banana
+NO telegraphic restyle) on the FROZEN inputs (theme/tools/evals/judge/case map) — the banana-to-banana
 comparison against the blind Mastra arm's subject.
 
 | stage | FL (cloud) | ram24 (local) | note |
@@ -250,10 +250,10 @@ recipe env `SELECTOR=1 SLIM_TOOLS=1 STABLE_PREFIX=1`. K=3 replicates, one distin
 - **Honest cert:** atlas-r2 on ram24/MTP-ON = **56/61 = 91.8%** (K=3 inert-byte band), above the
   90.2% D24 ram24 bar; the error bar is the flip between two coins, not the rate.
 
-**Operational gotcha found:** `scripts/s15-run-set.sh` did not export the model endpoint —
+**Operational gotcha found:** the local run script did not export the model endpoint —
 `qwen36-local` defaulted `baseURL` to ollama `:11434`, so a naive invocation hit nothing and every
 case autofailed with `observed [(none)]` (the mechanism behind an earlier mass-zero run). Fixed: the
 script now defaults `OLLAMA_BASE_URL=http://127.0.0.1:8081/v1` for `*-local` aliases when unset.
 
-Provenance: `bench/results/2026-07-17-atlasv2-band-ram24-mtpon-p{1,2,3}/` + perturbed bundles
-`bench/adapters/s15/agents-generated/atlas-band-p{1,2,3}/`.
+Provenance: `../results/2026-07-17-atlasv2-band-ram24-mtpon-p{1,2,3}/` + perturbed bundles
+`../specs/atlas-band-p{1,2,3}/`.

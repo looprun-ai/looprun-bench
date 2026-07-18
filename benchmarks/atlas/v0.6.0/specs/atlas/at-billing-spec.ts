@@ -24,7 +24,7 @@
  * //    booking→asset map, so only the accountFrozen + open-claim halves are decidable here; the
  * //    asset-hold half is world-enforced and the reply must relay it. (N4-B3, N round 1.)
  */
-import { AgentSpecBase } from '@neurono-bench/agentspec-runtime';
+import { AgentSpecBase } from '@looprun-ai/core';
 import {
   argRequired,
   custom,
@@ -34,7 +34,7 @@ import {
   noFabricatedSuccess,
   pendingConfirmMustAsk,
   precondition,
-} from '@neurono-bench/agentspec-runtime';
+} from '@looprun-ai/core';
 
 // ── Business-owned lexicon (P8a: the runtime carries NO linguistic regex; a spec passes its own).
 // Inlined to keep this drafter self-contained; a shipping domain hoists these into one lexicon module.

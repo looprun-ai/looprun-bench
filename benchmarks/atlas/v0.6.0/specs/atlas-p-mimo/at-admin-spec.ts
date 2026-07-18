@@ -23,7 +23,7 @@ import {
   precondition,
   requiresBefore,
   type AgentWorld,
-} from '@neurono-bench/agentspec-runtime';
+} from '@looprun-ai/core';
 
 /** Read the world's guard-readable projection scalars (defensive: an unrelated world → {}). */
 const proj = (w: AgentWorld): Record<string, unknown> =>

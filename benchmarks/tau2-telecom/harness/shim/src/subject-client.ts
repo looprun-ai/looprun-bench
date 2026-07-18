@@ -13,7 +13,7 @@
 import type { OpenAIMessage, OpenAIToolCall, OpenAIToolDef } from './openai-types.js';
 
 const SUBJECT_API_BASE = process.env.LOOPRUN_SUBJECT_API_BASE ?? 'http://127.0.0.1:8081/v1';
-const SUBJECT_MODEL = process.env.LOOPRUN_SUBJECT_MODEL ?? '/Users/marcos/models/qwen35-gguf/Qwen3.5-4B-UD-Q4_K_XL.gguf';
+const SUBJECT_MODEL = process.env.LOOPRUN_SUBJECT_MODEL ?? './models/Qwen3.5-4B-UD-Q4_K_XL.gguf';
 // Optional bearer auth (cloud subjects, e.g. gemini's OpenAI-compat endpoint). Empty = no header (local llama).
 const SUBJECT_API_KEY = process.env.LOOPRUN_SUBJECT_API_KEY ?? '';
 // The provider-specific thinking-off / pinning body, merged into every request. Default = the llama.cpp

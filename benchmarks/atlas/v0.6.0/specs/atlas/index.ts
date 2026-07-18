@@ -2,7 +2,7 @@
  * GENERATED domain bundle — atlas: the at-* AgentSpecs (each with its OWN persona — 283b4ed)
  * + the generated ATLAS_THEME (business-common skin — NO persona).
  */
-import type { AgentSpec, TrunkTheme } from '@neurono-bench/agentspec-runtime';
+import type { AgentSpec, TrunkTheme } from '@looprun-ai/core';
 import atRentals from './at-rentals-spec';
 import atBilling from './at-billing-spec';
 import atClaims from './at-claims-spec';

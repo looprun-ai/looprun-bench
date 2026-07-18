@@ -1,7 +1,7 @@
-> **Provenance:** exported verbatim from the canonical `neurono-bench` repo (internal research
-> doc). Internal vocabulary: "s15" = the runtime published as `looprun`/`@looprun-ai/core` 0.6.0;
-> "the Claude/Opus judge (D9, ruler-v2)" = the LLM judge used for every verdict in this benchmark
-> (both arms, same judge). Decision labels (D9/D24/D25...) refer to the bench's decision ledger.
+> **Provenance:** an internal research report, reproduced here as part of this benchmark edition.
+> Vocabulary: *governed* / *looprun* = the looprun runtime (`@looprun-ai/core` 0.6.0); *vanilla* = the
+> ungoverned control arm; "the Claude/Opus judge (D9, ruler-v2)" = the LLM judge used for every verdict
+> in this benchmark (both arms, same judge). Decision labels (D9/D24/D25...) are edition-internal.
 
 # Pacote #12 — Oportunidades de melhoria (reanálise de TODAS as falhas da matriz v2)
 

@@ -1,7 +1,7 @@
 # Finding — llama.cpp serving + the DYLD/SIP gotcha
 
 ## Config parity (confirmed)
-looprun's `packages/models/src/llamacpp.ts` launch recipe is **identical** to the upstream-validated s15
+looprun's `packages/models/src/llamacpp.ts` launch recipe is **identical** to the upstream-validated looprun runtime
 config — same flags, same tiers (4B: ctx 32768, cache-ram 3072; 35B-A3B: ctx 65536, cache-ram 16384), KV
 f16 both, `-ctxcp 64`, non-MTP. looprun has the latest serving optimizations; use `looprun models serve`.
 

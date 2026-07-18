@@ -39,7 +39,7 @@ import {
   noFalseFailureClaim,
   pendingConfirmMustAsk,
   precondition,
-} from '@neurono-bench/agentspec-runtime';
+} from '@looprun-ai/core';
 
 // Guard-readable snapshot accessor — checks read ONLY the dotted scalars projection() exposes.
 type AdminProjection = {

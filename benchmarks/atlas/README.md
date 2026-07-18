@@ -22,7 +22,7 @@ and the curated result verdicts that produced its published numbers — everythi
 
 | edition | date | looprun release | dir | aggregate (13-model cloud matrix, N=3) | anchors |
 |---|---|---|---|---|---|
-| **v0.6.0** | 2026-07-18 | `looprun@0.6.0` (GitHub `v0.6.0`) | [`v0.6.0/`](v0.6.0/README.md) | **governed 96.5 × ungoverned 92.6** (+3.9 pt, 11/13 per-model wins) | flash-lite (cloud subject) **100** · local-quantized (ram24) **91.8** |
+| **v0.6.0** | 2026-07-18 | `looprun@0.6.0` (GitHub `v0.6.0`) | [`v0.6.0/`](v0.6.0/README.md) | **governed 96.5 × ungoverned 92.6** (+3.9 pt, 11/13 per-model wins) | flash-lite (cloud subject) **100** · local-quantized (Qwen3.6-35B-A3B) **91.8** |
 | **v0.6.1** | 2026-07-18 | `looprun@0.6.1` | [`v0.6.1/`](v0.6.1/README.md) | **inherited from v0.6.0** — matrix NOT re-measured | cloud subject **98.4** (its one fail is a proven subject-model knife-edge — byte-identical prompt, ~50/50 same-day re-probe; the v0.6.0 **100** stands for its edition) · local-quantized **95.6 — local record** (speculative decoding ON) |
 
 ## The versioning LAW

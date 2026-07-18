@@ -27,7 +27,7 @@ LLM judge. Curated verdicts + deterministic autofails live under [`results/`](re
 | anchor | subject | result | notes |
 |---|---|---|---|
 | **cloud subject** | flash-lite-thinkoff | **98.4** (60/61, N=3) | its single failing case is a **proven knife-edge of the subject model** — byte-identical prompt vs v0.6.0, a same-day re-probe lands ~50/50; the v0.6.0 **100** stands for its edition |
-| **local quantized** | ram24 (Qwen3.6-35B-A3B, llama.cpp, **speculative decoding ON**) | **95.6 — local record** | best local result to date on Atlas |
+| **local quantized** | Qwen3.6-35B-A3B (IQ2_XXS, llama.cpp, **speculative decoding ON**) | **95.6 — local record** | best local result to date on Atlas |
 | package validation | weakest cloud model (gpt-*-nano) | **88.0 → 91.8** (N=3) | confirms the P9 fixes carry to the weakest model, not just the anchors |
 
 `results/` families:
@@ -35,7 +35,7 @@ LLM judge. Curated verdicts + deterministic autofails live under [`results/`](re
 | family | dirs | what |
 |---|---|---|
 | `2026-07-18-p9recert-fl-rep{0,1,2}` | 3 | cloud-subject (flash-lite) re-cert — the **98.4** anchor |
-| `2026-07-18-p9recert-ram24-rep{0,1,2}` | 3 | local-quantized (ram24, spec-decode ON) re-cert — the **95.6** local record |
+| `2026-07-18-p9recert-ram24-rep{0,1,2}` | 3 | local-quantized (spec-decode ON) re-cert — the **95.6** local record |
 | `2026-07-18-fix2nano-full61-rep{0,1,2}` | 3 | weakest-cloud-model package validation — **88.0 → 91.8** |
 
 Each rep dir keeps the per-agent `*.verdicts.jsonl` (raw LLM-judge verdicts) + `*.dump.autofail.json`
@@ -62,6 +62,6 @@ Everything else is identical to v0.6.0 and lives there:
 
 ## Provenance
 
-Measured on the canonical **neurono-bench** harness (`s15` runtime, mirrored as `@looprun-ai/core` /
-npm `looprun@0.6.1`). This directory is an export of that research; raw per-run traces stay in the
-canonical repo.
+Re-certified with the `agentspec` skill on the published looprun runtime (`@looprun-ai/core` /
+npm `looprun@0.6.1`). This directory is a self-contained export of that re-certification; curated
+verdicts + deterministic autofails live under [`results/`](results/).

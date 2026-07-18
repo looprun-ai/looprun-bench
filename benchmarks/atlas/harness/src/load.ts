@@ -29,7 +29,7 @@ function pick(mod: Record<string, unknown>, names: string[]): unknown {
 
 /** The five Atlas agent buckets: which case file feeds them, and the governed spec id + ungoverned
  *  agent id each maps to (the exported bundles key them differently — the inventory bucket is
- *  `at-inventory` governed / `fleet` ungoverned). Case-id ranges match the exported CASE-MAP. */
+ *  `at-inventory` governed / `fleet` ungoverned). Case-id ranges match the exported case map. */
 const BUCKET_DEFS: { file: string; exportName: string; governed: string; vanilla: string }[] = [
   { file: 'cases-at-rentals', exportName: 'ATLAS_CASES_AT_RENTALS', governed: 'at-rentals', vanilla: 'rentals' },
   { file: 'cases-at-billing', exportName: 'ATLAS_CASES_AT_BILLING', governed: 'at-billing', vanilla: 'billing' },

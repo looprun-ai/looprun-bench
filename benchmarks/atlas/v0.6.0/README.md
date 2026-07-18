@@ -17,10 +17,10 @@ were all auto-authored, then iterated against a measured bar. It is the ruler fo
 
 ## Provenance
 
-Measured on the **neurono-bench** harness — the `s15` runtime there is the canonical source mirrored
-as **`@looprun-ai/core`** / npm **`looprun` 0.6.0**. This directory is an **export** of that research:
+Atlas was authored and certified with the `agentspec` skill and run on the published looprun runtime
+(**`@looprun-ai/core`** / npm **`looprun` 0.6.0**). This directory is a **self-contained export**:
 the subject, the specs, the ungoverned control arm, curated result verdicts, and the internal reports.
-Raw per-run traces stay in the canonical repo; see [`results/README.md`](results/README.md).
+Curated verdicts + dumps for every run are under [`results/README.md`](results/README.md).
 
 Every verdict in this benchmark — both arms — is scored by **the LLM judge (a frontier coding agent)**
 against a fixed rubric ("ruler-v2"). The subject-under-test model is varied (13 cloud models plus a
@@ -30,11 +30,11 @@ local quantized model); the judge is held constant. Never mix rulers; never comp
 
 Certified anchors (ruler-v2):
 
-| arm | FL (flash-lite-thinkoff, cloud subject) | ram24 (local quantized) |
+| arm | FL (flash-lite-thinkoff, cloud subject) | local quantized (Qwen3.6-35B-A3B, IQ2_XXS) |
 |---|---|---|
 | **looprun / governed** (`atlas-r2`) | **100%** N=3 | **91.8%** (perturbed band 56/61; byte-identical 93.4 over-counts) |
 | traditional / ungoverned v2 (cloud-opt) | 98.4% (60/61) | — |
-| traditional / ungoverned v3 (ram24-opt) | — | 86.9% (53/61) |
+| traditional / ungoverned v3 (local-opt) | — | 86.9% (53/61) |
 
 Cloud tier — **13 OpenRouter models, N=3**:
 
@@ -48,39 +48,31 @@ Cloud tier — **13 OpenRouter models, N=3**:
 |---|---|
 | [`subject/`](subject/) | the ruler — `world.ts`, `tools.ts`/`.json`, `presets.ts`, the 61 cases (`cases-at-*.ts`), `judge-prompt.md`, `WORLD-MODEL.md`, `AGENT-MAP.md`, `EVALS*.md`, `G1-REVIEW.md` |
 | [`specs/`](specs/) | the governed (looprun) AgentSpec bundles: `atlas/` (base + `CASE-MAP.tsv`), `atlas-r2/`+`atlas-r2p/` (certified v2), `atlas-p-<model>/` (per-model form profiles), `atlas-band-p1..3/` (perturbed-band bundles for honest local cert) |
-| [`vanilla/`](vanilla/) | the ungoverned control arm (blind-authored traditional agent): `BRIEF.md`, `index.ts` (neutral adapter, reference only), `agents-generated/atlas/` (provenance + iteration ledger + `index.ts`/`v2` bundles + bug reports) |
+| [`vanilla/`](vanilla/) | the ungoverned control arm (blind-authored traditional agent): `BRIEF.md`, `agents-generated/atlas/` (provenance + iteration ledger + `index.ts`/`v2` bundles + bug reports) |
 | [`results/`](results/) | curated verdicts/dumps per run family for this edition — see [`results/README.md`](results/README.md) and the edition index in [`../README.md`](../README.md) |
 | [`docs/`](docs/) | the internal research reports (verbatim, provenance-headed): GO/NO-GO, the cloud matrix, flip-root-cause, regen report, compaction A/B |
 
 ## How to re-run
 
-The Atlas harness lives in the **canonical `neurono-bench` repo** (not this repo). The commands below
-run there. `<agent>` dumps are then scored by the LLM judge to produce `<agent>.verdicts.jsonl`.
+The public runner lives in [`../harness`](../harness) — it plays this exported subject through both
+arms, judges, and scores, reproducibly from this repo alone. `<agent>` dumps are scored by the LLM
+judge to produce `<agent>.verdicts.jsonl`.
 
 ```bash
-# --- governed (looprun / s15) arm ---
-# whole subject, one cloud model:
-scripts/s15-run-set.sh full gemini-3.1-flash-lite-thinkoff atlas
-# cloud matrix over a model group or explicit list (one results dir per model):
-scripts/s15-run-models.sh full "or-haiku-4.5,or-sonnet-5" atlas
+cd ../harness && pnpm install
 
-# --- traditional (ungoverned "vanilla") control arm ---
-scripts/vanilla-run-set.sh full gemini-3.1-flash-lite-thinkoff atlas
-scripts/vanilla-run-models.sh full "or-haiku-4.5,or-sonnet-5,..." atlas
-NB_VANILLA_SUFFIX=-rep1 scripts/vanilla-run-models.sh full "<models>" atlas   # N=3 replicates
+# --- governed (looprun) arm + traditional (ungoverned "vanilla") control arm ---
+# one cloud model, whole subject, N=3:
+MODEL_ID=gemini-3.1-flash-lite THINKING=off pnpm run:governed   --reps 3
+MODEL_ID=gemini-3.1-flash-lite THINKING=off pnpm run:ungoverned --reps 3
 
-# --- local arm (ram24 = quantized Qwen3.6-35B-A3B on llama.cpp) ---
-pnpm serve qwen3.6-35b-3b-gguf
-export OLLAMA_BASE_URL=http://127.0.0.1:8081/v1
-scripts/vanilla-run-set.sh full qwen36-local atlas
+# --- local arm (quantized Qwen3.6-35B-A3B via a looprun/llama.cpp server) ---
+# point the harness at an OpenAI-compatible endpoint:
+OPENAI_BASE_URL=http://127.0.0.1:8081/v1 MODEL_ID=qwen3.6-35b-a3b pnpm run:governed
 
-# --- judging (the only quality verdict) ---
-# the LLM judge scores each <agent>.dump.tasks.jsonl → <agent>.verdicts.jsonl, folded with:
-node bench/scripts/claude-judge-merge.mjs <dir>/<agent>.dump.json <dir>/<agent>.verdicts.jsonl \
-  <dir>/<agent>.dump.autofail.json <dir>/<agent>.judged.json
-
-# --- cost ---
-node bench/scripts/cost-report.mjs bench/results/<dir> [...]
+# --- judging (the only quality verdict) + scoring ---
+pnpm judge
+pnpm score
 ```
 
 Local certification is a **perturbed band**, not a single N: K=3 replicates that perturb only inert

@@ -31,7 +31,7 @@
  * //    precondition below approximates it coarsely (any open claim blocks a release); the exact
  * //    linkage is eval-only.
  */
-import { AgentSpecBase } from '@neurono-bench/agentspec-runtime';
+import { AgentSpecBase } from '@looprun-ai/core';
 import {
   argFormat,
   custom,
@@ -39,7 +39,7 @@ import {
   jargonScrub,
   pendingConfirmMustAsk,
   precondition,
-} from '@neurono-bench/agentspec-runtime';
+} from '@looprun-ai/core';
 
 // ── Business-owned EN lexicon (inlined for self-containment; P8a) ──────────────────────────────────
 /** A false "I couldn't do X" claim about an at-claims action that actually ran. Feeds the always-on

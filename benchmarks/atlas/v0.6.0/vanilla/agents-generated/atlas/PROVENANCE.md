@@ -1,16 +1,16 @@
 # Provenance — blind-authored vanilla bundle (atlas)
 
 **What this is.** `index.ts` + `README.md` were authored 2026-07-16 by a SEPARATE Fable session
-("blind session") that never saw this repo, the s15/looprun specs, GUARDS.md, the eval cases,
+("blind session") that never saw this repo, the looprun specs, GUARDS.md, the eval cases,
 rubrics, judge prompt, or the raw WORLD-MODEL.md. It is the "how a dev would normally generate an
 agent with a frontier LLM" arm of the looprun value experiment.
 
 **Exact inputs handed to the blind session** (isolated scratch dir, no repo paths):
 - `BRIEF.md` — sanitized business brief (sha256 `2d979583ba137c7b…d85a34`), derived from
   WORLD-MODEL.md + presets.ts policies with all pipeline/architecture vocabulary stripped
-  (sanitization audit grep = 0 hits). Canonical copy: `bench/adapters/vanilla/BRIEF.md`.
+  (sanitization audit grep = 0 hits). Canonical copy: `../../BRIEF.md`.
 - `tools.json` — the 54-op surface, byte-identical to
-  `bench/bench-core/src/subjects/atlas/tools.json` (sha256 `5616b41d…3cd92`).
+  the subject `tools.json` (sha256 `5616b41d…3cd92`).
 
 **Platform context given** (fixed constraints, not design hints): agents run on Mastra
 (`new Agent({instructions, model, tools})`), temperature 0, up to 16 tool steps/turn, model varies
@@ -22,10 +22,10 @@ shared operating core + per-area playbooks. See its `README.md`.
 
 **What THIS repo added afterwards (plumbing, not agent design):** `CASE-MAP.tsv` — routing of eval
 cases to the blind agents by business area (rentals→rentals, billing→billing, claims→claims,
-inventory→fleet, admin→admin), the functional equivalent of s15's user-as-classifier routing. The
-blind session never saw case ids.
+inventory→fleet, admin→admin), the functional equivalent of the governed arm's user-as-classifier
+routing. The blind session never saw case ids.
 
-**Iteration ledger** (parity budget: ≤3 measured iterations, mirroring the s15 T-loop):
+**Iteration ledger** (parity budget: ≤3 measured iterations, mirroring the governed T-loop):
 - v1: first shot, zero feedback. Measured full-61: FL N=3 85.2 mean/85.2 modal; ram24 N=3 72.1
   mean/70.5 modal. (`index.v1.ts.bak`)
 - v2 (2026-07-16, sha256 2036a5b6…): blind session revised after `BUGREPORT-v1.md` (business bug

@@ -8,7 +8,7 @@ measured numbers? (The stage-N ledger is REVIEW.md; this is the meta-review of t
 
 **Measured bottom line (ruler-v2, D9 Opus judge):** flash-lite-thinkoff full-61 **N=3 = 90.7% mean
 (56/56/54)**, 0 deterministic autofails in any certification rep; target band 85–90 hit at the top
-edge; ~4 pt HARDER than criaty on the same ruler (94.9) — the "non-saturated" mandate held.
+edge; ~4 pt HARDER than the earlier subject on the same ruler (94.9) — the "non-saturated" mandate held.
 T-loop converged in 3 iterations (≤3 bound): +listAssets (class 3), lexicon narrowing (class 5),
 one eval label fix (class 7).
 

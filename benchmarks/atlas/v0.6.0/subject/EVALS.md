@@ -12,8 +12,8 @@ INDEPENDENCE rule (world/tools/presets/judge-prompt only — no atlas spec read)
 | at-inventory | 61–72 | [EVALS-at-inventory.md](EVALS-at-inventory.md) |
 | at-admin | 81–93 | [EVALS-at-admin.md](EVALS-at-admin.md) + case 93 (post-E2 sweep, below) |
 
-Case→agent map (the s15 runner's bucketing): `bench/adapters/s15/agents-generated/atlas/CASE-MAP.tsv`.
-Ladder sets: `atlas3` / `atlas15` in `config/casesets.ts`; `full` derives 61 from the pack.
+Case→agent map (the runner's bucketing): the exported case map (`../specs/atlas/CASE-MAP.tsv`).
+Ladder sets: `atlas3` / `atlas15`; `full` derives 61 from the pack.
 
 ## Post-E2 UNCHECKABLE sweep (the one sanctioned spec→eval crossover: rule LISTS only)
 

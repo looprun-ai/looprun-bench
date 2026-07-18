@@ -27,8 +27,9 @@ directories — so the benchmark is reproducible from this repo alone.
 | subject (world, tools, 61 cases, judge prompt) | `../v0.6.0/subject/` | `SUBJECT_DIR` |
 | ungoverned control bundle (`AGENTS`) | `../v0.6.0/vanilla/agents-generated/atlas/index.ts` | `VANILLA_BUNDLE` |
 
-The exported spec bundles carry a build-time runtime import; the harness maps it onto the public
-`@looprun-ai/core` at load time, so the frozen artifacts run unchanged.
+The exported spec bundles import `@looprun-ai/core` directly; because the frozen edition
+directories carry no `node_modules`, the harness re-anchors that specifier to its own dependencies at
+load time, so the bundles run unchanged.
 
 ## 5-minute quickstart
 

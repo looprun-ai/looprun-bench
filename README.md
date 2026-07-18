@@ -42,12 +42,12 @@ pnpm setup:tau2               # clone + uv sync the τ² harness into benchmarks
 
 ## How this repo relates
 
-Three repos, one flow:
+Two repos, one flow:
 
-1. **`neurono-bench`** — the private R&D lab: the harness where benchmarks are authored, measured, and certified.
-2. **[`looprun`](https://github.com/looprun-ai/looprun)** — the public governance runtime + the `agentspec` skill.
-3. **`looprun-bench`** (this repo) — the exported, reproducible benchmark editions, pinned to looprun releases.
+1. **[`looprun`](https://github.com/looprun-ai/looprun)** — the public governance runtime + the `agentspec` skill.
+2. **`looprun-bench`** (this repo) — the reproducible benchmark editions, pinned to looprun releases.
 
-Benchmarks are certified in the lab, run on the published runtime, and exported here as versioned editions.
+Each benchmark subject is authored and certified with the `agentspec` skill, run on the published
+runtime, and shipped here as self-contained versioned editions.
 
 Apache-2.0 © LoopRun Team

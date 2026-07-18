@@ -25,7 +25,7 @@
  * //   - Scope boundary — deposit charge/release, invoicing, payments, refunds are the Billing agent's
  * //     job: none of those tools are on this surface, so there is nothing to gate; prose forbids the claim.
  */
-import { AgentSpecBase } from '@neurono-bench/agentspec-runtime';
+import { AgentSpecBase } from '@looprun-ai/core';
 import {
   argFormat,
   custom,
@@ -35,7 +35,7 @@ import {
   pendingConfirmMustAsk,
   precondition,
   requiresBefore,
-} from '@neurono-bench/agentspec-runtime';
+} from '@looprun-ai/core';
 
 // ── Business-owned language patterns (P8a: the runtime holds NO linguistic regex). A real bundle
 // keeps these in ONE lexicon module; inlined here to stay self-contained, all /i (no stateful /g or /y).

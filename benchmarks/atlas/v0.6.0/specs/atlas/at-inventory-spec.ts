@@ -47,8 +47,8 @@ import {
   noFabricatedSuccess,
   pendingConfirmMustAsk,
   precondition,
-} from '@neurono-bench/agentspec-runtime';
-import type { AgentWorld } from '@neurono-bench/agentspec-runtime';
+} from '@looprun-ai/core';
+import type { AgentWorld } from '@looprun-ai/core';
 
 // ── Business-owned lexicon (P8a — the runtime holds NO linguistic regex; a spec passes every
 //    pattern in). Authored for atlas/English; kept inline to stay self-contained. ──────────────────

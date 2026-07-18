@@ -16,14 +16,14 @@
  * // the S-1 firewall bars a guard from reading the user's stated purpose, so this is language-layer
  * // (conditioned prose + an eval dimension) only.
  */
-import { AgentSpecBase } from '@neurono-bench/agentspec-runtime';
+import { AgentSpecBase } from '@looprun-ai/core';
 import {
   destructiveClaimRequiresSuccess,
   jargonScrub,
   noFabricatedSuccess,
   pendingConfirmMustAsk,
   requiresBefore,
-} from '@neurono-bench/agentspec-runtime';
+} from '@looprun-ai/core';
 
 // ── Domain lexicon (P8a: language patterns are business-owned; the runtime holds no regex). All /i,
 //    never /g (stateful lastIndex alternates verdicts). ─────────────────────────────────────────────

@@ -2,8 +2,8 @@
  * ATLAS_TOOLS — the tool surface for the "atlas" subject (Atlas Equipment Rentals & Field Ops:
  * an equipment-rental marketplace + field-operations back-office assistant).
  *
- * Generated 1:1 from bench/bench-core/src/subjects/atlas/tools.json — the validated 54-tool surface.
- * Shape mirrors bench-core/fixtures/tools.json and BEAUTY_TOOLS: { name, description, inputSchema }
+ * Generated 1:1 from the validated 54-tool `tools.json` surface.
+ * Shape: { name, description, inputSchema }
  * where inputSchema is JSON-Schema (draft-07). Names, descriptions and schemas are preserved verbatim
  * from tools.json (do not hand-edit here — regenerate from tools.json if the surface changes).
  *

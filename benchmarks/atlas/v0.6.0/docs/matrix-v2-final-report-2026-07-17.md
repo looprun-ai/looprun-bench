@@ -1,7 +1,7 @@
-> **Provenance:** exported verbatim from the canonical `neurono-bench` repo (internal research
-> doc). Internal vocabulary: "s15" = the runtime published as `looprun`/`@looprun-ai/core` 0.6.0;
-> "the Claude/Opus judge (D9, ruler-v2)" = the LLM judge used for every verdict in this benchmark
-> (both arms, same judge). Decision labels (D9/D24/D25...) refer to the bench's decision ledger.
+> **Provenance:** an internal research report, reproduced here as part of this benchmark edition.
+> Vocabulary: *governed* / *looprun* = the looprun runtime (`@looprun-ai/core` 0.6.0); *vanilla* = the
+> ungoverned control arm; "the Claude/Opus judge (D9, ruler-v2)" = the LLM judge used for every verdict
+> in this benchmark (both arms, same judge). Decision labels (D9/D24/D25...) are edition-internal.
 
 # Matriz v2 "optimized-for" — RELATÓRIO FINAL (2026-07-17)
 
@@ -14,7 +14,7 @@
 - **atlas** = a ruler certificada (`config/examples/atlas.ts`, 61 casos) — a ÚNICA usada aqui.
 - **atlas2** = ruler bônus da sessão paralela — NÃO usada nesta matriz.
 - **`2026-07-17-v2-or-*`** = dirs DESTA matriz ("v2" = 2ª metodologia, não atlas2).
-- **`2026-07-16-atlasv2-s15-*`** = dirs da sessão paralela (16/07), herdados na base da branch.
+- **`2026-07-16-atlasv2-governed-*`** = dirs da sessão paralela (16/07), herdados na base da branch.
 - **atlas-r2** = spec-source (bundle); **atlas-p-<modelo>** = profile FORM por modelo.
 
 ## Tabela definitiva (N=3 salvo indicação) — CORRIGIDA pelo reteste pós-fix
@@ -179,7 +179,7 @@ Pendentes de recarga: gem-3.5-flash* (~US$16) · opus-4.8 (~US$21) · nemotron (
 ## Análise pós-matriz (2026-07-17): inversões vs capacidade, causas, e o 100% do FL
 
 > Fonte: tabela definitiva corrigida (acima) + agregado de falhas por caso×modelo dos verdicts
-> curados (`eval-logs/results/2026-07-17-atlas-v2-optimized/` + reteste
+> curados (`../results/2026-07-17-atlas-v2-optimized/` + reteste
 > `2026-07-17-lote-a-recert-retest/`). "τ²" = o rank τ²-Bench Telecom de entrada (max reasoning).
 
 ### A. Modelos "melhores no papel" performaram pior — as inversões

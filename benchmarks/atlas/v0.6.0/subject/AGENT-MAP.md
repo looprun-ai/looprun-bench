@@ -28,5 +28,5 @@ subset (two-step `confirmed`) shown per agent. Prefix: `at-`.
    quotas, permissions), not repeated read tools — keeps every bucket lean and the trunk stable.
 3. **Naming by job** (`rentals`, `billing`, `claims`, `inventory`, `admin`) — never audience/mood.
 4. Terminal tools (`replyToUser`/`askUser`) are runtime-owned — in no agent's `tools`.
-5. Case buckets: G3 emits ~12 cases per agent; the case→agent map lands in
-   `bench/adapters/s15/agents-generated/atlas/CASE-MAP.tsv` (and the s14 twin).
+5. Case buckets: G3 emits ~12 cases per agent; the case→agent map lands in the exported
+   case map (`../specs/atlas/CASE-MAP.tsv`).

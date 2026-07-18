@@ -15,7 +15,7 @@
  * reads ONLY the world's `projection()` scalars through defensive helpers, so an unrelated world
  * never throws (missing keys render as safe defaults).
  */
-import type { AgentWorld, TrunkTheme } from '@neurono-bench/agentspec-runtime';
+import type { AgentWorld, TrunkTheme } from '@looprun-ai/core';
 
 const yn = (v: unknown): string => (v ? 'yes' : 'no');
 const num = (v: unknown): number => (typeof v === 'number' && Number.isFinite(v) ? v : 0);

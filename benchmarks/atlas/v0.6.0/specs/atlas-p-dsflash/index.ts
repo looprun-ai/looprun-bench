@@ -5,10 +5,10 @@
  * iron-rules-without-verbosity, lifecycle laws, state-wins, name→id, falseFailureClaimRe template,
  * prompt budget by dedup, NO telegraphic restyle) — no prior atlas spec was read.
  * FROZEN inputs (banana-to-banana law): theme.ts (byte-identical to certified v1), tools.json,
- * WORLD-MODEL.md, the 61 v1-generated evals, judge prompt, CASE-MAP.
+ * WORLD-MODEL.md, the 61 v1-generated evals, judge prompt, case map.
  * Measured under the per-target protocol: docs/analysis/flip-root-cause-2026-07-16.md Parts 3–4.
  */
-import type { AgentSpec, TrunkTheme } from '@neurono-bench/agentspec-runtime';
+import type { AgentSpec, TrunkTheme } from '@looprun-ai/core';
 import atRentals from './at-rentals-spec';
 import atBilling from './at-billing-spec';
 import atClaims from './at-claims-spec';

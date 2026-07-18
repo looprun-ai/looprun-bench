@@ -1,18 +1,18 @@
-> **Provenance:** exported verbatim from the canonical `neurono-bench` repo (internal research
-> doc). Internal vocabulary: "s15" = the runtime published as `looprun`/`@looprun-ai/core` 0.6.0;
-> "the Claude/Opus judge (D9, ruler-v2)" = the LLM judge used for every verdict in this benchmark
-> (both arms, same judge). Decision labels (D9/D24/D25...) refer to the bench's decision ledger.
+> **Provenance:** an internal research report, reproduced here as part of this benchmark edition.
+> Vocabulary: *governed* / *looprun* = the looprun runtime (`@looprun-ai/core` 0.6.0); *vanilla* = the
+> ungoverned control arm; "the Claude/Opus judge (D9, ruler-v2)" = the LLM judge used for every verdict
+> in this benchmark (both arms, same judge). Decision labels (D9/D24/D25...) are edition-internal.
 
 # Tool-result history compaction — A/B verdict: ROLLBACK (2026-07-17)
 
-**Question (the biggest remaining token lever):** the s15 micro-loop re-sends prior turns'
+**Question (the biggest remaining token lever):** the governed micro-loop re-sends prior turns'
 tool-results in the message history each step; big list results (`listAssets`/`listBookings`) were
 suspected to inflate multi-turn cases. Would compacting them cut tokens without hurting quality?
 
 **Approach tested (user's choice):** Mastra-native. `ToolCallFilter` lives in
 `@mastra/core/processors` (v1) as an **`inputProcessor`** — decoupled from the `Memory` abstraction —
-and the s15 loop already passes `inputProcessors` to `agent.generate(...)`, so it plugged in
-surgically (no loop rewrite). Gated by env `NB_S15_COMPACT_TOOLRESULTS=1`; OFF ⇒ byte-identical
+and the governed loop already passes `inputProcessors` to `agent.generate(...)`, so it plugged in
+surgically (no loop rewrite). Gated by an internal compaction flag; OFF ⇒ byte-identical
 (proof suite 259/259 + invariants 202/202). `ToolCallFilter.processInput` runs once at each turn's
 start (before this turn produces results) so it only ever drops **prior-turn** results;
 `exclude` = the agent's domain surface (keeps prior `replyToUser`/`askUser` text).
