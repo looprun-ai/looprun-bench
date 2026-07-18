@@ -1,5 +1,12 @@
 # Roadmap — resume here
 
+> ⚠️ **SUPERSEDED (2026-07-18).** The current plan is **[`plan-v0.6.1.md`](plan-v0.6.1.md)** — discard the
+> 0.2.x skill round (commit `3333a7b`, now under `harness/telecom/`), regenerate on **looprun@0.6.1**, and use
+> **OpenRouter** subjects (edition-first `results/v0.6.1/`). The "START HERE" block below predates the restructure
+> and the 0.6.1 runtime (it still says the domain is "not generated / placeholder" — in fact the 0.2.x bundle is
+> present and is the round being discarded). Keep it only for the benchmark-run mechanics (§"The benchmark run"),
+> which `plan-v0.6.1.md` reuses.
+
 The single source of truth for "what's done, what's next." Read `CLAUDE.md` first for the hard rules.
 
 ## ▶ START HERE — regenerate the telecom domain NATIVELY (fresh session)
