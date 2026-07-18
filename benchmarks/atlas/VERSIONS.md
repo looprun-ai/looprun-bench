@@ -18,7 +18,7 @@ curated result verdicts that produced its published numbers.
 | edition | date | looprun release | results dir | headline (aggregate) | anchors | scope |
 |---|---|---|---|---|---|---|
 | **v0.6.0** | 2026-07-18 | `looprun@0.6.0` (GitHub `v0.6.0`) | [`results/v0.6.0/`](results/v0.6.0/) | **governed 96.5 × ungoverned 92.6** — aggregate over **13 cloud models, N=3** | flash-lite (cloud subject) **100** · local-quantized (ram24) **91.8** | full cloud-model matrix + local band |
-| v0.6.1 | pending | `looprun@0.6.1` (tag TBD) | `results/v0.6.1/` (pending) | matrix numbers **not re-measured** — remain those of v0.6.0 | anchors **re-certified** | runtime **P9** patch: two guard-tune fixes promoted after a per-case forensic campaign |
+| v0.6.1 | 2026-07-18 (npm pending) | `looprun@0.6.1` (tag TBD) | `results/v0.6.1/` (pending) | matrix numbers **not re-measured** — remain those of v0.6.0 | anchors re-certified N=3: **cloud subject 98.4** (its one failing case is a proven knife-edge of the subject model — byte-identical prompt, ~50/50 same-day probe; the v0.6.0 100 stands for its edition) · **local quantized 95.6 — local record** (speculative decoding ON) | runtime **P9** patch: two guard-tune fixes (prose-surfaced confirmation accepted as the two-step probe; policy-rejected probe keeps the honest-limit ask exemption) + confirmed prose refinements in the governed specs, promoted after a per-case forensic campaign |
 
 ### v0.6.0 (2026-07-18) — current published edition
 
