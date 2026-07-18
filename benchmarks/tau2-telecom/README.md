@@ -17,14 +17,17 @@ The unit of comparison is a **pair**, on the identical tasks + user-simulator:
       score A        score B      →   B − A  =  what looprun added
 ```
 
-**looprun version used: `0.6.0`** (npm `looprun@0.6.0`, GitHub release `v0.6.0`).
+**Target edition: `v0.6.1`** (npm `looprun@0.6.1`) — see [`docs/plan-v0.6.1.md`](docs/plan-v0.6.1.md). (The
+discarded first round ran on `looprun@0.2.1`; the workspace is still installed at 0.2.1 until the bump.)
 
 ## Status
 
-**IN PROGRESS.** The telecom domain is **not yet generated** — it was reset to a clean state so the
-`agentspec` skill can be run **natively** (via the Skill tool, from a fresh session). `harness/telecom`
-is a placeholder contract; nothing is certified; the benchmark has not run.
-**Start at [`docs/roadmap.md`](docs/roadmap.md) → "START HERE".**
+**IN PROGRESS — planning the v0.6.1 round.** A first domain WAS generated + certified on `looprun@0.2.1`
+(the 0.2.x skill round, commit `3333a7b`, now under `harness/telecom/` — 48/51 = 94.1% N=3). That round is
+being **discarded** in favor of a fresh regeneration on **`looprun@0.6.1`** with **OpenRouter** subjects; the
+benchmark itself has not run.
+**Start at [`docs/plan-v0.6.1.md`](docs/plan-v0.6.1.md)** (the current source of truth; the older
+`docs/roadmap.md` "START HERE" block is superseded).
 
 ## What lives where
 

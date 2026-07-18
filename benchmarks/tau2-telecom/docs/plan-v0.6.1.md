@@ -4,6 +4,31 @@
 > [`roadmap.md`](roadmap.md) (which predates the restructure and the 0.6.1 runtime). Read `../../../CLAUDE.md`
 > for the hard rules first.
 
+## Status — start here (as of 2026-07-18)
+
+**Nothing on the v0.6.1 round has started.** The only telecom artifact that exists is the **0.2.x round**
+(commit `3333a7b`, now sitting under `harness/telecom/`) — and it is the round being **discarded** (§1). Concretely:
+
+- The workspace is still installed at **`looprun@0.2.1` / `@looprun-ai/eval@0.2.0`** (nothing bumped yet).
+- No OpenRouter wiring exists yet; no `results/v0.6.1/` yet; no 0.6.1 CERT yet.
+- The tau2-telecom `README.md` + the `roadmap.md` "START HERE" block are **stale** (they say the domain is "not
+  generated / placeholder" — false: the 0.2.x bundle is present). Ignore them; this file is authoritative.
+
+**Resume chain:** `../../../CLAUDE.md` → `roadmap.md` (SUPERSEDED banner) → **this file**.
+
+**Read the 0.2.x round's forensics before regenerating** — they carry the measured root-causes so you don't
+re-derive them (all under `harness/telecom/`):
+- `CERT.md` — the 4-iteration measured-loop history (65→82→94%), the accepted residual (`09`), the two removed guards.
+- `src/agents/telecom/REVIEW.md` — the Stage-N adversarial findings + the state-visibility LEAK fix.
+- `evals/EVALS.md` — the dimension map + the BARRED debate verdicts + which eval defects were fixed.
+
+**⚠️ Out-of-scope files that still conflict (do NOT trust them for this round):** the repo-root `CLAUDE.md`
+("Keys: load `GOOGLE_GENERATIVE_AI_API_KEY`… subject = gemini-flash-lite") and `.env.example` (only the Google
+key) still describe the **old** subject/key story. They live OUTSIDE `benchmarks/tau2-telecom/` and are not
+edited here. For the v0.6.1 round, **this plan overrides them**: the subject is OpenRouter (§4); add
+`OPENROUTER_API_KEY` to the repo-root `.env` yourself. (When you have write access to the root, update the root
+`CLAUDE.md` + `.env.example` to match — it is a known follow-up, not a blocker.)
+
 ## 0. Why a new round (what changed since the last round)
 
 | axis | then (my round, commit `3333a7b`) | now |
@@ -42,16 +67,59 @@ git history — the 0.2.x round stays as commit `3333a7b`; it is simply not the 
 |---|---|---|
 | `reference/*` (policy, manual, tool-schemas) | **KEEP** | pure τ² domain source; unchanged |
 | `harness/telecom/src/world/{tools,world,presets}.ts` | **KEEP, re-verify imports** | deterministic world + the 6 shim-contract accessors; only the `looprun` type imports (`ToolDef`/`AgentWorld`) may shift at 0.6.1 |
-| `harness/telecom/evals/{cases.ts,judge-prompt.md}` | **KEEP as the ruler, re-validate** | 17 debate-validated cases + domain judge rules; re-run G3 debate only if the 0.6.1 skill changes the case shape |
+| `harness/telecom/evals/{cases.ts,judge-prompt.md}` | **KEEP as the ruler** (existing-eval-set path) | 17 debate-validated + measured-loop-hardened cases; the skill's own rule is "if the domain already maintains its own cases, they are the ruler → skip G3" |
 | `harness/telecom/src/agents/telecom/{spec,theme,lexicon}.ts` | **REGENERATE (E2/E3)** | runtime-coupled; must re-test the P9 honesty guards instead of the 0.2.x removals |
 | `harness/telecom/CERT.md`, `eval-results/` | **REGENERATE (T/S)** | new subject (OpenRouter) + new runtime |
 | `harness/telecom/package.json` | **BUMP** `looprun`→`^0.6.1`, `@looprun-ai/eval`→ its 0.6.x line | + the shim/runner package.jsons + one lockfile (`pnpm -w up`) |
 | `roadmap.md`, `README.md` (tau2-telecom) | **REFRESH** | remove the stale "not generated / placeholder" language once the 0.6.1 bundle lands |
 
-> Firewall note: the atlas specs import `@neurono-bench/agentspec-runtime` because atlas is a **research
-> export**, not run here. tau2-telecom runs **natively on the published package** — every generated file
-> imports from `looprun` / `@looprun-ai/eval`. Never introduce the `@neurono-bench/*` import (the legacy
-> lineage token — CLAUDE.md firewall).
+### The regen is PARTIAL — resolve the "skill regenerates everything" contradiction up front
+
+The agentspec skill run natively would author a *fresh* world (G2) and *fresh* evals (G3) under its independence
+rule. **Do NOT let it.** This domain already has a certified subject + a debate-validated ruler, so take the
+skill's own sanctioned shortcut:
+
+- **SKIP G1** — tools exist (`reference/tool-schemas.json`).
+- **SKIP G2** — the world (`src/world/{tools,world,presets}.ts`) exists and is version-agnostic domain simulation;
+  keep it. (Only re-verify its `looprun` type imports still resolve at 0.6.1.)
+- **SKIP G3** — the evals ARE the ruler (the skill's "existing eval set → skip G3" rule). Keeping them also keeps
+  the 0.6.1 numbers comparable to the 0.2.x round. They were authored independently of the spec (a separate G3
+  subagent), so the independence rule is already satisfied.
+- **RUN E → N → T → S only** — regenerate spec/theme/lexicon on 0.6.1 (E), adversarial review (N), the measured
+  loop against the OpenRouter subject (T), certify N=3 (S). This is the whole 0.6.1 round.
+
+Adaptation only if the 0.6.1 `@looprun-ai/eval` changed the `EvalConfig`/`EvalCase` shape or the world seam —
+then migrate `cases.ts` / `looprun.eval.config.ts` mechanically (open question #1), never re-author the ruler.
+
+> Import discipline: tau2-telecom runs **natively on the published package** — every generated file imports from
+> `looprun` / `@looprun-ai/eval`, never from any pre-looprun research runtime. Do not copy an atlas spec as a
+> template. Keep the drift grep clean — the CLAUDE.md firewall bars the legacy-lineage token from every tracked
+> file, so it must never appear in anything generated here.
+
+## 2a. Bootstrap the 0.6.1 toolchain (do this FIRST, before any regen)
+
+```bash
+# 1. bump the runtime across the 3 harness packages (telecom + shim + runner) to 0.6.1
+#    (edit each package.json's "looprun" / "@looprun-ai/eval" ranges, then one lockfile update)
+pnpm -w up looprun@^0.6.1 @looprun-ai/eval@latest      # confirm the exact @looprun-ai/eval 0.6.x line first
+pnpm install                                           # one lockfile; pnpm only (never npm)
+
+# 2. read the ACTUAL 0.6.1 API you author against (the last round found real signature drift at 0.2.1):
+#    @looprun-ai/core .d.ts under node_modules/.pnpm/@looprun-ai+core@0.6.1/.../dist/{spec,rules,guards,trunk}.d.ts
+#    @looprun-ai/eval .d.ts  → dist/types.d.ts (EvalConfig / EvalCase), config.d.ts, model-resolve.d.ts
+find node_modules/.pnpm -path '*@looprun-ai+core@0.6*/dist/guards.d.ts' -o -path '*@looprun-ai+eval@0.6*/dist/types.d.ts'
+
+# 3. the eval CLI is NOT symlinked into node_modules/.bin (pnpm workspace quirk found last round).
+#    Invoke it by absolute path, run FROM the package that holds looprun.eval.config.ts:
+EVALBIN=$(find node_modules/.pnpm -path '*@looprun-ai+eval@0.6*/bin/looprun-eval.mjs' | head -1)
+( cd benchmarks/tau2-telecom/harness/telecom && node "$PWD/../../../../$EVALBIN" check )   # static, no LLM — the seam smoke
+
+# 4. env: the CLI does NOT auto-load .env. Source it, and add the OpenRouter key first:
+#    echo 'OPENROUTER_API_KEY=...' >> .env       (repo root .env; also GOOGLE key only if a gemini judge/sim is kept)
+set -a; . ./.env; set +a
+```
+
+Gate before moving on: `looprun-eval check` green + `pnpm -r typecheck` green on the kept world/evals under 0.6.1.
 
 ## 3. Regenerate the domain on 0.6.1 (the AGENTS pipeline, via the skill, in a fresh session)
 
@@ -73,6 +141,10 @@ Deltas vs the 0.2.x run to bake in from the start (measured lessons this domain 
 - Bar unchanged: **≥90% Claude-judged, N=3**. An uncertified spec is not a valid subject.
 
 ## 4. OpenRouter wiring (replaces the Google key + the gemini-native shim fix)
+
+**Where to crib the model matrix + wiring:** `benchmarks/atlas/v0.6.0/docs/vanilla-cloud-matrix-2026-07-18.md`
+lists the 13 OpenRouter models atlas certified (both arms) and how its vanilla runner passed them; use that as
+the model spine + the OpenAI-compat wiring reference (adapt to the tau2 shim/runner, don't copy atlas code).
 
 OpenRouter is an **OpenAI-compatible** endpoint, so it drops into the paths that already exist — this makes the
 old roadmap item "rebuild the shim cloud path for gemini `thought_signature`" **mostly moot** for OpenRouter
