@@ -1,0 +1,159 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll look up the CAT 320 excavator and generate the quote in parallel. Let me first find the asset in the catalog.Found it — the CAT 320 Excavator (`ast_excv01`). Now let me generate the quote with delivery and insurance included.Here's your rental quote for the **CAT 320 Excavator**:\n\n| Line item | Amount |\n|---|---|\n| Daily rate × 3 billable days | $850 × 3 = **$2,550** |\n| Delivery fee | **$400** |\n| Damage-waiver insurance | **$120** |\n| **Rental total** | **$3,070** |\n| Required security deposit (refundable) | **$3,000** |\n\n**Dates:** July 10 – July 13, 2026 (3 billable days)\n**Quote ID:** qt_5001\n\nThe deposit is held separately from the rental total and is refundable after the equipment is returned, assuming no damage claims. Would you like to move forward with a booking on this quote? If so, I'll hand you off to the Rentals team to create it.",
+      "I've already given you the quote above — glad that landed!\n\nFor the booking date change, that's a job for the **Rentals team**. I can't reschedule bookings myself. Just ask them:\n\n> *\"Please reschedule booking bk_1001 to start 2026-07-20 through 2026-07-24.\"*\n\nThey'll check availability and handle the update. Anything else on the billing side I can help with?"
+    ],
+    "actualTrace": [
+      "listAssets",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-13",
+          "includeDelivery": true,
+          "includeInsurance": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll look into this right away. Let me pull up the booking details, deposit balance, and check for any active holds or claims that might block the release.I found the booking and verified the deposit — $2,500 is fully held against the $2,500 required. However, **I cannot release the deposit right now.** Two blockers exist:\n\n1. **Open damage claim (clm_3001):** The loader (ast_load01) was returned with a bent hydraulic cylinder, and a damage claim is currently **under review**. Per policy, no deposit can be released while a claim against the booking is open — claim settlements are deducted from the deposit first.\n\n2. **No invoice yet:** The booking has no generated invoice. The invoice must exist and be paid before a deposit release is permitted.\n\n3. **Asset-level safety hold (hold_9001):** An investigatory hold is active on the asset, tied to the open claim.\n\n**To unblock the release, here's what needs to happen:**\n\n| Step | What | Owner |\n|------|------|-------|\n| 1 | Resolve the damage claim (clm_3001) — settle or deny it | **Claims & Compliance** |\n| 2 | Generate and pay the rental invoice for bk_1001 | **Billing (me)** — once the claim is resolved |\n| 3 | Release the deposit (minus any claim settlement deduction) | **Billing (me)** — after steps 1 & 2 |\n\nI can generate the invoice now (that's not blocked), but the deposit release itself must wait until the claim is closed and the invoice is paid. Would you like me to generate the invoice now, and shall I hand off the claim resolution to Claims & Compliance?"
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getDepositBalance",
+      "listClaims",
+      "listClaims",
+      "listClaims",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "approved"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "30-impatient-two-money-moves-one-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I hear you — I'll get both moving right now. But to be clear: I still have to preview each one before executing; that's a hard rule I can't skip. Let me pull up the details and run the previews immediately.Good — I have everything I need. Let me also check for any holds on the booking's asset and customer, since holds block deposit releases.No holds anywhere — all clear. Here are your two previews:\n\n---\n\n**1. Pay invoice `inv_7001` in full**\n- **Amount:** $3,850.00\n- **Invoice total:** $3,850.00 (rental $3,500 + delivery $350, no late fee)\n- **Current balance due:** $3,850.00\n- This will bring the invoice to **paid** status.\n\n**2. Release deposit on `bk_1001`**\n- **Amount:** $2,500.00 (full held deposit)\n- **Deposit held:** $2,500.00 · **Required:** $2,500.00 · **Shortfall:** $0\n- All gates pass: asset returned (good condition), invoice `inv_7001` will be paid, no open claims, no holds on the asset or customer.\n- This is **irreversible** — the $2,500 returns to the customer.\n\n---\n\nPlease reply **yes** to each one you want me to execute (you can say \"yes to both\"). Once you confirm, I'll run them immediately."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getInvoice",
+      "getBooking",
+      "getDepositBalance",
+      "listHolds",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account",
+          "assetId": "cust_2001"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

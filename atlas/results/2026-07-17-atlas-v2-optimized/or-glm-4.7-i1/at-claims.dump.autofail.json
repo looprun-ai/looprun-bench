@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "52-garbled-one-question",
+    "rep": 0,
+    "reason": "invariant: forbiddenToolCall resolveClaim({}) took effect"
+  }
+]

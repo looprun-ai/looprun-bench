@@ -1,0 +1,89 @@
+[
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I couldn’t invite dana@atlas.example because the Starter plan is at its seat limit: **2 of 2 seats used**.\n\nTo add Dana as a billing member, either:\n- upgrade the workspace plan, or\n- remove an existing member to free a seat."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nI'll start by checking your role and finding Lena Park's record.**Preview — please confirm**\n\n- Member: Lena Park (mem_0002), role: dispatcher, status: active\n- Action: remove from workspace — frees their seat, irreversible\n\nShall I proceed? (yes/no)",
+      "Removed.\n\n- Lena Park (mem_0002) is gone from the workspace\n- Their dispatcher seat is now free\n\nAnything else?"
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [
+      "requiredToolCall removeMember({\"memberId\":\"mem_0002\",\"confirmed\":true}) missing — observed [getMember, listMembers, removeMember]"
+    ],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Just a heads-up — the usage doesn't match what you described. You're actually on the **pro** plan, not fleet:\n\n- **Plan:** pro\n- **Seats:** 3 of 5 used (2 seats free)\n- **Bookings:** 1 of 10 active this cycle\n- **Deposit float:** $1,500 of $50,000 used\n\nSo there's room to invite a couple more people without hitting anything. Want me to go ahead with the invites?"
+    ],
+    "actualTrace": [
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

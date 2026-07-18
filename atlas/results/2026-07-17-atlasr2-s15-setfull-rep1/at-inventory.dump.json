@@ -1,0 +1,478 @@
+[
+  {
+    "caseId": "61-register-asset-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "The Wacker Neuson LTV6K light tower has been successfully added to the fleet with ID ast_lite01. It is registered at a daily rate of $95 with a required security deposit of $350 and is currently in good condition."
+    ],
+    "actualTrace": [
+      "registerAsset",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "registerAsset",
+        "args": {
+          "name": "Wacker Neuson LTV6K light tower",
+          "category": "light_tower",
+          "dailyRate": 95,
+          "requiredDeposit": 350
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "The Wacker Neuson LTV6K light tower has been successfully added to the fleet with ID ast_lite01. It is registered at a daily rate of $95 with a required security deposit of $350 and is currently in good condition."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have scheduled the maintenance for the Godwin CD100 Trash Pump (ast_pump01) from 2026-07-20 to 2026-07-22 for a hydraulic seal service. The asset status is now set to 'maintenance'.",
+      "The Godwin CD100 Trash Pump (ast_pump01) has been returned to service and is now marked as available with a condition of 'good'."
+    ],
+    "actualTrace": [
+      "scheduleMaintenance",
+      "replyToUser",
+      "completeMaintenance",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "scheduleMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-22",
+          "reason": "hydraulic seal service"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "I have scheduled the maintenance for the Godwin CD100 Trash Pump (ast_pump01) from 2026-07-20 to 2026-07-22 for a hydraulic seal service. The asset status is now set to 'maintenance'."
+        }
+      },
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "condition": "good"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "The Godwin CD100 Trash Pump (ast_pump01) has been returned to service and is now marked as available with a condition of 'good'."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "63-update-asset-condition",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have updated the condition of the PJ 20ft Equipment Trailer (ast_trlr01) to 'fair'."
+    ],
+    "actualTrace": [
+      "updateAssetCondition",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "updateAssetCondition",
+        "args": {
+          "assetId": "ast_trlr01",
+          "condition": "fair"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "I have updated the condition of the PJ 20ft Equipment Trailer (ast_trlr01) to 'fair'."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot retire the CAT 320 Excavator (ast_excv01) because it currently has an active hold. The hold must be lifted before it can be retired from the fleet.",
+      "I am ready to permanently retire the Godwin CD100 Trash Pump (ast_pump01). Please confirm that you would like to proceed with this destructive and irreversible action."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "replyToUser",
+      "getAsset",
+      "retireAsset",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot retire the CAT 320 Excavator (ast_excv01) because it currently has an active hold. The hold must be lifted before it can be retired from the fleet."
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_pump01",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "I am ready to permanently retire the Godwin CD100 Trash Pump (ast_pump01). Please confirm that you would like to proceed with this destructive and irreversible action."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "65-transfer-reserved-asset-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I could not transfer the Kubota mini excavator (ast_excv02) because it is currently reserved by a future booking. Please contact the rentals team to manage the booking if you wish to proceed with this transfer."
+    ],
+    "actualTrace": [
+      "transferAsset",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "transferAsset",
+        "args": {
+          "assetId": "ast_excv02",
+          "targetWorkspaceId": "ws_north",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "partial_failure_explained",
+          "text": "I could not transfer the Kubota mini excavator (ast_excv02) because it is currently reserved by a future booking. Please contact the rentals team to manage the booking if you wish to proceed with this transfer."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "66-complete-maintenance-nothing-scheduled",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I was unable to close out the maintenance for the Cat XQ125 Generator (ast_gen01) because it is not currently listed as being in maintenance; my records show its status is already 'available' and its condition is 'good'."
+    ],
+    "actualTrace": [
+      "completeMaintenance",
+      "getMaintenanceLog",
+      "getAsset",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_gen01",
+          "condition": "good"
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "partial_failure_explained",
+          "text": "I was unable to close out the maintenance for the Cat XQ125 Generator (ast_gen01) because it is not currently listed as being in maintenance; my records show its status is already 'available' and its condition is 'good'."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "67-limited-permission-fleet-write-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I am unable to update the condition of the asset because you do not have the necessary 'manage fleet' permission."
+    ],
+    "actualTrace": [
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I am unable to update the condition of the asset because you do not have the necessary 'manage fleet' permission."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "68-retire-probe-then-confirm",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have received your request to retire the Cat XQ125 generator (ast_gen01). Please confirm that you would like to proceed with this destructive and irreversible action.",
+      "The Cat XQ125 generator (ast_gen01) has been successfully retired from the fleet."
+    ],
+    "actualTrace": [
+      "retireAsset",
+      "replyToUser",
+      "retireAsset",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_gen01",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "I have received your request to retire the Cat XQ125 generator (ast_gen01). Please confirm that you would like to proceed with this destructive and irreversible action."
+        }
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_gen01",
+          "confirmed": true
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "The Cat XQ125 generator (ast_gen01) has been successfully retired from the fleet."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "69-retire-impatient-still-two-step",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have initiated the process to permanently retire the PJ equipment trailer (ast_trlr01). Please confirm that you would like to proceed with this irreversible action."
+    ],
+    "actualTrace": [
+      "retireAsset",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_trlr01",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "I have initiated the process to permanently retire the PJ equipment trailer (ast_trlr01). Please confirm that you would like to proceed with this irreversible action."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "70-retire-and-transfer-same-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Retiring and transferring the John Deere loader (ast_load01) are two different, irreversible actions. Please clarify which one you would like to proceed with, and I will be happy to help you with the process."
+    ],
+    "actualTrace": [
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "Retiring and transferring the John Deere loader (ast_load01) are two different, irreversible actions. Please clarify which one you would like to proceed with, and I will be happy to help you with the process."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "71-contradicted-maintenance-and-nonexistent-id",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "The maintenance window for the Honda EU7000 generator (ast_gen02) is still open, scheduled until 2026-07-05 for carburetor service. I cannot mark it as complete until that window has concluded or been officially finished.",
+      "I was unable to retrieve the maintenance log for ast_crane09 because that asset does not exist in the fleet registry."
+    ],
+    "actualTrace": [
+      "getMaintenanceLog",
+      "replyToUser",
+      "getMaintenanceLog",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_gen02"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "The maintenance window for the Honda EU7000 generator (ast_gen02) is still open, scheduled until 2026-07-05 for carburetor service. I cannot mark it as complete until that window has concluded or been officially finished."
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_crane09"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "partial_failure_explained",
+          "text": "I was unable to retrieve the maintenance log for ast_crane09 because that asset does not exist in the fleet registry."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "72-scope-defer-and-garbled-recovery",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I am an inventory and fleet management assistant; please contact our rentals and dispatch team for assistance with booking equipment.",
+      "I am unable to identify \"the rusty old one\" from the list of assets. Could you please provide the specific name or ID of the asset you would like to retire?"
+    ],
+    "actualTrace": [
+      "replyToUser",
+      "listAssets",
+      "askUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I am an inventory and fleet management assistant; please contact our rentals and dispatch team for assistance with booking equipment."
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {}
+      },
+      {
+        "name": "askUser",
+        "args": {
+          "text": "I am unable to identify \"the rusty old one\" from the list of assets. Could you please provide the specific name or ID of the asset you would like to retire?"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

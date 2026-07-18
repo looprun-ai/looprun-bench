@@ -1,0 +1,45 @@
+[
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me start by checking the acting user's permissions and finding Lena Park's details.\n\nSam, as the workspace owner, you have permission. Lena Park (mem_0002) is a dispatcher. Let me preview the removal.\n\nHere's the preview of what will happen:\n\n**Remove Lena Park (dispatcher)** from the workspace. This action is **irreversible** — she'll lose access immediately, and her seat will be freed up.\n\nShould I go ahead and remove her?",
+      "Done. **Lena Park** (dispatcher) has been removed from the workspace. Her seat is now freed up."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers",
+      "removeMember",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002"
+        }
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

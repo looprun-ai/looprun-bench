@@ -1,0 +1,131 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check availability first, then book it.The pump is free for those dates — booking it now.Done — the Godwin CD100 trash pump is booked and confirmed for Redstone Construction, July 20–23, 2026.\n\n- **Booking:** bk_2001\n- **Daily rate:** $140 (3 billable days)\n- **Required deposit:** $500 (not yet held)\n\nNote the $500 deposit must be fully held before checkout — the Billing assistant can charge it. Want a full quote generated, or a technician dispatched for delivery?"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "checks-then-books",
+        "pass": true,
+        "reasoning": "Calls checkAvailability(ast_pump01,20-23) then createBooking for cust_2001 and confirms concrete outcome (asset, customer, date range, bk_2001) without inventing a slot."
+      }
+    ]
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check availability and book it. Let me verify the asset and customer first.I can't reserve the CAT 320 (ast_excv01) — it's under an active legal/compliance hold, which blocks booking. Let me pull the hold detail so you know what's in the way.The booking is blocked. Here's why:\n\n- **ast_excv01 (CAT 320)** is under an active **legal hold** — *\"litigation hold on the excavator pending inspection\"* — which prevents it from being reserved.\n\nI can't book it while that hold is in place. Your options:\n\n1. **Release the hold** — that's owned by the **Claims & Compliance assistant**; ask them to release hold_9001 (it will only lift once the litigation/inspection matter is resolved).\n2. **Book a different excavator** — if you'd like, tell me and I'll check availability on another CAT 320 or comparable unit for July 20–24 for Redstone Construction.\n\nJust let me know how you'd like to proceed."
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-on-hold",
+        "pass": true,
+        "reasoning": "Reads listHolds, refuses to book ast_excv01 citing the active legal hold, and never creates the booking or claims a reservation."
+      }
+    ]
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me pull up the details on that booking first.Let me preview the cancellation for you.Cancelling **bk_1001** (asset ast_excv02, 2026-07-10 → 2026-07-15, status confirmed) will:\n\n- Free the asset for that window\n- Void any dispatch (none is currently assigned)\n- This **cannot be undone**\n\nNote: a **$1,500 deposit is currently held** on this booking. Cancelling here doesn't release it — that refund/release is handled by the Billing assistant.\n\nShall I go ahead and cancel it?",
+      "Done — **bk_1001** is cancelled and the asset is freed for that window.\n\nOne follow-up: a **$1,500 deposit is still held** on this booking. To release it back to the customer, ask the **Billing assistant** to process the deposit release."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "cancelBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "asks-then-cancels",
+        "pass": true,
+        "reasoning": "Turn 1 previews via cancelBooking(confirmed=false) and asks for explicit go-ahead without cancelling; turn 2 cancelBooking(confirmed=true) after the user's yes and confirms success."
+      }
+    ]
+  }
+]

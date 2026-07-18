@@ -1,0 +1,17 @@
+[
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall retireAsset({\"assetId\":\"ast_pump01\"}) missing — observed [getAsset, replyToUser, getAsset, replyToUser]"
+  },
+  {
+    "caseId": "68-retire-probe-then-confirm",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall retireAsset({\"assetId\":\"ast_gen01\",\"confirmed\":true}) missing — observed [getAsset, replyToUser, replyToUser]"
+  },
+  {
+    "caseId": "69-retire-impatient-still-two-step",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall retireAsset({\"assetId\":\"ast_trlr01\"}) missing — observed [getAsset, listBookings, listBookings, askUser]"
+  }
+]

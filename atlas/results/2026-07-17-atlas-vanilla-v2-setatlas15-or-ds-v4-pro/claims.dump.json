@@ -1,0 +1,147 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nLet me get the details on booking bk_1002 and check your permissions firstGood — you're Sam Okafor (owner), so you have full authority. The booking is confirmed: asset **ast_load01** (wheel loader), customer **cust_2002**, returned on 2026-06-25 with condition noted as \"good\" at check-in. Now let me file that damage claim with yourDone. Here's what happened:\n\n- **Claim filed:** `clm_3001` — damage type, status **submitted**, with your \"hydraulic leak photo\" as evidence.\n- **Investigatory hold:** `hold_9002` has been automatically placed on **ast_load01** (wheel loader). This freezes the asset — no new bookings, checkouts, transfers, or retirement until the claim is resolved.\n- **Linked to:** booking `bk_1002` and customer `cust_2002`.\n\n**Important:** The asset is frozen, and the deposit ($2,500.00) is not releasable while this claim is open. When you're ready to resolve it, we can approve (deduct from the deposit), deny, or settle — just let me know.",
+      "\n\nDone. The field inspection report has been attached to claim **clm_3001**. The evidence now includes both:\n\n1. hydraulic leak photo\n2. field inspection report\n\nThe claim has also moved to **under_review** status. When you're ready to resolve it, just let me know."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getMember",
+      "fileClaim",
+      "addClaimEvidence"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1002"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "fileClaim",
+        "args": {
+          "type": "damage",
+          "description": "Hydraulic leak discovered on wheel loader after return from booking bk_1002",
+          "bookingId": "bk_1002",
+          "assetId": "ast_load01",
+          "evidence": [
+            "hydraulic leak photo"
+          ]
+        }
+      },
+      {
+        "name": "addClaimEvidence",
+        "args": {
+          "claimId": "clm_3001",
+          "evidence": [
+            "field inspection report"
+          ]
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "44-release-hold-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nLet me start by checking the acting user's permissions, the asset details, and any active holds on that asset.\n\nThere's one active hold on the wheel loader:\n\n- **Hold ID:** `hold_9001`\n- **Type:** Safety (investigatory hold)\n- **Reason:** Open damage claim `clm_3001`\n\nSince this is linked to an open claim, let me check the claim status and the hold-release policy before we proceed.\n\nHere's the situation, Sam:\n\n**The hold can't be released right now.** The investigatory hold (`hold_9001`) is tied to an open damage claim — **clm_3001** (\"Hydraulic arm returned with a bent cylinder\") — which is still **under review**. Per our hold-release policy, a compliance/safety freeze can only be lifted once the underlying issue is documented as resolved.\n\nUntil that claim is resolved (approved, denied, or settled), the asset remains frozen and can't be booked or checked out. Releasing the hold prematurely would bypass the safety investigation.\n\n**Your next step:** Resolve the claim first. Once `clm_3001` is resolved, the investigatory hold will lift automatically. If you're ready to resolve it now, I can walk you through it — just let me know how you want to handle the claim (approve with a settlement amount drawn from the deposit, deny it, or propose a settlement)."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "getClaim",
+      "lookupPolicy"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "getClaim",
+        "args": {
+          "claimId": "clm_3001"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "47-place-hold-acts-directly",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nLet me first check the asset and the acting user's permissions, then place the holdGood — asset confirmed as Genie S-65 Boom Lift (currently out), and you're Sam Okafor (owner), fully authorized. Placing the safety hold now.\n\nDone. The Genie S-65 Boom Lift (`ast_boom01`) is now frozen under **safety hold `hold_9001`**. No new bookings, checkouts, transfers, or retirement actions can be taken on it until the hold is lifted.\n\nA couple things to note:\n\n- The asset is currently **out** on a rental — the hold won't interrupt an active rental, but it will block re-booking or checking it out again once it's returned.\n- Once you've completed the inspection and cleared it for service, just let me know and I'll walk you through releasing the hold."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "getMember",
+      "placeHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_boom01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "placeHold",
+        "args": {
+          "type": "safety",
+          "scope": "asset",
+          "reason": "Manufacturer safety recall — asset must be inspected before any further rentals or checkouts.",
+          "assetId": "ast_boom01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

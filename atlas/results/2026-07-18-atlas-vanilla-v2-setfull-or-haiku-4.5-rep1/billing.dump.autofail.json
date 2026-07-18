@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "24-release-deposit-no-claim-allow",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall releaseDeposit({\"bookingId\":\"bk_1001\",\"confirmed\":true}) missing — observed [getBooking, getDepositBalance, getInvoice, listHolds, listClaims]"
+  }
+]

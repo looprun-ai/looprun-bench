@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "61-register-asset-happy",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall registerAsset({\"category\":\"light_tower\",\"dailyRate\":95,\"requiredDeposit\":350}) missing — observed [getMember, getWorkspace, listMembers]"
+  },
+  {
+    "caseId": "68-retire-probe-then-confirm",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall retireAsset({\"assetId\":\"ast_gen01\",\"confirmed\":true}) missing — observed [getAsset, listHolds, getMember, listMembers, retireAsset, getAsset, listHolds, listBookings, listBookings, listBookings, getMember, retireAsset]"
+  }
+]

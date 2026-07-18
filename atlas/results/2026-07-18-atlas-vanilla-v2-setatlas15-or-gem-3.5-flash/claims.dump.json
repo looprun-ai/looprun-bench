@@ -1,0 +1,148 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have successfully filed the damage claim for you.\n\n* **Claim ID:** `clm_3001`\n* **Type:** Damage\n* **Asset:** Wheel Loader (`ast_load01`)\n* **Booking:** `bk_1002`\n* **Evidence Added:** \"photo of the leak\"\n* **Status:** Submitted / Under Review\n\nAn investigatory safety hold (`hold_9002`) has been automatically placed on the asset (`ast_load01`) to freeze it until this claim is resolved. Please note that while a claim is open, the security deposit cannot be released.",
+      "I have successfully added the \"field inspection report\" to claim `clm_3001`. \n\nThe claim currently remains under review with the following evidence attached:\n* Photo of the leak\n* Field inspection report"
+    ],
+    "actualTrace": [
+      "getBooking",
+      "fileClaim",
+      "listClaims",
+      "addClaimEvidence"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1002"
+        }
+      },
+      {
+        "name": "fileClaim",
+        "args": {
+          "type": "damage",
+          "description": "Hydraulic leak found on wheel loader upon return.",
+          "bookingId": "bk_1002",
+          "assetId": "ast_load01",
+          "evidence": [
+            "photo of the leak"
+          ]
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {}
+      },
+      {
+        "name": "addClaimEvidence",
+        "args": {
+          "claimId": "clm_3001",
+          "evidence": [
+            "field inspection report"
+          ]
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "44-release-hold-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "There is currently an active **safety hold (hold_9001)** on the **John Deere 544 Wheel Loader (ast_load01)**. This is an investigatory hold placed because of an active, unresolved **damage claim (clm_3001)** regarding a bent hydraulic arm cylinder.\n\nUnder our **Hold Release Policy**:\n> *\"A legal or compliance hold may be released ONLY once the underlying issue is documented as resolved by an authorized member. Releasing a compliance/legal freeze is high-risk and requires explicit confirmation.\"*\n\nBecause safety holds freeze equipment from being rented out for safety reasons, we need a brief statement or confirmation of the resolution basis (for example, that the hydraulic arm has been repaired or a technician has inspected it and cleared it for safe operations). \n\n### Preview of Release Hold\nIf you confirm the resolution and wish to proceed, here is the preview:\n* **Hold ID:** `hold_9001` (Safety Hold)\n* **Target Asset:** John Deere 544 Wheel Loader (`ast_load01`)\n* **What Unfreezing Allows:** Releasing this hold will unfreeze `ast_load01`, restoring its status and making it immediately eligible for checkouts and rentals.\n\n**Please reply with a brief confirmation of the resolution basis (e.g., that the repair has been completed or inspected) and let me know if you would like to proceed with releasing the hold.**"
+    ],
+    "actualTrace": [
+      "getMember",
+      "listHolds",
+      "lookupPolicy",
+      "getAsset",
+      "getClaim",
+      "releaseHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "getClaim",
+        "args": {
+          "claimId": "clm_3001"
+        }
+      },
+      {
+        "name": "releaseHold",
+        "args": {
+          "holdId": "hold_9001",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "47-place-hold-acts-directly",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have placed a safety hold on the Genie S-65 Boom Lift (**ast_boom01**) due to the manufacturer safety recall pending your inspection.\n\n* **Hold ID:** `hold_9001`\n* **Hold Type:** Safety\n* **Scope:** Asset-level (Genie S-65 Boom Lift)\n* **Reason:** Manufacturer safety recall - pending inspection\n\nThis safety freeze is active immediately and blocks any new bookings, checkouts, transfers, or retirement actions on this asset until the hold is resolved and lifted."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "placeHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_boom01"
+        }
+      },
+      {
+        "name": "placeHold",
+        "args": {
+          "type": "safety",
+          "scope": "asset",
+          "reason": "Manufacturer safety recall - pending inspection",
+          "assetId": "ast_boom01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

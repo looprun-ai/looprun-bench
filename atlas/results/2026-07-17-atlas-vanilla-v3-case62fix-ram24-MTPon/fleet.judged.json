@@ -1,0 +1,51 @@
+[
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "The Godwin CD100 Trash Pump (ast_pump01) has been scheduled for maintenance from July 1 to July 2026-07-03 for hydraulic seal service. The asset status is now \"maintenance\" and is unavailable for booking during that window.\n\nOnce the hydraulic seal service is complete, let me know and I'll mark the maintenance as complete and return the asset to available status.",
+      "The Godwin CD100 Trash Pump (ast_pump01) has been completed and is back in service in good condition. The asset status is now \"available\" for booking."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "scheduleMaintenance",
+      "completeMaintenance"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "scheduleMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-03",
+          "reason": "hydraulic seal service"
+        }
+      },
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "condition": "good"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "schedule-then-complete",
+        "pass": true,
+        "reasoning": "Turn 1 scheduled ast_pump01 for July 1-3 maintenance and waited for the user's go-ahead; Turn 2, after the user reported completion, called completeMaintenance with condition 'good' and confirmed return to available, with no premature completion (the 'July 2026-07-03' phrasing artifact is wording, not substance)."
+      }
+    ]
+  }
+]

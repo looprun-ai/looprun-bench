@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "68-retire-probe-then-confirm",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall retireAsset({\"assetId\":\"ast_gen01\",\"confirmed\":true}) missing — observed [getAsset, listHolds, getMember, retireAsset, getAsset, listHolds, getMember, retireAsset]"
+  }
+]

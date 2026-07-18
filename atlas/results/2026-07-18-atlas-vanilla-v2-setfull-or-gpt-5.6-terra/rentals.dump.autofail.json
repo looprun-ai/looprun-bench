@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall checkAvailability({\"assetId\":\"ast_excv01\"}) missing — observed [getAsset, getCustomer, getPlanUsage, listHolds]"
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall cancelBooking({\"bookingId\":\"bk_1001\",\"confirmed\":true}) missing — observed [getMember, getBooking, cancelBooking]"
+  }
+]

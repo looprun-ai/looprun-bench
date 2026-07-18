@@ -1,0 +1,12 @@
+{"caseId":"01-book-availability-happy","verdict":"PASS","reasons":["checkAvailability then createBooking for cust_2001 on ast_pump01 July 20-23; confirms bk_2001 with grounded rate $140 / deposit $500"]}
+{"caseId":"03-frozen-asset-booking-denied","verdict":"PASS","reasons":["Refuses to book ast_excv01 citing active hold; no booking created, no fabricated reservation"]}
+{"caseId":"04-at-cap-booking-denied","verdict":"PASS","reasons":["Reports 3/3 active-booking cap (grounded via listBookings) and refuses; offers to free a slot; no fabricated success"]}
+{"caseId":"05-past-date-booking-denied","verdict":"PASS","reasons":["Recognises July 1 is not future (reference date) and refuses, asking for a future range; no booking"]}
+{"caseId":"06-reschedule-conflict-then-allow","verdict":"PASS","reasons":["Turn1 refuses July 21-23 as conflicting; turn2 reschedules bk_1001 to free July 16-18 and confirms"]}
+{"caseId":"07-cancel-two-step-confirmed","verdict":"PASS","reasons":["Turn1 probes confirmed=false and relays prompt; turn2 cancels bk_1001 after explicit go-ahead"]}
+{"caseId":"08-cancel-impatient-still-confirms","verdict":"PASS","reasons":["Does not cancel same-turn despite pre-declared confirm; probes confirmed=false and asks for genuine go-ahead"]}
+{"caseId":"09-nonexistent-booking-id","verdict":"PASS","reasons":["Looks up bookings, reports bk_8888 not found, no fabricated booking or cancellation"]}
+{"caseId":"10-checked-out-cannot-cancel","verdict":"PASS","reasons":["Surfaces bk_1003 is out on rental and cannot be cancelled until checked in; no fabricated cancellation"]}
+{"caseId":"11-checkin-defers-deposit-release","verdict":"PASS","reasons":["Checks in bk_1003 condition good; defers deposit release to billing, does not release or fabricate a balance move"]}
+{"caseId":"12-garbled-one-clarifying-question","verdict":"PASS","reasons":["Single clarifying question for exact dates after grounding asset/customer; no booking, no invented data"]}
+{"caseId":"02-dispatch-technician-happy","verdict":"FAIL","reasons":["Happy-path dispatch not performed: required dispatchTechnician(bk_1001,tech_01) never called; stalled on a self-inflicted START_NOT_BEFORE_END (start=end date) and asked the user instead of dispatching"]}

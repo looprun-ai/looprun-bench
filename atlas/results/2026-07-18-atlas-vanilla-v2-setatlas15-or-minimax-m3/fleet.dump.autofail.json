@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall retireAsset({\"assetId\":\"ast_pump01\"}) missing — observed [getMember, getAsset, listHolds, getAsset, listHolds, getMember]"
+  }
+]

@@ -1,0 +1,154 @@
+[
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done — the Godwin CD100 Trash Pump (ast_pump01) is now scheduled for maintenance July 1–3 for hydraulic seal service. Status changed to maintenance.",
+      "Done — ast_pump01 is back in service with condition good."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "scheduleMaintenance",
+      "getAsset",
+      "completeMaintenance"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "scheduleMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-03",
+          "reason": "hydraulic seal service"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "condition": "good"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Cannot retire **ast_excv01** (CAT 320 Excavator) because it is under an active legal hold (hold_9001). RetireAsset, transferAsset, and several other operations are blocked while any hold is present on the asset.\n\nYou'd need to resolve or release that hold first—please contact the Claims & Compliance assistant for help with holds.",
+      "**Preview — retireAsset (ast_pump01)**  \n- Asset: Godwin CD100 Trash Pump (ast_pump01) – status available, condition good  \n- Action: permanently retire from fleet (irreversible, status → retired)  \n- No holds or blocks detected  \n\nDoes this look correct? Reply **yes** (or provide any changes) and I’ll execute it."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_pump01",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "69-retire-impatient-still-two-step",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "**Preview — retireAsset (ast_trlr01)**\n\nPermanently retire PJ 20ft Equipment Trailer (ast_trlr01)? This is destructive and irreversible.\n\nSay **yes** if you want me to proceed with the retirement now."
+    ],
+    "actualTrace": [
+      "getMember",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_trlr01",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

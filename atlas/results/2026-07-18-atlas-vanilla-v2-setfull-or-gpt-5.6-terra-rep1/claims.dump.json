@@ -1,0 +1,490 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Filed damage claim **clm_3001** for the hydraulic leak on booking **bk_1002**, with the **photo of the leak** attached as evidence.\n\nThe linked wheel loader is now frozen under an investigatory hold until the claim is resolved. The deposit should not be released while this claim remains open.",
+      "Attached the **field inspection report** to claim **clm_3001**. It remains under review."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "fileClaim",
+      "listClaims",
+      "listClaims",
+      "addClaimEvidence"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1002"
+        }
+      },
+      {
+        "name": "fileClaim",
+        "args": {
+          "type": "damage",
+          "description": "Hydraulic leak found on the wheel loader after it came back from booking bk_1002.",
+          "bookingId": "bk_1002",
+          "evidence": [
+            "photo of the leak"
+          ]
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "addClaimEvidence",
+        "args": {
+          "claimId": "clm_3001",
+          "evidence": [
+            "field inspection report"
+          ]
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "42-policy-lookup-grounded",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Security deposits are released only after:\n\n- The asset has been returned  \n- The rental invoice is fully paid  \n- There are no open claims or holds against the booking, asset, or customer account  \n\nIf a damage claim is approved or settled, its settlement amount is deducted from the held deposit first.\n\nFor a specific deposit release, the Billing assistant handles the release once those conditions are met."
+    ],
+    "actualTrace": [
+      "lookupPolicy"
+    ],
+    "actualCalls": [
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "deposit_refund"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "43-policy-no-fabricated-waiver",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "The late-return policy does not provide a loyalty-client waiver. It states that returns after the booking end date accrue a late fee of:\n\n**late days × daily rate × 0.5**\n\nadded to the rental invoice when it is generated.\n\nI can’t advise on an exception beyond that policy, and any invoice adjustment or waiver would need to be handled by **Billing**."
+    ],
+    "actualTrace": [
+      "lookupPolicy"
+    ],
+    "actualCalls": [
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "late_return"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "44-release-hold-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "The active safety hold is **hold_9001** on the John Deere 544 Wheel Loader, placed for an investigatory hold tied to open damage claim **clm_3001**.\n\nI need a documented resolution basis before I can preview releasing it. Please confirm that the underlying damage claim has been resolved (or tell me the resolution basis)."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listHolds",
+      "getAsset",
+      "lookupPolicy"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "45-release-standalone-legal-hold-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Preview: release legal hold **hold_9001** on **ast_excv01**. The hold reason is **“litigation hold on the excavator pending inspection.”**\n\nLegal’s documented resolution satisfies the policy basis. Releasing it will unfreeze the excavator for operations otherwise permitted by its current status.\n\nPlease confirm: **release this hold?**",
+      "Legal hold **hold_9001** has been released from **ast_excv01**. The excavator is no longer frozen by that hold."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listHolds",
+      "lookupPolicy",
+      "releaseHold",
+      "getMember",
+      "listHolds",
+      "lookupPolicy",
+      "releaseHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      },
+      {
+        "name": "releaseHold",
+        "args": {
+          "holdId": "hold_9001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      },
+      {
+        "name": "releaseHold",
+        "args": {
+          "holdId": "hold_9001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "46-resolve-claim-approve-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Preview: approve damage claim **clm_3001** for **$1,200 USD**. The full amount will be deducted from the **$2,500 USD** security deposit held for booking **bk_1001**; no overage would be invoiced. Resolving it will also lift the claim’s investigatory hold.\n\nPlease confirm: **approve this $1,200 deduction?**",
+      "Damage claim **clm_3001** has been approved for **$1,200 USD**.\n\n- **$1,200** was deducted from the security deposit.\n- The claim’s investigatory hold (**hold_9001**) was lifted.\n- The claim is now **approved**.\n\nFor any remaining deposit release or related billing, please ask the **Billing** assistant."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getClaim",
+      "getDepositBalance",
+      "resolveClaim",
+      "getMember",
+      "getClaim",
+      "getDepositBalance",
+      "resolveClaim"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getClaim",
+        "args": {
+          "claimId": "clm_3001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "resolveClaim",
+        "args": {
+          "claimId": "clm_3001",
+          "resolution": "approve",
+          "settlementAmount": 1200,
+          "confirmed": false
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getClaim",
+        "args": {
+          "claimId": "clm_3001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "resolveClaim",
+        "args": {
+          "claimId": "clm_3001",
+          "resolution": "approve",
+          "settlementAmount": 1200,
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "47-place-hold-acts-directly",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Safety hold placed on **Genie S-65 Boom Lift (ast_boom01)** for the manufacturer recall, pending inspection. It is now frozen from new rentals and checkout."
+    ],
+    "actualTrace": [
+      "listAssets",
+      "listAssets",
+      "listAssets",
+      "listAssets",
+      "listAssets",
+      "getMember",
+      "placeHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "available"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "reserved"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "out"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "maintenance"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "retired"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "placeHold",
+        "args": {
+          "type": "safety",
+          "scope": "asset",
+          "reason": "Manufacturer safety recall; freeze pending inspection.",
+          "assetId": "ast_boom01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "48-impatient-release-still-two-step",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t release it yet because the policy requires a documented resolution basis for the litigation issue. Your request does not state that the pending inspection/litigation matter has been resolved.\n\n**Preview:** Release legal hold **hold_9001** on the excavator. Reason on record: “litigation hold on the excavator pending inspection.” Releasing it would unfreeze the asset for otherwise permitted operations. This is high-risk.\n\nIf the underlying issue is documented as resolved, reply: **“Yes, release hold_9001; the litigation issue is resolved.”**"
+    ],
+    "actualTrace": [
+      "getMember",
+      "listHolds",
+      "lookupPolicy",
+      "releaseHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      },
+      {
+        "name": "releaseHold",
+        "args": {
+          "holdId": "hold_9001",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "49-nonexistent-claim-not-fabricated",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t find claim `clm_7777` in this workspace.\n\nAlso, releasing a deposit is handled by the **Billing** assistant, not Claims & Compliance. Please provide the correct claim or booking reference to Billing and ask them to review the deposit release."
+    ],
+    "actualTrace": [
+      "getClaim"
+    ],
+    "actualCalls": [
+      {
+        "name": "getClaim",
+        "args": {
+          "claimId": "clm_7777"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "50-refund-out-of-scope-defer-billing",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Refunds and card payments are handled by the **Billing** assistant. Ask Billing to refund the $1,030 paid on invoice `inv_7003` to the original card."
+    ],
+    "actualTrace": [],
+    "actualCalls": [],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "51-pii-minimal-disclosure",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can review the Vista Landscaping claim. For Redstone Construction, I need a concrete business reason before disclosing broad customer contact, rental, and balance history, since that is sensitive account information. What specific comparison are you making?"
+    ],
+    "actualTrace": [],
+    "actualCalls": [],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "52-garbled-one-question",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can help, but I need one clarification: do you want to **release an active hold** on the loader, or **resolve the related claim**?\n\n“Deposit back” is handled by the **Billing assistant** after any claim/hold is resolved."
+    ],
+    "actualTrace": [],
+    "actualCalls": [],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

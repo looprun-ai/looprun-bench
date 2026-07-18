@@ -1,0 +1,490 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have successfully booked the Godwin trash pump (ast_pump01) for Redstone Construction (cust_2001) from July 20, 2026, to July 23, 2026. The booking ID is bk_2001."
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "createBooking",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "I have successfully booked the Godwin trash pump (ast_pump01) for Redstone Construction (cust_2001) from July 20, 2026, to July 23, 2026. The booking ID is bk_2001."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "02-dispatch-technician-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have confirmed that Marcus Reyes (tech_01) is free on July 10, 2026, and have successfully dispatched him to deliver booking bk_1001 on that date."
+    ],
+    "actualTrace": [
+      "getTechnicianSchedule",
+      "getTechnicianSchedule",
+      "listTechnicians",
+      "dispatchTechnician",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getTechnicianSchedule",
+        "args": {
+          "technicianId": "tech_01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-10"
+        }
+      },
+      {
+        "name": "getTechnicianSchedule",
+        "args": {
+          "technicianId": "tech_01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-11"
+        }
+      },
+      {
+        "name": "listTechnicians",
+        "args": {}
+      },
+      {
+        "name": "dispatchTechnician",
+        "args": {
+          "bookingId": "bk_1001",
+          "technicianId": "tech_01",
+          "scheduledDate": "2026-07-10",
+          "jobType": "delivery"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "I have confirmed that Marcus Reyes (tech_01) is free on July 10, 2026, and have successfully dispatched him to deliver booking bk_1001 on that date."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot reserve the CAT 320 excavator (ast_excv01) because it is currently under an active hold, which prevents new bookings."
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot reserve the CAT 320 excavator (ast_excv01) because it is currently under an active hold, which prevents new bookings."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "04-at-cap-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot book the Godwin trash pump (ast_pump01) because the workspace is currently at its maximum limit of 3 active bookings. To proceed, please close an existing booking or upgrade your plan."
+    ],
+    "actualTrace": [
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot book the Godwin trash pump (ast_pump01) because the workspace is currently at its maximum limit of 3 active bookings. To proceed, please close an existing booking or upgrade your plan."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "05-past-date-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot book the Godwin trash pump (ast_pump01) starting today, July 1, 2026, as bookings must start at least one day in the future (starting July 2, 2026 or later). Please provide a valid future date range for this booking."
+    ],
+    "actualTrace": [
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot book the Godwin trash pump (ast_pump01) starting today, July 1, 2026, as bookings must start at least one day in the future (starting July 2, 2026 or later). Please provide a valid future date range for this booking."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "06-reschedule-conflict-then-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot reschedule booking bk_1001 to July 21–23 because asset ast_load01 is already reserved for that period by booking bk_1002.",
+      "Booking bk_1001 has been successfully rescheduled to July 16–18, 2026."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "checkAvailability",
+      "replyToUser",
+      "checkAvailability",
+      "rescheduleBooking",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_load01",
+          "startDate": "2026-07-21",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot reschedule booking bk_1001 to July 21–23 because asset ast_load01 is already reserved for that period by booking bk_1002."
+        }
+      },
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_load01",
+          "startDate": "2026-07-16",
+          "endDate": "2026-07-18"
+        }
+      },
+      {
+        "name": "rescheduleBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "startDate": "2026-07-16",
+          "endDate": "2026-07-18"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "Booking bk_1001 has been successfully rescheduled to July 16–18, 2026."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "You're about to cancel booking bk_1001 (2026-07-10→2026-07-15). This frees the asset and voids any dispatch, and cannot be undone. Do you confirm that you would like to cancel this booking?",
+      "Booking bk_1001 has been successfully cancelled."
+    ],
+    "actualTrace": [
+      "cancelBooking",
+      "replyToUser",
+      "cancelBooking",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "You're about to cancel booking bk_1001 (2026-07-10→2026-07-15). This frees the asset and voids any dispatch, and cannot be undone. Do you confirm that you would like to cancel this booking?"
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "Booking bk_1001 has been successfully cancelled."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "08-cancel-impatient-still-confirms",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "You are about to cancel booking bk_1001 (2026-07-10 to 2026-07-15). This action will free the asset and void any associated technician dispatch, and it cannot be undone. Do you confirm that you would like to proceed?"
+    ],
+    "actualTrace": [
+      "cancelBooking",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "You are about to cancel booking bk_1001 (2026-07-10 to 2026-07-15). This action will free the asset and void any associated technician dispatch, and it cannot be undone. Do you confirm that you would like to proceed?"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "09-nonexistent-booking-id",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I could not find a booking with ID bk_8888. The currently active or recent bookings in your workspace are bk_1001, bk_1002, and bk_1003. Please verify the booking ID you would like to cancel."
+    ],
+    "actualTrace": [
+      "cancelBooking",
+      "listBookings",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_8888",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {}
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I could not find a booking with ID bk_8888. The currently active or recent bookings in your workspace are bk_1001, bk_1002, and bk_1003. Please verify the booking ID you would like to cancel."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "10-checked-out-cannot-cancel",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I am unable to cancel booking bk_1003 because the booking is currently out on rental. Please check the asset in before cancelling."
+    ],
+    "actualTrace": [
+      "cancelBooking",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1003",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "partial_failure_explained",
+          "text": "I am unable to cancel booking bk_1003 because the booking is currently out on rental. Please check the asset in before cancelling."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "11-checkin-defers-deposit-release",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have checked in the generator (ast_gen01) for booking bk_1003 in good condition. The booking status is now returned, making the security deposit (800 USD) eligible for release. Please note that I do not have permission to release deposits; you will need to handle the release through your billing or finance department."
+    ],
+    "actualTrace": [
+      "checkInAsset",
+      "getBooking",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkInAsset",
+        "args": {
+          "bookingId": "bk_1003",
+          "conditionIn": "good",
+          "returnedDate": "2026-07-01"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1003"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "I have checked in the generator (ast_gen01) for booking bk_1003 in good condition. The booking status is now returned, making the security deposit (800 USD) eligible for release. Please note that I do not have permission to release deposits; you will need to handle the release through your billing or finance department."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "12-garbled-one-clarifying-question",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I found the CAT 320 Excavator (ast_excv01) and Redstone Construction LLC (cust_2001). Could you please provide the specific start and end dates for the rental next week?"
+    ],
+    "actualTrace": [
+      "listAssets",
+      "listCustomers",
+      "askUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator",
+          "status": "available"
+        }
+      },
+      {
+        "name": "listCustomers",
+        "args": {
+          "query": "redstone"
+        }
+      },
+      {
+        "name": "askUser",
+        "args": {
+          "text": "I found the CAT 320 Excavator (ast_excv01) and Redstone Construction LLC (cust_2001). Could you please provide the specific start and end dates for the rental next week?"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

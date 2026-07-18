@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "24-release-deposit-no-claim-allow",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall releaseDeposit({\"bookingId\":\"bk_1001\",\"confirmed\":true}) missing — observed [listBookings, getBooking, getDepositBalance, listInvoices, listInvoices, listInvoices, listInvoices, listInvoices, listInvoices, listBookings, listBookings, listBookings, listBookings, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, replyToUser, releaseDeposit, replyToUser]"
+  },
+  {
+    "caseId": "27-low-deposit-shortfall-surfaced",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall getDepositBalance({\"bookingId\":\"bk_1001\"}) missing — observed [listBookings, listBookings, listBookings, listBookings, listBookings, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listAssets, listInvoices, listInvoices, listInvoices, listInvoices, listInvoices, listBookings, listAssets, listAssets, listInvoices, listInvoices, listInvoices, listInvoices, getBooking, getDepositBalance, listBookings, listAssets, replyToUser]"
+  }
+]

@@ -1,0 +1,213 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Booked successfully.\n\n- **Equipment:** Godwin CD100 Trash Pump (`ast_pump01`)\n- **Customer:** Redstone Construction LLC\n- **Dates:** July 20–23, 2026\n- **Booking:** `bk_2002`\n- **Status:** Confirmed\n- **Rental total:** $420\n- **Required security deposit:** $500\n\nThe pump was confirmed free for those dates before booking."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getWorkspace",
+      "getPlanUsage",
+      "listHolds",
+      "listHolds",
+      "getAsset",
+      "getCustomer",
+      "checkAvailability",
+      "generateQuote",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "getCustomer",
+        "args": {
+          "customerId": "cust_2001"
+        }
+      },
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "includeDelivery": false,
+          "includeInsurance": false
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "quoteId": "qt_5001"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "checks-then-books",
+        "pass": true,
+        "reasoning": "Called checkAvailability for ast_pump01 over Jul 20-23, then createBooking for cust_2001 with quote qt_5001, and confirmed the concrete outcome (asset, customer Redstone, dates, bk_2002, $420 total / $500 deposit from the quote) with nothing invented."
+      }
+    ]
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t reserve **CAT 320 Excavator (ast_excv01)** because it has an active legal hold: **“litigation hold on the excavator pending inspection.”** The Claims & Compliance assistant must clear that hold before booking."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getWorkspace",
+      "getPlanUsage",
+      "getAsset",
+      "getCustomer",
+      "listHolds",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "getCustomer",
+        "args": {
+          "customerId": "cust_2001"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [
+      "requiredToolCall checkAvailability({\"assetId\":\"ast_excv01\"}) missing — observed [getMember, getWorkspace, getPlanUsage, getAsset, getCustomer, listHolds, listHolds]"
+    ],
+    "judgeVerdict": "fail",
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "You’re about to cancel booking **bk_1001** for **2026-07-10 through 2026-07-15**. This will free the asset, void any technician dispatch, and cannot be undone.\n\nPlease confirm: **Cancel it?**",
+      "Booking **bk_1001** has been cancelled successfully. Any associated technician dispatch was voided, and the asset is now freed."
+    ],
+    "actualTrace": [
+      "getMember",
+      "cancelBooking",
+      "getMember",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "asks-then-cancels",
+        "pass": true,
+        "reasoning": "Turn 1 probed cancelBooking(confirmed=false) and relayed the confirmation prompt without cancelling; turn 2, after the go-ahead, sent confirmed=true and confirmed bk_1001 cancelled."
+      }
+    ]
+  }
+]

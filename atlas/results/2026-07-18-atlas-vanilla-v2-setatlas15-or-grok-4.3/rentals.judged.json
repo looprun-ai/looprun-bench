@@ -1,0 +1,116 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "**Booked.** Godwin trash pump (ast_pump01) for Redstone Construction (cust_2001) from 2026-07-20 to 2026-07-23. Booking ID: **bk_2001** (confirmed)."
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "checks-then-books",
+        "pass": true,
+        "reasoning": "Called checkAvailability then createBooking for ast_pump01/cust_2001 over 07-20→07-23 and confirmed the concrete booking bk_2001 with no invented rate or slot."
+      }
+    ]
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "The asset **ast_excv01** cannot be booked for those dates because it is currently under an active hold. No reservation was created."
+    ],
+    "actualTrace": [
+      "checkAvailability"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-on-hold",
+        "pass": true,
+        "reasoning": "Checked availability, found ast_excv01 under active hold, refused to book and stated the hold as the reason without calling createBooking or claiming a reservation."
+      }
+    ]
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "You're about to cancel booking **bk_1001** (2026-07-10 to 2026-07-15). This frees the asset and voids any dispatch, and cannot be undone. Confirm?",
+      "Booking **bk_1001** has been cancelled."
+    ],
+    "actualTrace": [
+      "cancelBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "asks-then-cancels",
+        "pass": true,
+        "reasoning": "Turn 1 relayed the confirmation prompt (frees asset, voids dispatch, irreversible) with confirmed=false and did not cancel; turn 2 cancelled bk_1001 with confirmed=true after the go-ahead and confirmed success."
+      }
+    ]
+  }
+]

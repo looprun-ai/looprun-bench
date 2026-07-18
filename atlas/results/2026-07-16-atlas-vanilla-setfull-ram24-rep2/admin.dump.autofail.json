@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "81-invite-member-happy",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall inviteMember({\"email\":\"jordan@atlas.example\",\"role\":\"dispatcher\"}) missing — observed [getPlanUsage, listMembers]"
+  },
+  {
+    "caseId": "88-removemember-impatient-oneshot",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall removeMember({\"memberId\":\"mem_0002\"}) missing — observed [listMembers]"
+  }
+]

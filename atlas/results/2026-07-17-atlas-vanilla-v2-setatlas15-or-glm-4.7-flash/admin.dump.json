@@ -1,0 +1,77 @@
+[
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I’ll invite Dana as a billing member right away. First, let me confirm there’s a seat available.Your plan is at the seat cap (2 seats used, 2 cap). I can’t invite Dana until a seat frees up. Here’s how to proceed:\n\n- Free a seat: have someone leave the workspace (on your plan, seats are tied to members). You must be owner or admin to remove a member.\n- Or upgrade your plan: owner can upgrade to pro (5 seats) to add more seats.\n\nLet me know which option you’d like, and I’ll help with the steps."
+    ],
+    "actualTrace": [
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll remove Lena Park from the workspace. Let me confirm her identity first by looking up the members list.Found Lena Park (mem_0002). Since this is a gated operation, I need to show the exact consequence before proceeding.\n\n**Preview of the change:**\n- Remove member: Lena Park (mem_0002, dispatcher role)\n- This will free up her seat\n- The workspace will then have 2 active members: Sam Okafor (owner) and Raj Bhatt (billing)\n- This operation cannot be undone — after confirmation, Lena Park will no longer be able to access the workspace or its data\n\nDo you confirm this removal?",
+      "Done. Lena Park (mem_0002, dispatcher) has been removed from the workspace. Her seat is now free."
+    ],
+    "actualTrace": [
+      "listMembers",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll read the current plan usage so we can confirm exactly how many seats you've got.You're actually on the **Pro plan**, not Fleet. Here's the current usage:\n\n- **Seats:** 3 used of 5 cap (well under)\n- **Active bookings:** 1 used of 10 cap\n- **Deposit float:** $1,500 of $50,000 cap\n\nSo you have **2 free seats available** before hitting your Pro cap. You're not at a seat limit right now. Let me know the email and role for who you want to invite, and I'll do it."
+    ],
+    "actualTrace": [
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "caseId": "24-release-deposit-no-claim-allow",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall releaseDeposit({\"bookingId\":\"bk_1001\",\"confirmed\":true}) missing — observed [getBooking, getDepositBalance, getMember, getInvoice, listHolds, listHolds, getCustomer, lookupPolicy, getMember, getBooking, getDepositBalance, getInvoice, listHolds, listHolds, listClaims, lookupPolicy, releaseDeposit, payInvoice]"
+  },
+  {
+    "caseId": "27-low-deposit-shortfall-surfaced",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall getDepositBalance({\"bookingId\":\"bk_1001\"}) missing — observed [getMember, getBooking, listHolds, lookupPolicy, listHolds]"
+  },
+  {
+    "caseId": "28-pay-voided-invoice-deny",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall voidInvoice({\"invoiceId\":\"inv_7001\",\"confirmed\":true}) missing — observed [getMember, getInvoice, voidInvoice, getMember, getInvoice, voidInvoice, getMember, getInvoice, payInvoice]"
+  }
+]

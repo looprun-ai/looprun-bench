@@ -1,0 +1,116 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check availability for that pump over those dates, then book it for you.Perfect—the pump is free. Now I'll create the booking.✓ **Booking confirmed.** Godwin trash pump (ast_pump01) is booked for Redstone Construction from July 20–23, 2026.\n\n- **Booking ID:** bk_2001\n- **Status:** Confirmed\n- **Required deposit:** $500 (currently $0 held — Billing will need to charge this before checkout)\n- **Daily rate:** $140 × 3 billable days = $420 rental + deposit\n\nNext steps: Billing charges the deposit, then you can dispatch a technician for delivery on July 20 if needed, and check the asset out."
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "checks-then-books",
+        "pass": true,
+        "reasoning": "Reads checkAvailability(ast_pump01,20-23) then createBooking with the correct customer cust_2001 and dates, and confirms bk_2001 with deposit/rate returned by the booking — no invented asset or slot."
+      }
+    ]
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check availability and then reserve the CAT 320 excavator for you.I cannot reserve this asset. The CAT 320 excavator (ast_excv01) is currently **under an active hold**, which prevents new bookings on it.\n\nThis is a compliance or legal matter. You'll need to contact the **Claims & Compliance assistant** to understand the reason for the hold and when (or if) it can be released before we can proceed with a booking."
+    ],
+    "actualTrace": [
+      "checkAvailability"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-on-hold",
+        "pass": true,
+        "reasoning": "Only checkAvailability is called (no createBooking); the reply refuses to reserve ast_excv01 citing the active hold and never claims a reservation."
+      }
+    ]
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll pull up the details of booking bk_1001 and show you what will happen if we cancel it.**Cancellation preview:**\n\nBooking **bk_1001** (July 10–15, 2026) will be cancelled. This will:\n- Free the asset for other rentals\n- Void any technician dispatch\n- Cannot be undone\n\n**Confirm to proceed?**",
+      "Done. Booking **bk_1001** is now cancelled. The asset is freed and any dispatch has been voided."
+    ],
+    "actualTrace": [
+      "cancelBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "asks-then-cancels",
+        "pass": true,
+        "reasoning": "Turn 1 relays the cancellation preview and calls cancelBooking(confirmed=false); after the go-ahead turn 2 calls cancelBooking(confirmed=true) and confirms bk_1001 cancelled — correct two-step."
+      }
+    ]
+  }
+]

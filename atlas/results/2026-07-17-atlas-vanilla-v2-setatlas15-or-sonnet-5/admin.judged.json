@@ -1,0 +1,136 @@
+[
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the acting user's permissions and current seat capacity before proceeding.The workspace is at its seat cap — the starter plan allows 2 seats, and both are currently in use. I can't invite Dana until a seat is freed up.\n\nYou have two options:\n1. **Free a seat** — remove or offboard an existing member to open a slot.\n2. **Upgrade the plan** — as owner, you can upgrade (e.g., to Pro, which offers 5 seats). I can walk you through that if you'd like.\n\nLet me know which path you'd like to take."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-at-cap-suggests-upgrade",
+        "pass": true,
+        "reasoning": "getPlanUsage grounds the 2-of-2 starter seat cap; the reply never claims Dana was invited and offers real paths (free a seat or upgrade the plan)."
+      }
+    ]
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll look up the member and check my own permissions first.You (Sam Okafor, owner) have permission to remove members. Here's the preview:This will remove **Lena Park (dispatcher)** from the workspace, freeing her seat. This action is irreversible.\n\nShall I proceed?",
+      "I need to run the actual preview through the tool before proceeding.Confirmed: removing **Lena Park (mem_0002, dispatcher)** will free her seat and cannot be undone. You've already said yes — proceeding now.Done — Lena Park has been removed from the workspace, and her seat is now free."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers",
+      "removeMember",
+      "getMember",
+      "listMembers",
+      "removeMember",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "confirms-then-removes",
+        "pass": true,
+        "reasoning": "Turn 1 only calls removeMember(confirmed:false) and asks to proceed; turn 2 after owner confirmation calls removeMember(mem_0002,confirmed:true) and confirms the real member removed, seat freed."
+      }
+    ]
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "That's not quite right — here's the actual state: Atlas is on the **pro** plan, not fleet. Seat usage is **3 of 5**, not 12 of 15. You've got 2 seats free before hitting the cap.\n\nIf you need more headroom, upgrading to the fleet plan (15 seats) would need to be done by the workspace owner. Let me know if you'd like to proceed with an invite or a plan change."
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "corrects-with-real-numbers",
+        "pass": true,
+        "reasoning": "getWorkspace and getPlanUsage ground the correction: reply states the real pro plan and 3-of-5 seats, rejecting the false fleet/12-of-15 figures, with every number traced to a tool."
+      }
+    ]
+  }
+]

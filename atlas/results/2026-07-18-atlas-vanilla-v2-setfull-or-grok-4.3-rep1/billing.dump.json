@@ -1,0 +1,507 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "**Quote qt_5001** — CAT 320 Excavator (ast_excv01) for 2026-07-10 to 2026-07-13:\n\n- Daily rate: $850 × 3 days = $2,550  \n- Delivery: $400  \n- Damage-waiver insurance: $120  \n- **Total: $3,070**  \n- Security deposit: $3,000  \n\nReady to book or adjust?",
+      "Rescheduling booking bk_1001 is handled by the Rentals assistant — please ask them to move it to 2026-07-20 through 2026-07-24."
+    ],
+    "actualTrace": [
+      "listAssets",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator",
+          "status": "available"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-13",
+          "includeDelivery": true,
+          "includeInsurance": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "22-invoice-generate-then-pay",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Invoice **inv_7001** generated for bk_1002.  \nTotal: **$3,850** (balance due $3,850; no late fee).",
+      "Preview: record a **$3,850** payment against **inv_7001** (full balance due). This will mark it paid.  \n\nConfirm with \"yes\" (or equivalent) if you'd like me to proceed.",
+      ""
+    ],
+    "actualTrace": [
+      "generateInvoice",
+      "getMember",
+      "getMember",
+      "payInvoice",
+      "payInvoice"
+    ],
+    "actualCalls": [
+      {
+        "name": "generateInvoice",
+        "args": {
+          "bookingId": "bk_1002"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "0"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "payInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "amount": 3850,
+          "idempotencyKey": "pay-inv7001-full",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "payInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "amount": 3850,
+          "idempotencyKey": "pay-inv7001-full-confirmation",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      ""
+    ],
+    "actualTrace": [
+      "getMember",
+      "getBooking",
+      "getDepositBalance",
+      "listClaims",
+      "listClaims",
+      "listClaims",
+      "listClaims",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "approved"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "denied"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account",
+          "assetId": "ast_load01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "24-release-deposit-no-claim-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "**Release preview for bk_1001**  \n- Amount: $2,500 USD (full deposit held)  \n- Destination: customer cust_2001  \n- Status: asset returned, invoice paid, no holds/claims — gates clear.  \n\nThis moves money and cannot be undone. Do you confirm?",
+      "**Deposit released.**  \n$2,500 USD released on bk_1001. The held balance is now $0."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getBooking",
+      "listHolds",
+      "listHolds",
+      "releaseDeposit",
+      "releaseDeposit"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account",
+          "assetId": "cust_2001"
+        }
+      },
+      {
+        "name": "releaseDeposit",
+        "args": {
+          "bookingId": "bk_1001",
+          "amount": 2500,
+          "confirmed": false
+        }
+      },
+      {
+        "name": "releaseDeposit",
+        "args": {
+          "bookingId": "bk_1001",
+          "amount": 2500,
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "25-refund-above-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Refund capped at the paid amount of $1030. Refusing the $2000 request (exceeds amountPaid). Provide the correct figure (≤ $1030) if you'd like to proceed with a preview."
+    ],
+    "actualTrace": [
+      "getInvoice",
+      "issueRefund"
+    ],
+    "actualCalls": [
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7003"
+        }
+      },
+      {
+        "name": "issueRefund",
+        "args": {
+          "invoiceId": "inv_7003",
+          "amount": 2000,
+          "reason": "Customer refund request",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "26-account-frozen-blocks-refund",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Refund blocked — a compliance/legal hold freezes the account tied to this invoice. No money can be moved until the hold is cleared (Claims & Compliance can investigate)."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getInvoice",
+      "issueRefund"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "issueRefund",
+        "args": {
+          "invoiceId": "inv_7001",
+          "amount": 1000,
+          "reason": "Customer request",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "27-low-deposit-shortfall-surfaced",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "The deposit on **bk_1001** cannot be released yet because:\n\n- The booking status is **confirmed** (asset not returned; returnedDate is null).\n- No invoice exists (invoiceId is null).\n\nPlease return the asset and generate/pay the invoice first, then we can revisit the release."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [
+      "requiredToolCall getDepositBalance({\"bookingId\":\"bk_1001\"}) missing — observed [getMember, getBooking]"
+    ],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "28-pay-voided-invoice-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Voiding **inv_7001** (issued, total $3,850) is destructive and irreversible. Confirm with \"yes\" to proceed?",
+      "Invoice **inv_7001** has been voided.",
+      "**inv_7001** is void and cannot be paid (voided invoices are terminal and cannot be paid, refunded, or un-voided). A new invoice would be required for any charge."
+    ],
+    "actualTrace": [
+      "voidInvoice",
+      "voidInvoice"
+    ],
+    "actualCalls": [
+      {
+        "name": "voidInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "voidInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "29-limited-permission-payinvoice-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Your role is dispatcher; moving money (payInvoice) requires owner or billing. Ask Sam Okafor (owner) or Raj Bhatt (billing)."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "30-impatient-two-money-moves-one-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "**Preview before execution (required):**\n\n- **payInvoice inv_7001**: pay full balanceDue of **$3,850**. Status issued → paid. Irreversible.\n- **releaseDeposit bk_1001**: release full held amount of **$2,500**. Irreversible; requires no open claims/holds on this booking/asset/customer.\n\nDoes this match what you want? Reply **yes** (or with any changes) to execute both."
+    ],
+    "actualTrace": [
+      "getMember",
+      "payInvoice",
+      "releaseDeposit",
+      "getInvoice",
+      "getDepositBalance"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "payInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "amount": 0,
+          "idempotencyKey": "",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "releaseDeposit",
+        "args": {
+          "bookingId": "bk_1001",
+          "amount": 0,
+          "confirmed": false
+        }
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "31-quote-total-none-exists",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "There are no quotes in the workspace (empty result from the quote list)."
+    ],
+    "actualTrace": [
+      "getQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "getQuote",
+        "args": {
+          "quoteId": ""
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "32-garbled-amount-one-question",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "What exact partial amount (in USD) would you like to pay on inv_7001?"
+    ],
+    "actualTrace": [],
+    "actualCalls": [],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

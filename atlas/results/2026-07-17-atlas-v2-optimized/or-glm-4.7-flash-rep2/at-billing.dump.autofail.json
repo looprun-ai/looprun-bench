@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "28-pay-voided-invoice-deny",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall voidInvoice({\"invoiceId\":\"inv_7001\",\"confirmed\":true}) missing — observed [getInvoice, getInvoice]"
+  }
+]

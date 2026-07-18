@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "71-contradicted-maintenance-and-nonexistent-id",
+    "rep": 0,
+    "reason": "invariant: forbiddenToolCall updateAssetCondition({\"assetId\":\"ast_gen02\",\"condition\":\"excellent\"}) took effect"
+  }
+]

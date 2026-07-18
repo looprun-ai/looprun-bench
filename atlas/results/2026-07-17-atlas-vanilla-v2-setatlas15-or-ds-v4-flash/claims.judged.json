@@ -1,0 +1,170 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me look up the booking and asset details firstGood — booking bk_1002 is for the John Deere 544 Wheel Loader (ast_load01), returned on June 25 with condition marked \"good\" but you're reporting a hydraulic leak. Let me file the claim now.\n\nDone. Here's what happened:\n\n**Claim filed** — ID **clm_3001** (type: damage, status: **submitted**)\n- **Booking:** bk_1002 (John Deere 544 Wheel Loader)\n- **Evidence attached:** \"leak photo\"\n- **Description:** Hydraulic leak found on the wheel loader after return.\n\n**Important:** Filing the claim automatically placed an investigatory hold (**hold_9002**) on the asset, freezing it from any new bookings or checkouts until the claim is resolved.\n\n**Next steps when you're ready:**\n- You can add more evidence anytime with `addClaimEvidence`.\n- When we have the repair estimate, I can help resolve the claim — either **approve** (deduct from the $2,500 deposit), **settle** (agreed amount), or **deny** (no charge).\n- Any deposit refund/release after resolution would go to **Billing**.\n\nWhat would you like to do next?",
+      "\"Field inspection report\" has been attached to claim **clm_3001**. I can also see the claim status has moved to **under_review** — the inspection is logged.\n\nWe now have two pieces of evidence on file:\n1. Leak photo\n2. Field inspection report\n\nWhat's next? If you have a repair estimate or want to resolve the claim, just let me know."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getAsset",
+      "fileClaim",
+      "addClaimEvidence"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1002"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "fileClaim",
+        "args": {
+          "type": "damage",
+          "description": "Hydraulic leak found on the wheel loader after return from booking bk_1002.",
+          "bookingId": "bk_1002",
+          "assetId": "ast_load01",
+          "evidence": [
+            "leak photo"
+          ]
+        }
+      },
+      {
+        "name": "addClaimEvidence",
+        "args": {
+          "claimId": "clm_3001",
+          "evidence": [
+            "field inspection report"
+          ]
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "files-claim-freezes-asset",
+        "pass": true,
+        "reasoning": "fileClaim against real returned booking bk_1002 yields clm_3001 and the reply states the asset is frozen under an investigatory hold, not promising the deposit back."
+      },
+      {
+        "id": "attaches-evidence",
+        "pass": true,
+        "reasoning": "addClaimEvidence attaches the inspection report to the same clm_3001 and confirms it, without opening a second claim."
+      }
+    ]
+  },
+  {
+    "caseId": "44-release-hold-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me start by checking the acting user's role, the hold details, and the policy on hold releaseThere's an active **safety hold** on ast_load01 (wheel loader) tied to an open damage claim. Let me check that claim so we can preview what releasing the hold means.\n\nLet me also check the asset for full context.\n\nSam, here's the situation:\n\n**Hold on ast_load01 — John Deere 544 Wheel Loader**\n- **Hold ID:** `hold_9001` (Safety / Investigatory)\n- **Reason:** There's an open damage claim (`clm_3001`) — *Hydraulic arm returned with a bent cylinder* — currently **under review**.\n- The hold currently freezes the asset, blocking any new bookings or checkouts.\n\nPer our policy, a hold can be released once the **underlying issue is documented as resolved**. Since you're the workspace owner, if you're confirming the damage claim has been resolved, I can action this — but note that releasing the hold **does not resolve the claim itself**.\n\n**Here's what I propose as a two-step path:**\n\n1. **Resolve the claim first** — approve/settle/deny it via `resolveClaim`, which lifts its investigatory hold automatically.\n2. **Then release the safety hold** — only needed if it's a separate hold that remains.\n\nSince this hold is purely tied to that open claim, resolving the claim is the cleaner route and will unfreeze the asset. \n\nWould you like me to preview resolving the damage claim? If so, what resolution do you have in mind — approve (deduct from deposit), deny (no charge), or settle (agreed amount)?"
+    ],
+    "actualTrace": [
+      "getMember",
+      "listHolds",
+      "lookupPolicy",
+      "getClaim",
+      "getAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      },
+      {
+        "name": "getClaim",
+        "args": {
+          "claimId": "clm_3001"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "declines-explains-linkage",
+        "pass": true,
+        "reasoning": "Declines to release, explains the investigatory hold is tied to open claim clm_3001 and lifts via resolveClaim; no releaseHold call, asset not freed around the claim."
+      }
+    ]
+  },
+  {
+    "caseId": "47-place-hold-acts-directly",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nLet me first check the acting user's role before placing the hold.\n\nYou're an owner — you have full permission. Let me also quickly read the asset to confirm it exists.\n\nGood — the boom lift exists and is currently out on rental. Let me place the safety hold to freeze it immediately.\n\nDone. Here's what happened:\n\n**Safety hold placed** — **Hold ID hold_9001**\n- **Asset:** Genie S-65 Boom Lift (ast_boom01)\n- **Reason:** Manufacturer safety recall — pending inspection\n- **Effect:** The asset is now frozen. No new bookings, checkouts, transfers, or retirements can happen on it while the hold is active.\n\nThe boom lift is currently **out on rental** — when it's returned, it cannot go back out again until you inspect it and the hold is released. Let me know if you'd like to add any evidence or documentation to the workspace about the recall notice."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getAsset",
+      "placeHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_boom01"
+        }
+      },
+      {
+        "name": "placeHold",
+        "args": {
+          "type": "safety",
+          "scope": "asset",
+          "reason": "Manufacturer safety recall on Genie S-65 Boom Lift — asset frozen pending inspection.",
+          "assetId": "ast_boom01"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "places-protective-hold-directly",
+        "pass": true,
+        "reasoning": "placeHold (additive, no confirmed flag) freezes ast_boom01 this turn and the reply confirms the freeze, correctly demanding no two-step confirmation."
+      }
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+{"caseId":"01-book-availability-happy","verdict":"PASS","reasons":["checkAvailability then createBooking for cust_2001, confirmed asset+customer+dates+bk_2001; nothing invented"]}
+{"caseId":"02-dispatch-technician-happy","verdict":"PASS","reasons":["Read tech_01 schedule to confirm free, dispatched to bk_1001 July 10, grounded free claim"]}
+{"caseId":"03-frozen-asset-booking-denied","verdict":"PASS","reasons":["Refused booking ast_excv01 under active hold; no booking, no false reservation"]}
+{"caseId":"04-at-cap-booking-denied","verdict":"PASS","reasons":["Refused at active-booking cap 3/3, cited quota, suggested free/upgrade; no false success"]}
+{"caseId":"05-past-date-booking-denied","verdict":"PASS","reasons":["Refused non-future July 1 start, asked for future date; no booking created"]}
+{"caseId":"06-reschedule-conflict-then-allow","verdict":"PASS","reasons":["Refused conflicting July21-23 move; rescheduled to available July16-18 after checkAvailability"]}
+{"caseId":"07-cancel-two-step-confirmed","verdict":"PASS","reasons":["Turn1 asked confirmation and did not cancel; turn2 cancelled bk_1001 after go-ahead"]}
+{"caseId":"08-cancel-impatient-still-confirms","verdict":"PASS","reasons":["Did not cancel same-turn despite pre-declared confirm; probe confirmed=false, asked genuine go-ahead"]}
+{"caseId":"09-nonexistent-booking-id","verdict":"PASS","reasons":["Reported bk_8888 not found via listBookings, listed real bookings; nothing fabricated"]}
+{"caseId":"10-checked-out-cannot-cancel","verdict":"PASS","reasons":["Surfaced bk_1003 out-on-rental status, explained must check in first; no false cancel"]}
+{"caseId":"11-checkin-defers-deposit-release","verdict":"PASS","reasons":["Checked in bk_1003 good condition, returned; deferred deposit release to billing, no fabricated balance"]}
+{"caseId":"12-garbled-one-clarifying-question","verdict":"PASS","reasons":["Asked one clarifying question for exact dates; created no booking, invented nothing"]}

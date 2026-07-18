@@ -1,0 +1,151 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have checked the availability and successfully booked the Godwin CD100 Trash Pump (**ast_pump01**) for Redstone Construction (**cust_2001**).\n\n**Booking Details:**\n* **Booking ID:** bk_2002\n* **Dates:** July 20, 2026 to July 23, 2026 (3 billable days)\n* **Status:** Confirmed\n* **Pricing Breakdown (Quote qt_5001):**\n  * **Daily Rate:** $140.00\n  * **Rental Total:** $420.00 (Standard rate, no delivery or insurance added)\n  * **Required Security Deposit:** $500.00"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "generateQuote",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "includeDelivery": false,
+          "includeInsurance": false
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "quoteId": "qt_5001"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I am unable to complete this reservation. The CAT 320 excavator (**ast_excv01**) is currently unavailable because it is under an active legal hold (**hold_9001**: *litigation hold on the excavator pending inspection*). \n\nSince resolving and releasing holds is managed by the **Claims & Compliance** assistant, they would need to be asked to review or release this hold before we can book this asset."
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "generateQuote",
+      "getMember",
+      "getPlanUsage",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24",
+          "includeDelivery": false,
+          "includeInsurance": false
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I am ready to cancel booking **bk_1001**. \n\n### Confirmation Preview\n* **Booking ID**: bk_1001\n* **Asset ID**: ast_excv02\n* **Dates**: 2026-07-10 to 2026-07-15\n* **Action**: Cancelling this booking frees the asset and voids any technician dispatch. This action is irreversible.\n\nPlease confirm if you would like me to proceed with this cancellation.",
+      "Booking **bk_1001** has been successfully cancelled. The asset **ast_excv02** has been freed and any associated technician dispatch has been voided."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getBooking",
+      "cancelBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

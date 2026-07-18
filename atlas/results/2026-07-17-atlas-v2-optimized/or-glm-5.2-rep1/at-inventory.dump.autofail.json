@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall completeMaintenance({\"assetId\":\"ast_pump01\",\"condition\":\"good\"}) missing — observed [scheduleMaintenance, replyToUser, getMaintenanceLog, replyToUser]"
+  }
+]

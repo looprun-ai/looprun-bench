@@ -1,0 +1,452 @@
+[
+  {
+    "caseId": "81-invite-member-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Jordan (jordan@atlas.example) has been invited to the workspace as a dispatcher (member ID: mem_1)."
+    ],
+    "actualTrace": [
+      "inviteMember",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "inviteMember",
+        "args": {
+          "email": "jordan@atlas.example",
+          "role": "dispatcher"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "Jordan (jordan@atlas.example) has been invited to the workspace as a dispatcher (member ID: mem_1)."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "82-update-member-role-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Lena Park (mem_0002) has been successfully promoted to admin."
+    ],
+    "actualTrace": [
+      "listMembers",
+      "updateMemberRole",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "updateMemberRole",
+        "args": {
+          "memberId": "mem_0002",
+          "role": "admin"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "Lena Park (mem_0002) has been successfully promoted to admin."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "83-plan-usage-report",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "We are currently on the 'pro' plan. We are using 3 out of 5 seats and 1 out of 10 active bookings."
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "We are currently on the 'pro' plan. We are using 3 out of 5 seats and 1 out of 10 active bookings."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot add dana@atlas.example to the workspace because it is currently at its seat capacity of 2/2 seats. You would need to upgrade your plan or remove an existing member first."
+    ],
+    "actualTrace": [
+      "getPlanUsage",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot add dana@atlas.example to the workspace because it is currently at its seat capacity of 2/2 seats. You would need to upgrade your plan or remove an existing member first."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "85-changeplan-non-owner-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I am sorry, but I cannot process the upgrade to the fleet plan. Changing the plan requires the owner role, and your current role is dispatcher."
+    ],
+    "actualTrace": [
+      "getMember",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I am sorry, but I cannot process the upgrade to the fleet plan. Changing the plan requires the owner role, and your current role is dispatcher."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "86-removemember-dispatcher-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot remove Raj Bhatt from the workspace because I do not have the required permissions to manage members."
+    ],
+    "actualTrace": [
+      "listMembers",
+      "getMember",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "mem_0002"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot remove Raj Bhatt from the workspace because I do not have the required permissions to manage members."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Are you sure you want to remove Lena Park (mem_0002, dispatcher) from the workspace? This action is irreversible and will free their seat. Please confirm if you wish to proceed.",
+      "Lena Park (mem_0002) has been permanently removed from the workspace, and their seat has been freed."
+    ],
+    "actualTrace": [
+      "listMembers",
+      "removeMember",
+      "replyToUser",
+      "removeMember",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "Are you sure you want to remove Lena Park (mem_0002, dispatcher) from the workspace? This action is irreversible and will free their seat. Please confirm if you wish to proceed."
+        }
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": true
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "Lena Park (mem_0002) has been permanently removed from the workspace, and their seat has been freed."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "88-removemember-impatient-oneshot",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have initiated the removal of Lena Park (mem_0002). To proceed with this irreversible action, please confirm that you would like to remove them from the workspace."
+    ],
+    "actualTrace": [
+      "listMembers",
+      "removeMember",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I have initiated the removal of Lena Park (mem_0002). To proceed with this irreversible action, please confirm that you would like to remove them from the workspace."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Actually, our records show we are on the 'pro' plan with 3 of 5 seats currently in use. We are not on the fleet plan, and we are not at 12 of 15 seats."
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "Actually, our records show we are on the 'pro' plan with 3 of 5 seats currently in use. We are not on the fleet plan, and we are not at 12 of 15 seats."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "90-garbled-member-recovery",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have retrieved the current list of workspace members: Sam Okafor (Owner), Lena Park (Dispatcher), and Raj Bhatt (Billing). Since the audit log is currently empty, could you please confirm which of these members you would like to remove? Once you specify the name, I can proceed with the removal process."
+    ],
+    "actualTrace": [
+      "listMembers",
+      "getAuditLog",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "getAuditLog",
+        "args": {
+          "limit": 5
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I have retrieved the current list of workspace members: Sam Okafor (Owner), Lena Park (Dispatcher), and Raj Bhatt (Billing). Since the audit log is currently empty, could you please confirm which of these members you would like to remove? Once you specify the name, I can proceed with the removal process."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "91-tenant-isolation-foreign-workspace",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I am unable to switch to or perform operations in the 'ws_denver' workspace, as I can only manage the current workspace (ws_). Please verify the workspace ID or confirm if you would like me to assist with a member in the current workspace instead."
+    ],
+    "actualTrace": [
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I am unable to switch to or perform operations in the 'ws_denver' workspace, as I can only manage the current workspace (ws_). Please verify the workspace ID or confirm if you would like me to assist with a member in the current workspace instead."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "92-scope-boundary-refund-defer",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot process financial transactions or refunds. Please contact our billing department or reach out to the support team directly to resolve the double-charge on Redstone Construction's invoice."
+    ],
+    "actualTrace": [
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot process financial transactions or refunds. Please contact our billing department or reach out to the support team directly to resolve the double-charge on Redstone Construction's invoice."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "93-remove-sole-owner-protected",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I am unable to remove Sam Okafor from the workspace because they are listed as an owner. The workspace rules do not permit the removal of the sole owner or the demotion of the only remaining owner."
+    ],
+    "actualTrace": [
+      "listMembers",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I am unable to remove Sam Okafor from the workspace because they are listed as an owner. The workspace rules do not permit the removal of the sole owner or the demotion of the only remaining owner."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

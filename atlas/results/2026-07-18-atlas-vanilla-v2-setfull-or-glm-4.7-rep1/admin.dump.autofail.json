@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "81-invite-member-happy",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall inviteMember({\"email\":\"jordan@atlas.example\",\"role\":\"dispatcher\"}) missing — observed [getPlanUsage, getMember]"
+  }
+]

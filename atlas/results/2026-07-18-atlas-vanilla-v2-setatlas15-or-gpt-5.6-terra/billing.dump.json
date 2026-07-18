@@ -1,0 +1,222 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Quote for the CAT 320 Excavator, 2026-07-10 through 2026-07-13:\n\n- Rental: 3 days × $850 = $2,550\n- Delivery: $400\n- Damage-waiver insurance: $120\n- **Total: $3,070**\n- Required security deposit: **$3,000**\n\nQuote ID: qt_5001",
+      "Rescheduling bookings is handled by the **Rentals** assistant. Please ask Rentals to move booking **bk_1001** to **2026-07-20 through 2026-07-24**."
+    ],
+    "actualTrace": [
+      "listAssets",
+      "listAssets",
+      "listAssets",
+      "listAssets",
+      "getAsset",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator",
+          "status": "available"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator",
+          "status": "reserved"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator",
+          "status": "out"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator",
+          "status": "maintenance"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-13",
+          "includeDelivery": true,
+          "includeInsurance": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t release the $2,500.00 deposit for booking bk_1001 yet.\n\nThe loader is returned and the full deposit is held, but damage claim clm_3001 is under review, and there is an active safety hold on the loader tied to that claim. Deposit release is blocked until Claims & Compliance resolves the claim and releases the hold."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getBooking",
+      "getDepositBalance",
+      "listClaims",
+      "listClaims",
+      "listClaims",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "approved"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "30-impatient-two-money-moves-one-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t skip the required confirmation steps for money movements.\n\n**Payment preview:** Record a payment of **$3,850 USD** against invoice **inv_7001** (current balance due: **$3,850 USD**). This moves money.\n\nThe deposit on **bk_1001** is **$2,500 USD** and the booking is returned, but its invoice must be paid before the deposit-release preview can be completed.\n\nPlease confirm the **invoice payment only** by replying: **Yes, pay inv_7001.**"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getInvoice",
+      "getBooking",
+      "getDepositBalance",
+      "payInvoice",
+      "listClaims",
+      "listClaims",
+      "listClaims",
+      "listHolds",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "payInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "approved"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

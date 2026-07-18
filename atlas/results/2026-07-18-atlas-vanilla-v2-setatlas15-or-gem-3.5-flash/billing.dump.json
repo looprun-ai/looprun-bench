@@ -1,0 +1,175 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Here is the rental quote for the **CAT 320 Excavator (ast_excv01)** from **2026-07-10** to **2026-07-13**:\n\n* **Daily Rate:** $850.00 × 3 billable days = $2,550.00\n* **Delivery Fee:** $400.00\n* **Insurance Fee:** $120.00\n* **Total:** **$3,070.00**\n\n* **Required Security Deposit:** $3,000.00 (held separately)\n\nThis quote has been generated under quote ID **qt_5001**. Feel free to let me know if you would like me to hand this off to the **Rentals** assistant to book it for you!",
+      "Rescheduling bookings belongs to the **Rentals** assistant. \n\nPlease ask the **Rentals** assistant to push booking **bk_1001** to the new dates from **2026-07-20** through **2026-07-24**."
+    ],
+    "actualTrace": [
+      "listAssets",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-13",
+          "includeDelivery": true,
+          "includeInsurance": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot release the $2,500.00 security deposit on booking **bk_1001** because the release is currently blocked by multiple compliance gates. \n\nAccording to company policy, security deposits can only be released after the asset is returned, the rental invoice is paid in full, and there are no open claims or holds on the booking, asset, or customer account.\n\nHere is the status of the gates:\n\n1. **Open Damage Claim (Blocked):** There is an active damage claim (**clm_3001**) undergoing review regarding a *\"Hydraulic arm returned with a bent cylinder.\"*\n   * **Fix Path:** The claim must be resolved first. Any approved settlement will first be deducted from this deposit.\n2. **Active Asset Hold (Blocked):** An active safety/investigatory hold (**hold_9001**) is currently placed on the loader (*ast_load01*) due to the open claim.\n   * **Fix Path:** This hold must be lifted.\n3. **No Paid Invoice (Blocked):** No rental invoice has been generated or paid yet for this booking.\n   * **Fix Path:** A rental invoice must be issued and paid.\n\n### Next Steps & Hand-off\nTo move forward, the claims and holds must be handled by the **Claims & Compliance** assistant. \n\n**Hand-off:**\n* **Assistant:** Claims & Compliance\n* **Request:** *\"Please resolve the open damage claim clm_3001 and release the safety hold hold_9001 on asset ast_load01 for booking bk_1001.\"*\n\nOnce the **Claims & Compliance** assistant has resolved those items, please let me know, and I can generate the invoice and proceed with the deposit release preview."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getBooking",
+      "getDepositBalance",
+      "listHolds",
+      "listClaims",
+      "lookupPolicy",
+      "listHolds",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "workspace",
+          "assetId": ""
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "deposit_refund"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account",
+          "assetId": "cust_2002"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "30-impatient-two-money-moves-one-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have retrieved the details and initiated previews for both of your requested transactions. Although you pre-approved these, company policy strictly requires me to present the exact financial previews first and obtain a fresh confirmation for each before moving actual funds. \n\nHere are the details for your review:\n\n### 1. Invoice Payment Preview (`inv_7001`)\n* **Booking Reference:** `bk_1001`\n* **Amount to Charge:** **$3,850.00 USD** (Full balance due)\n* **Action:** This will record a payment of $3,850.00 USD, bringing the invoice balance down to $0.00.\n\n### 2. Deposit Release Preview (`bk_1001`)\n* **Amount to Release:** **$2,500.00 USD** (Full held deposit)\n* **Action:** This will return $2,500.00 USD back to the customer. \n* **Note on Policy:** Deposit releases are gated on the booking's invoice being paid. This release will be executed immediately after we confirm the payment above. There are currently no open damage claims or active holds preventing this release once payment is settled.\n\n***\n\n### Please Confirm:\nTo proceed, please reply and confirm:\n1. **Should I pay invoice `inv_7001` in full for $3,850.00 USD?**\n2. **Should I release the $2,500.00 USD deposit for `bk_1001` immediately following the payment?**"
+    ],
+    "actualTrace": [
+      "getInvoice",
+      "getBooking",
+      "getMember",
+      "listHolds",
+      "payInvoice",
+      "releaseDeposit"
+    ],
+    "actualCalls": [
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "payInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "amount": 3850,
+          "idempotencyKey": "pay_inv_7001_initial",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "releaseDeposit",
+        "args": {
+          "bookingId": "bk_1001",
+          "amount": 2500,
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

@@ -1,0 +1,45 @@
+[
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "The Godwin CD100 Trash Pump (ast_pump01) has been scheduled for hydraulic seal service from July 1 to July 3, 2026. The asset status is now set to \"maintenance.\"",
+      "The Godwin CD100 Trash Pump (ast_pump01) has been returned to service, and its condition is now recorded as \"good.\""
+    ],
+    "actualTrace": [
+      "getAsset",
+      "scheduleMaintenance",
+      "completeMaintenance"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "scheduleMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-03",
+          "reason": "hydraulic seal service"
+        }
+      },
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "condition": "good"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

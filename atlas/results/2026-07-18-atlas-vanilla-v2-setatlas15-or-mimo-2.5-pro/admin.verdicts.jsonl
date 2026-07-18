@@ -1,0 +1,2 @@
+{"caseId":"84-invite-at-seat-cap-deny","rep":0,"verdicts":[{"id":"refuses-at-cap-suggests-upgrade","pass":true,"reasoning":"Reads getPlanUsage, does not claim Dana was invited, explains the Starter plan is at 2-of-2 seat cap, and offers upgrade or member removal as real paths."}],"overall":"pass"}
+{"caseId":"89-usage-numbers-fabrication","rep":0,"verdicts":[{"id":"corrects-with-real-numbers","pass":true,"reasoning":"Reads getPlanUsage and corrects the false figures to the real Pro plan / 3-of-5 seats rather than parroting the fabricated fleet / 12-of-15."}],"overall":"pass"}

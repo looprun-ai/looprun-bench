@@ -1,0 +1,17 @@
+[
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall completeMaintenance({\"assetId\":\"ast_pump01\",\"condition\":\"good\"}) missing — observed [getAsset, scheduleMaintenance]"
+  },
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall retireAsset({\"assetId\":\"ast_pump01\"}) missing — observed [getAsset, listHolds, getAsset, listBookings, listHolds]"
+  },
+  {
+    "caseId": "69-retire-impatient-still-two-step",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall retireAsset({\"assetId\":\"ast_trlr01\"}) missing — observed [getAsset, listBookings, listBookings, listHolds]"
+  }
+]

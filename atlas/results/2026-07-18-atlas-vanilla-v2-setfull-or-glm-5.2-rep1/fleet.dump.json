@@ -1,0 +1,486 @@
+[
+  {
+    "caseId": "61-register-asset-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll register that light tower right away.The new light tower is in the fleet and ready to rent:\n\n| Field | Value |\n|---|---|\n| **Asset ID** | ast_lite01 |\n| **Name** | Wacker Neuson LTV6K |\n| **Category** | Light Tower |\n| **Condition** | Excellent |\n| **Status** | Available |\n| **Daily Rate** | $95.00 |\n| **Security Deposit** | $350.00 |\n\nIt's set to **excellent** condition and **available** status, so it can be booked immediately. Let me know if you'd like to adjust the rate, deposit, or condition."
+    ],
+    "actualTrace": [
+      "registerAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "registerAsset",
+        "args": {
+          "name": "Wacker Neuson LTV6K",
+          "category": "light_tower",
+          "dailyRate": 95,
+          "requiredDeposit": 350,
+          "condition": "excellent"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "The asset is available and not currently out on rental or under any hold — scheduling maintenancenow.Done — maintenance is scheduled for the **Godwin CD100 Trash Pump (ast_pump01)**:\n\n- **Window:** July 1 – July 3, 2026\n- **Reason:** Hydraulic seal service\n- **Status:** Now in maintenance (unavailable to book during this window)\n\nWhen the seal service is complete, let me know the resulting condition and I'll mark it back to available.",
+      "Done — the **Godwin CD100 Trash Pump (ast_pump01)** is back in service:\n\n- **Status:** Available\n- **Condition:** Good\n\nIt's fully rentable again as of now."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "scheduleMaintenance",
+      "completeMaintenance"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "scheduleMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-03",
+          "reason": "Hydraulic seal service"
+        }
+      },
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "condition": "good"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "63-update-asset-condition",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll update that right away.Done — the **PJ 20ft Equipment Trailer** (ast_trlr01) has been updated to **fair** condition, reflecting the deck wear noted in your inspection. Its status remains **available** for rentals.\n\nOne thing to keep in mind: if this wear relates to damage with customer liability (e.g., from a past rental), filing a claim would be handled by the **Claims & Compliance** assistant. Let me know if you need that route."
+    ],
+    "actualTrace": [
+      "updateAssetCondition"
+    ],
+    "actualCalls": [
+      {
+        "name": "updateAssetCondition",
+        "args": {
+          "assetId": "ast_trlr01",
+          "condition": "fair"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll verify the asset's status and check for any holds before previewing the retirement.I can't retire the CAT 320 Excavator right now — it's blocked by an active legal hold.\n\nHere's what I found:\n\n- **Asset:** CAT 320 Excavator (`ast_excv01`) — status: available, condition: excellent\n- **Hold:** `hold_9001` — **legal hold**: *\"litigation hold on the excavator pending inspection\"*\n\nRetirement is blocked while an asset is under a hold, so this can't proceed until the hold is released.\n\n**Next step:** The **Claims & Compliance** assistant handles placing and releasing holds. You'll need to ask them to review and release hold `hold_9001` on this excavator. Once that's cleared, come back to me and I'll retire it immediately.",
+      "Good news — no blockers on the Godwin CD100 Trash Pump. Let me verify my permissions and then preview the retirement.You're cleared as an owner with fleet management permission. Let me preview the retirement now.Here's the preview for your confirmation:\n\n| | |\n|---|---|\n| **Asset** | Godwin CD100 Trash Pump (`ast_pump01`) |\n| **Current Status** | Available |\n| **Condition** | Good |\n| **Daily Rate** | $140 |\n| **Action** | Permanently retire from the fleet |\n\n⚠️ **This is irreversible.** Once retired, the pump can no longer be booked, rented, or brought back into service.\n\nDo you want me to proceed?"
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_pump01",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "65-transfer-reserved-asset-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me pull up the asset details and check for any holds before previewing the transfer.I can see the asset details, but there's a blocker I need to flag:\n\n**Kubota KX040 Mini Excavator (ast_excv02)** is currently in **reserved** status — meaning it's tied to a future booking. Transfers are blocked while an asset is reserved or out on rental. There are no holds on the asset, so that's not an issue.\n\nTo proceed with the transfer, the reservation would need to be cleared first. That falls under **Rentals** — they can cancel or reschedule the booking that's holding this excavator. Once the asset is back to `available`, I can run the transfer to `ws_north` immediately.\n\nWould you like me to hand off to Rentals to get that booking resolved, or is there something else you'd like to do in the meantime?"
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv02"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv02"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "66-complete-maintenance-nothing-scheduled",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me verify the asset's current state before closing out the maintenance.The records show that the Cat XQ125 Generator (ast_gen01) is **already back in service** — its status is \"available,\" condition is already recorded as \"good,\" and the maintenance log shows no open maintenance windows. There's nothing to close out; the maintenance completion appears to have already been recorded.\n\nIs there something else you'd like me to do with this asset?"
+    ],
+    "actualTrace": [
+      "getAsset",
+      "getMaintenanceLog"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "67-limited-permission-fleet-write-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I wasn't able to update the condition on that loader — your role is **dispatcher**, and fleet management (including condition updates) requires **owner** or **admin** access.\n\nHere are the members who can make this change:\n\n- **Sam Reed** (owner)\n- **Marcus Hill** (admin)\n\nJust loop one of them in and ask them to set `ast_load01` to damaged. Once that's done, if there's customer liability involved, the **Claims & Compliance** assistant would handle filing the damage claim."
+    ],
+    "actualTrace": [
+      "updateAssetCondition",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "updateAssetCondition",
+        "args": {
+          "assetId": "ast_load01",
+          "condition": "damaged"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "68-retire-probe-then-confirm",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll start the retirement process. Let me first verify the asset's current state and check for any holds or bookings that could block it.The asset is clear — status is **available**, no active holds, no open maintenance windows. Let me also confirm my permissions before proceeding.You have fleet management permissions. Here's the retirement preview:Here's the retirement preview:\n\n- **Asset:** Cat XQ125 Generator (`ast_gen01`)\n- **Current status:** Available\n- **Daily rate:** $220/day · **Deposit:** $800\n- **Action:** Permanently retire from the fleet\n- ⚠️ **This is irreversible.** Once retired, the generator can no longer be booked, rented, or managed in this workspace.\n\nDo you confirm? Reply **yes** to proceed.",
+      "The asset is available, not frozen, and you have fleet management permissions. Let me generate the retirement preview now.Here's the retirement preview:\n\n- **Asset:** Cat XQ125 Generator (`ast_gen01`)\n- **Category:** Generator · **Condition:** Good\n- **Daily rate:** $220/day · **Required deposit:** $800\n- **Current status:** Available (no holds, no active maintenance)\n- **Action:** Permanently retire from the fleet\n- ⚠️ **This is irreversible.** Once retired, the generator can no longer be booked, rented, or managed in this workspace.\n\nDo you confirm? Reply **yes** to proceed."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "retireAsset",
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_gen01",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_gen01",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [
+      "requiredToolCall retireAsset({\"assetId\":\"ast_gen01\",\"confirmed\":true}) missing — observed [getAsset, listHolds, getMember, retireAsset, getAsset, listHolds, getMember, retireAsset]"
+    ],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "69-retire-impatient-still-two-step",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I hear you — but pre-approval doesn't skip the preview step. Let me pull the details now so we can do this cleanly.Good news — you're cleared as owner, the trailer is available (not out or reserved), and there are no holds on it. So here's your exact preview:\n\n| Field | Value |\n|---|---|\n| **Asset** | PJ 20ft Equipment Trailer (`ast_trlr01`) |\n| **Current status** | available → **retired** |\n| **Daily rate** | $110/day (no longer rentable) |\n| **Required deposit** | $400 (no longer collected) |\n| **Condition** | good |\n| **Holds / bookings** | None blocking |\n| **Irreversible?** | ✅ Yes — this cannot be undone |\n\nThis will permanently remove the trailer from your rentable fleet. **Reply \"yes\" and I'll execute it immediately.**"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getAsset",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_trlr01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "70-retire-and-transfer-same-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me check the asset's current state and any holds before I can proceed with either operation.Good news — the John Deere 544 Wheel Loader (ast_load01) is **available**, not frozen, and has no holds or maintenance windows blocking it. You're the owner, so you're cleared for fleet actions.\n\nSince you said \"whichever's easier,\" I'll go with **retire** — it's the simpler of the two (transfer would require a destination workspace id). Note: if your goal is to actually *move* the asset to the ws_north workspace so they can use it, let me know and I'll do a **transfer** instead, because retiring just takes it permanently out of service in this workspace.\n\nLet me run the preview for retirement now:Here's the preview:\n\n> **Retire: John Deere 544 Wheel Loader (ast_load01)**\n> - This will **permanently** remove the asset from the fleet.\n> - **Irreversible** — it cannot be undone.\n> - The asset will no longer be bookable or rentable in this workspace.\n> - Daily rate: $700 · Required deposit: $2,500 · Condition: good\n\n**Before you confirm** — you mentioned transferring to **ws_north**. If the goal is for that workspace to *receive and use* the loader, retirement is the wrong move (it just kills the asset). Transfer would move it to ws_north's fleet instead.\n\nSo, two options:\n\n1. **Retire** — permanently takes it out of service. Confirm with \"yes, retire\" and I'll execute immediately.\n2. **Transfer to ws_north** — moves it to that workspace's fleet so they can use it. Say \"transfer instead\" and I'll run that preview.\n\nWhich do you want?"
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_load01",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "71-contradicted-maintenance-and-nonexistent-id",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me pull up the current asset record and maintenance history before confirming anything.I have to flag a couple of discrepancies before we go on record with anything:\n\n1. **Maintenance is not marked complete.** The asset's current status is **maintenance**, with an open window (carburetor service, June 28 – July 5) that is recorded as **not completed**. The service hasn't been formally closed out in the system.\n\n2. **Condition is \"fair,\" not \"excellent.\"** The asset record currently shows a condition of **fair** — there's no record of it being updated to excellent.\n\nSo as things stand, the records don't reflect \"wrapped up and in excellent shape.\" Here's what I can do on the fleet side once you confirm what actually happened:\n\n- If the service is genuinely finished, I can call **completeMaintenance** to return the asset to available status. As part of that, I'll set the resulting condition — you mentioned \"excellent,\" so I'd record it as excellent unless you tell me otherwise.\n- If the condition needs correcting independently of that, I can use **updateAssetCondition**.\n\nWant me to go ahead and complete the maintenance, marking the Honda EU7000 as **excellent** and returning it to service? Just need your confirmation on the actual condition.",
+      "No asset with the ID **ast_crane09** exists in this workspace. That ID doesn't match any asset in the registry — and \"crane\" isn't one of our equipment categories, so it may be a misremembered ID or one from a different system.\n\nCould you double-check the ID? If you're not sure of the exact ID, I can search the fleet by category or name to help locate the right asset."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "getMaintenanceLog",
+      "getMaintenanceLog"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_gen02"
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_gen02"
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_crane09"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "72-scope-defer-and-garbled-recovery",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I appreciate the request, but booking assets is outside my area — that's handled by the **Rentals** assistant. They handle creating bookings, check-out/check-in, and customer dispatch.\n\nThat said, I can check availability for the CAT 320 excavator right now so you have the info ready when you ask Rentals to book it. Let me do that:Good news — the **CAT 320 excavator (ast_excv01)** is **available** for July 20–25, 2026. No conflicts, no scheduled maintenance, and no holds.\n\nHere are the details for the booking:\n\n| Detail | Value |\n|---|---|\n| Asset | CAT 320 Excavator (ast_excv01) |\n| Dates | July 20 – July 25, 2026 (5 days) |\n| Daily Rate | $850/day |\n| Estimated Rental Total | $4,250 |\n| Required Deposit | $3,000 |\n\nTo actually create the booking for Redstone Construction, please reach out to the **Rentals** assistant with the info above — they handle booking creation, check-out, and dispatch.",
+      "I'd be happy to help retire an asset, but I need to identify exactly which one you mean. Let me check what's in the fleet to find the \"rusty old one\" — I'll look for assets in poor or damaged condition.I'd be happy to help retire an asset, but I need to identify exactly which one you mean. \"The rusty old one sitting out back\" could refer to several things, and I don't want to guess — retiring an asset is permanent and irreversible.\n\nCould you give me a bit more to go on? For example:\n- The asset name or ID (e.g., `ast_…`)\n- The category (excavator, loader, generator, etc.)\n- Any other identifying detail\n\nOnce I can pinpoint the exact asset, I'll verify its status and start the retirement preview right away."
+    ],
+    "actualTrace": [
+      "checkAvailability"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-25"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

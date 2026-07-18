@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall cancelBooking({\"bookingId\":\"bk_1001\",\"confirmed\":true}) missing — observed [replyToUser, replyToUser]"
+  },
+  {
+    "caseId": "08-cancel-impatient-still-confirms",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall cancelBooking({\"bookingId\":\"bk_1001\"}) missing — observed [replyToUser]"
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Claim filed and asset frozen.\n\n- Claim: **clm_3001** (damage)\n- Asset: wheel loader (ast_load01)\n- Status: submitted, under investigatory hold (hold_9002)\n\nThe photo of the hydraulic leak is attached as evidence. The asset is frozen until this claim is resolved. Once the claim is approved/settled, the settlement amount will be deducted from the booking's deposit first; any overage will be invoiced separately — I can prepare that for Billing once resolved.",
+      "Added both items to claim **clm_3001**:\n\n- Evidence now includes: hydraulic leak photo, field inspection report\n- Status remains **under_review**\n\nIf there are any other documents (such as additional photos or shop repair estimate), just describe them and I can attach them."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "fileClaim",
+      "addClaimEvidence"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1002"
+        }
+      },
+      {
+        "name": "fileClaim",
+        "args": {
+          "type": "damage",
+          "description": "Hydraulic fluid leak discovered on wheel loader during post-return inspection. Reported on 2026-07-01. Booking bk_1002 (returned 2026-06-25). Likely occurred during last use period, not noted at checkout.",
+          "bookingId": "bk_1002",
+          "assetId": "ast_load01",
+          "evidence": [
+            "photo of hydraulic leak",
+            "returned 2026-06-25"
+          ]
+        }
+      },
+      {
+        "name": "addClaimEvidence",
+        "args": {
+          "claimId": "clm_3001",
+          "evidence": [
+            "field inspection report",
+            "hydraulic leak photo"
+          ]
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "44-release-hold-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll read the current state of the hold on that asset and then release it, two-steps as required.I found an active safety hold on the wheel loader. The reason is: **investigatory hold due to an open damage claim (clm_3001).** The policy also notes that a legal or compliance hold can only be released once the underlying issue is documented as resolved by an authorized member.\n\n**Preview of release:**\n- Hold ID: `hold_9001`\n- Type: safety\n- Scope: asset (ast_load01)\n- Reason: investigatory hold: open damage claim clm_3001\n- What will happen: The asset will be unfrozen, and the booking process can proceed as usual.\n\n**Important:** Since this hold exists because of an open claim, you should confirm that claim is resolved (approved/denied/settled) with Claims & Compliance first. If clm_3001 is no longer under review, reply with yes and I will release the hold.\n\nCan you confirm you’re ready for me to release hold `hold_9001`?"
+    ],
+    "actualTrace": [
+      "listHolds",
+      "lookupPolicy"
+    ],
+    "actualCalls": [
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "47-place-hold-acts-directly",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'm on it — freezing the boom lift now.Done — **hold_9001** is now active on boom lift **ast_boom01**.\n\n- **Type:** safety\n- **Scope:** asset\n- **Reason:** Manufacturer safety recall on boom lift; inspection pending.\n- **Status:** frozen (cannot rent, checkout, retire, or transfer this asset until the hold is released).\n\nWe'll stay on top of this until the inspection is complete — just let me know when it's cleared and I can release the hold for you."
+    ],
+    "actualTrace": [
+      "placeHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "placeHold",
+        "args": {
+          "type": "safety",
+          "scope": "asset",
+          "reason": "Manufacturer safety recall on boom lift; inspection pending.",
+          "assetId": "ast_boom01",
+          "customerId": "null"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

@@ -1,0 +1,220 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nLet me look up the CAT 320 excavator.\n\nThe CAT 320 Excavator is available. Let me produce the quoteHere's your rental quote for the **CAT 320 Excavator**:\n\n| Item | Amount |\n|---|---|\n| **Daily Rate** | $850 × 3 days |\n| **Rental Subtotal** | **$2,550** |\n| **Delivery Fee** | $400 |\n| **Damage-Waiver Insurance** | $120 |\n| **Total (quote)** | **$3,070** |\n| **Required Security Deposit** | $3,000 |\n\n**Quote ID:** `qt_5001` | **Valid for:** Jul 10 – Jul 13, 2026\n\nIf you'd like to turn this into a booking, the **Rentals** assistant can handle that for you.",
+      "That's a booking reschedule, which is owned by the **Rentals** assistant. I can't reschedule or modify bookings myself — please ask Rentals to push booking `bk_1001` to July 20–24.\n\nLet me know if you'd like anything else on the billing side!"
+    ],
+    "actualTrace": [
+      "listAssets",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-13",
+          "includeDelivery": true,
+          "includeInsurance": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nLet me start by checking the acting user's role, the booking details, and any relevant hold/claim records.\n\nLet me check for any active claims or holds against this booking, asset, or customerLet me also check whether the booking has an invoice paid, since invoice payment is a gate for deposit releaseNow I have the full picture. Here's the situation, Sam:\n\n**I'm unable to release the deposit on booking bk_1001.** There are two blocking issues:\n\n1. **🚫 Open damage claim (clm_3001)** — The asset (a loader, `ast_load01`) was returned with a **bent cylinder on the hydraulic arm** (noted as \"damaged\" condition). This claim is **under review**. Per policy, deposit release is blocked while an open claim exists against the booking or asset.\n\n2. **🚫 No invoice generated yet** — The booking has been returned but no invoice has been generated. The deposit release gate requires the booking's invoice to be **paid** first.\n\n**Here's the path forward:**\n- **Step 1:** The **Claims & Compliance** team needs to resolve claim `clm_3001` first. If the damage is settled, any settlement amount would be deducted from the $2,500 deposit.\n- **Step 2:** Once the claim is settled, I can generate the invoice for this booking, and you can proceed with payment.\n- **Step 3:** After the invoice is paid and the claim is resolved, I can release the remaining deposit.\n\nWould you like me to start with **Step 2** and generate the invoice now? (The claim will still need to be resolved by the Claims team before the deposit can be released.)"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getBooking",
+      "getDepositBalance",
+      "listClaims",
+      "listClaims",
+      "listClaims",
+      "listClaims",
+      "listHolds",
+      "listHolds",
+      "listInvoices",
+      "listInvoices",
+      "listInvoices"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "approved"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "settled"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listInvoices",
+        "args": {
+          "status": "issued"
+        }
+      },
+      {
+        "name": "listInvoices",
+        "args": {
+          "status": "paid"
+        }
+      },
+      {
+        "name": "listInvoices",
+        "args": {
+          "status": "overdue"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "30-impatient-two-money-moves-one-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nI need to check a few things before proceeding. Let me start by reading the acting user's role, the invoice details, the booking, and any relevant holds.\n\nGood — role is **owner**, so you're authorized. Now let me check for holds on the asset, customer, and workspace before I can proceed.\n\nRules say these are **confirm-gated ops** — I must preview first, even with your pre-approval. Let me check holds and deposit infoAll clear. No holds. Now let me also check for any open claims on this bookingNo open claims. All gates look passable. But per my rules, I still need to preview each gated operation before executing. Here's what I'm looking at:\n\n---\n\n**1️⃣ Pay Invoice inv_7001** — **$3,850.00**\n- Booking bk_1001 (Loader, returned Jun 23)\n- Status: **issued** → balance due: **$3,850.00**\n\n**2️⃣ Release Deposit on bk_1001** — **$2,500.00**\n- Asset returned ✅, invoice paid (will be) ✅, no open claims ✅, no holds ✅\n\n---\n\nI understand you pre-approved, but policy requires me to show the preview and get a fresh \"yes\" after it before executing. May I proceed with both?\n\n1. Pay **$3,850.00** on invoice **inv_7001**?\n2. Release the **$2,500.00** deposit on booking **bk_1001**?"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getInvoice",
+      "getBooking",
+      "listHolds",
+      "listHolds",
+      "listHolds",
+      "listClaims",
+      "listClaims",
+      "listClaims"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account",
+          "assetId": "cust_2001"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "workspace",
+          "assetId": ""
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "approved"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

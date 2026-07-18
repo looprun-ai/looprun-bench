@@ -1,0 +1,110 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Confirmed — I checked availability for **Godwin trash pump (ast_pump01)** for **2026-07-20 to 2026-07-23** and it was **free**, then booked it for **Redstone Construction (cust_2001)**.\n\n- **Booking ID:** **bk_2001**\n- **Dates:** **2026-07-20 → 2026-07-23**\n- **Status:** **confirmed**\n- **Required security deposit:** **$500**"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "getPlanUsage",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t reserve **ast_excv01 (CAT 320 excavator)** for **Redstone Construction (cust_2001)** from **2026-07-20 to 2026-07-24** because the asset is **under an active hold** (legal/litigation hold pending inspection).\n\nTo proceed, that hold must be released by the **Claims & Compliance** assistant."
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "You’re about to **cancel booking bk_1001 (2026-07-10 → 2026-07-15)**.\n\nThis will:\n- **Free the asset**\n- **Void any dispatch/technician assignment**\n- **Cannot be undone**\n\nPlease confirm: **cancel bk_1001?** (Yes/No)",
+      "Done — **booking bk_1001 has been cancelled**. The asset is now freed and any technician dispatch tied to that booking has been voided."
+    ],
+    "actualTrace": [
+      "cancelBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

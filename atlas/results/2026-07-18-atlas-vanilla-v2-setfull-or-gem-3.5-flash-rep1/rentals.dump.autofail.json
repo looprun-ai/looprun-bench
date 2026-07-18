@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "12-garbled-one-clarifying-question",
+    "rep": 0,
+    "reason": "invariant: forbiddenToolCall createBooking({}) took effect"
+  }
+]

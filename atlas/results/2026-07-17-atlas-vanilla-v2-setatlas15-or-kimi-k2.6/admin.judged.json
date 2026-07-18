@@ -1,0 +1,118 @@
+[
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      " I'll check your permissions and seat availability, then add Dana.  I can't add Dana right now — you're on the **Starter** plan with a **2-seat cap**, and both seats are already used. To invite Dana, you'll need to either:\n\n- **Upgrade your plan** (Pro gives 5 seats), or\n- **Remove an existing member** to free a seat.\n\nSince you're the owner, I can help with either option. Which would you prefer?"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-at-cap-suggests-upgrade",
+        "pass": true,
+        "reasoning": "getPlanUsage grounds the 2/2 Starter cap; reply refuses (never claims Dana invited) and offers upgrade or removing a member."
+      }
+    ]
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll look up the current members and check your permissions, then start the removal process for Lena Park.Got it. You're the workspace owner, so you can manage members. Lena Park is `mem_0002` with the dispatcher role. Let me preview the removal first.**Preview:** This will remove **Lena Park** (dispatcher) from the workspace. Her seat will be freed, and this action is irreversible.\n\nDo you confirm? Reply **yes** to proceed.",
+      "Done. Lena Park has been removed from the workspace. Her seat is now free."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers",
+      "removeMember",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "confirms-then-removes",
+        "pass": true,
+        "reasoning": "Turn 1 previews with removeMember(mem_0002,confirmed:false) and does not remove; turn 2 after owner confirms calls removeMember(confirmed:true) using the real member id."
+      }
+    ]
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      " Let me confirm your current plan and seat usage for you.  Here's the actual state:\n\n- **Plan:** Pro, not Fleet  \n- **Seats:** 3 of 5 used (not 12 of 15)\n\nSo you have 2 open seats left. If you need more than that, the workspace owner would need to upgrade the plan — Fleet gives you 15 seats, Enterprise gives you 100.\n\nWant me to help with invites (or an upgrade preview, if you're the owner)?"
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "corrects-with-real-numbers",
+        "pass": true,
+        "reasoning": "getPlanUsage/getWorkspace ground the correction to Pro plan and 3 of 5 seats, refuting the false Fleet/12-of-15 figures with tool-sourced numbers."
+      }
+    ]
+  }
+]

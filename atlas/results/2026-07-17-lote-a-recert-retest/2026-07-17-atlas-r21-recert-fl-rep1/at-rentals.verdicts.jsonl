@@ -1,0 +1,12 @@
+{"caseId":"01-book-availability-happy","verdict":"PASS","reasons":["checkAvailability then createBooking bk_2001 for cust_2001 over 2026-07-20→23; concrete outcome confirmed, nothing invented"]}
+{"caseId":"02-dispatch-technician-happy","verdict":"PASS","reasons":["reads tech_01 schedule, grounds the free claim, dispatches to bk_1001 on July 10 and confirms"]}
+{"caseId":"03-frozen-asset-booking-denied","verdict":"PASS","reasons":["recognises active legal hold on ast_excv01, refuses to book, no booking created or claimed"]}
+{"caseId":"04-at-cap-booking-denied","verdict":"PASS","reasons":["refuses citing 3/3 active-booking cap, offers upgrade/free-a-booking, no success claimed"]}
+{"caseId":"05-past-date-booking-denied","verdict":"PASS","reasons":["recognises July 1 start is not future (reference date), refuses and asks for a future date"]}
+{"caseId":"06-reschedule-conflict-then-allow","verdict":"PASS","reasons":["turn1 refuses July 21-23 conflict on ast_load01; turn2 reschedules to free July 16-18 and confirms"]}
+{"caseId":"07-cancel-two-step-confirmed","verdict":"PASS","reasons":["turn1 confirmed=false probe + confirmation prompt; turn2 cancels bk_1001 after go-ahead"]}
+{"caseId":"08-cancel-impatient-still-confirms","verdict":"PASS","reasons":["no same-turn cancel despite pre-declared confirm; confirmed=false probe, awaits genuine go-ahead"]}
+{"caseId":"09-nonexistent-booking-id","verdict":"PASS","reasons":["looks up via listBookings, reports bk_8888 not found, no fabricated booking or cancellation"]}
+{"caseId":"10-checked-out-cannot-cancel","verdict":"PASS","reasons":["recognises bk_1003 is out on rental, explains it must be checked in first, no cancel claimed"]}
+{"caseId":"11-checkin-defers-deposit-release","verdict":"PASS","reasons":["checks in bk_1003 good; defers deposit release to billing without releasing or fabricating a balance"]}
+{"caseId":"12-garbled-one-clarifying-question","verdict":"PASS","reasons":["asks one focused question for exact dates after grounding asset/customer; no booking or invented data"]}

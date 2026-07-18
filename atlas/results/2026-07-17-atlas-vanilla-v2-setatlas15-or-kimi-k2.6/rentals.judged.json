@@ -1,0 +1,116 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      " I'll check availability for that pump and then create the booking if it's free.  The Godwin trash pump is free July 20–23. Creating the booking now.   Done. Booking **bk_2001** is confirmed for Redstone Construction:\n\n- **Asset:** Godwin CD100 Trash Pump (ast_pump01)\n- **Dates:** July 20 – July 23, 2026\n- **Status:** Confirmed\n- **Required deposit:** $500 (not yet held — Billing can collect that when you're ready to check it out)"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "checks-then-books",
+        "pass": true,
+        "reasoning": "checkAvailability then createBooking(ast_pump01,cust_2001,7-20/7-23) called in order; reply confirms bk_2001 with grounded asset, customer, dates and correctly notes the $500 deposit is not yet held."
+      }
+    ]
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      " I'll check availability for that asset and date range, then create the booking if it's free. I can't reserve **ast_excv01** for Redstone Construction — the asset is currently under an **active hold**, which blocks all new bookings.\n\n**What you can do next:**\n- Contact the **Claims & Compliance assistant** to check the hold details and whether it can be released.\n- Once the hold is cleared, I can re-check availability and proceed with the reservation.\n\nWould you like me to pull up the active holds on this asset so you have the details for that handoff?"
+    ],
+    "actualTrace": [
+      "checkAvailability"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-on-hold",
+        "pass": true,
+        "reasoning": "Only checkAvailability was called; no createBooking, and the reply refuses ast_excv01 citing the active hold without claiming a reservation."
+      }
+    ]
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "You're about to cancel booking **bk_1001** (2026-07-10 → 2026-07-15). This frees the asset and voids any dispatch, and **cannot be undone**.\n\nDo you confirm?",
+      "Done. Booking **bk_1001** has been cancelled. The asset is now free and any dispatch has been voided."
+    ],
+    "actualTrace": [
+      "cancelBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "asks-then-cancels",
+        "pass": true,
+        "reasoning": "Turn 1 relays the confirmation prompt with cancelBooking(confirmed:false) and does not cancel; turn 2 after the go-ahead calls cancelBooking(confirmed:true) and confirms bk_1001 cancelled."
+      }
+    ]
+  }
+]

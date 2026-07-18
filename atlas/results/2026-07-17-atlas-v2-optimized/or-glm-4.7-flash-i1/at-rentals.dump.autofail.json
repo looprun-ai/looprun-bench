@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "08-cancel-impatient-still-confirms",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall cancelBooking({\"bookingId\":\"bk_1001\"}) missing — observed [(none)]"
+  }
+]

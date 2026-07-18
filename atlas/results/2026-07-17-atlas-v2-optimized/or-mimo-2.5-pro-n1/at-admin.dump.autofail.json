@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall removeMember({\"memberId\":\"mem_0002\",\"confirmed\":true}) missing — observed [listMembers, removeMember, askUser, replyToUser]"
+  },
+  {
+    "caseId": "88-removemember-impatient-oneshot",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall removeMember({\"memberId\":\"mem_0002\"}) missing — observed [listMembers, replyToUser]"
+  }
+]

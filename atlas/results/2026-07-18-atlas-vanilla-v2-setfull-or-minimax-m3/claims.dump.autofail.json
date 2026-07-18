@@ -1,0 +1,17 @@
+[
+  {
+    "caseId": "45-release-standalone-legal-hold-confirmed",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall releaseHold({\"holdId\":\"hold_9001\",\"confirmed\":true}) missing — observed [getMember, listHolds, lookupPolicy, releaseHold, getMember, listHolds, lookupPolicy, releaseHold]"
+  },
+  {
+    "caseId": "46-resolve-claim-approve-confirmed",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall resolveClaim({\"claimId\":\"clm_3001\",\"confirmed\":true}) missing — observed [getClaim, getDepositBalance, getMember, getBooking]"
+  },
+  {
+    "caseId": "47-place-hold-acts-directly",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall placeHold({\"scope\":\"asset\",\"assetId\":\"ast_boom01\"}) missing — observed [getAsset, listHolds]"
+  }
+]

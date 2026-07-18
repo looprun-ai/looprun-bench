@@ -1,0 +1,120 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nFiling the damage claim now on booking bk_1002 for the hydraulic leak on the wheel loader, with the leak photo attached as evidence.\n\nDone. Claim **clm_3001** has been filed (status: submitted) against booking **bk_1002** for the hydraulic leak on the wheel loader (asset ast_load01), with the leak photo attached as evidence.\n\nA few things to know:\n- **The wheel loader is now frozen** under an investigatory hold (hold_9002) until the claim is resolved, so it can't be re-booked or checked out.\n- The deposit on this booking **cannot be released** while the claim is open.\n- If more photos or reports come in (inspection notes, repair quote, etc.), send them over and I'll attach them to the claim.\n\nWhen you're ready to wrap this up, I'll need to know the resolution: deny (no charge), or approve/settle with an amount — which would deduct from the deposit first, with any overage invoiced separately.",
+      "Attached. Claim **clm_3001** now has both pieces of evidence on file: leak photo and field inspection report. It's been auto-advanced to **under_review**.\n\nThe investigatory hold on the wheel loader stays in place until the claim is resolved."
+    ],
+    "actualTrace": [
+      "fileClaim",
+      "addClaimEvidence"
+    ],
+    "actualCalls": [
+      {
+        "name": "fileClaim",
+        "args": {
+          "type": "damage",
+          "description": "Hydraulic leak discovered on the wheel loader after return from booking bk_1002.",
+          "bookingId": "bk_1002",
+          "evidence": [
+            "leak photo"
+          ]
+        }
+      },
+      {
+        "name": "addClaimEvidence",
+        "args": {
+          "claimId": "clm_3001",
+          "evidence": [
+            "field inspection report"
+          ]
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "44-release-hold-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nI'll get this set up. Let me first check the hold, your permissions, and the relevant policy in parallel.\n\nI want to push back before I do anything here.\n\nThe freeze on ast_load01 isn't a generic hold — it was automatically placed because there's an open damage claim against that asset:Here's what's going on:\n\n- **Asset:** John Deere 544 Wheel Loader (ast_load01)\n- **Hold:** `hold_9001`, safety-scope, asset-level, reason: open damage claim `clm_3001` (bent hydraulic cylinder, currently under review)\n- **Claim:** `clm_3001` is still `under_review` — not approved, denied, or settled.\n\n**Why I won't just release it:** Per Atlas policy, an asset freeze tied to an open claim should not be lifted by hand while the claim is unresolved — the claim itself is what should resolve the hold. If I release it now, the asset goes back to rentable while an unresolved damage claim (hydraulic cylinder bent on return) is still open against it. That's the kind of move that ends in a customer getting a damaged machine and Atlas eating the cost.\n\nThe clean way to un-freeze it is one of these, in order of preference:\n\n1. **Resolve the claim first**, which auto-lifts the hold. If you have enough info on the bent cylinder to decide, I can preview an approval/denial/settlement now. I'll need from you: the agreed settlement amount (if any) and which resolution you want. The claim covers booking `bk_1001`.\n2. **Transfer or service the asset** under the Fleet workflow if the cylinder has actually been repaired — a `maintenance` closeout, plus reopening as available, is the Fleet assistant's path.\n3. **Release the safety hold directly** — I can preview that, but only if you can tell me what the resolution basis is (e.g., \"the claim was resolved off-system and I'm closing the file manually\"). I won't release a safety hold on the basis of \"I want to rent it this weekend.\"\n\nIf you want the loader out this weekend, the fastest path is option 1 — tell me how you want to resolve `clm_3001` and I'll handle it (and the hold lifts automatically). Otherwise, hand the repair status to the Fleet assistant and I can lift the hold once they confirm the unit is service-ready.\n\nWhat would you like to do?"
+    ],
+    "actualTrace": [
+      "getMember",
+      "listHolds",
+      "lookupPolicy",
+      "getAsset",
+      "getClaim"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "getClaim",
+        "args": {
+          "claimId": "clm_3001"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "47-place-hold-acts-directly",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nI'll freeze it with a safety hold right now.\n\nDone. Boom lift **ast_boom01** is now under safety hold **hold_9001** — no new bookings or checkouts on it until the inspection is complete.\n\nWhen you've finished the inspection and confirmed the unit is cleared (or it needs to be retired/repaired), let me know and I can release the hold or hand off to Fleet for next steps."
+    ],
+    "actualTrace": [
+      "placeHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "placeHold",
+        "args": {
+          "type": "safety",
+          "scope": "asset",
+          "reason": "Manufacturer safety recall — asset frozen pending inspection and any required remediation.",
+          "assetId": "ast_boom01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

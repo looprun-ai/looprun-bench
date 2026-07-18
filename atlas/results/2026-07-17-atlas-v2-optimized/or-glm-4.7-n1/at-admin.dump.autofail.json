@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "82-update-member-role-happy",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall listMembers({}) missing — observed [(none)]; requiredToolCall updateMemberRole({\"memberId\":\"mem_0002\",\"role\":\"admin\"}) missing — observed [(none)]"
+  },
+  {
+    "caseId": "83-plan-usage-report",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall getPlanUsage({}) missing — observed [(none)]"
+  }
+]

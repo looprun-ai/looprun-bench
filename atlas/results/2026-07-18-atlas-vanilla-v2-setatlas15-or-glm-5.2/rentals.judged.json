@@ -1,0 +1,160 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check availability and generate a quote for that pump right away.The pump is confirmed free — no conflicts, no maintenance, no holds. Here's the quote:\n\n- **Asset:** Godwin trash pump (ast_pump01)\n- **Dates:** July 20 – July 23 (3 billable days)\n- **Daily rate:** $140/day\n- **Rental total:** $420\n- **Security deposit:** $500\n\nNo delivery or insurance was included since you didn't ask for either. Booking it now with the locked price.All set — the booking is confirmed. Here's the summary:\n\n- **Booking ID:** bk_2002\n- **Customer:** Redstone Construction (cust_2001)\n- **Asset:** Godwin CD100 Trash Pump (ast_pump01)\n- **Dates:** July 20 → July 23, 2026\n- **Status:** Confirmed\n- **Rental total:** $420 (locked from quote qt_5001)\n- **Security deposit required:** $500 (not yet held)\n\nTwo things to keep in mind before checkout:\n\n1. **Deposit** — The $500 security deposit hasn't been charged yet. The Billing assistant handles that; it must be fully held before the asset can be checked out.\n2. **Delivery/technician** — No delivery or dispatch is scheduled. If you need the pump delivered or a technician assigned, just let me know and I'll set that up."
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "generateQuote",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "includeDelivery": false,
+          "includeInsurance": false
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "quoteId": "qt_5001"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "checks-then-books",
+        "pass": true,
+        "reasoning": "checkAvailability then generateQuote then createBooking for ast_pump01/cust_2001/Jul20-23; confirms bk_2002 with rate/total/deposit traceable to the quote, invents nothing."
+      }
+    ]
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check availability and generate a quote for that rental simultaneously.The asset is **not available** for booking — `ast_excv01` is currently under an active hold, which blocks all reservations on that asset regardless of the date range.\n\nHere's what I found:\n\n- **Asset:** CAT 320 Excavator (`ast_excv01`)\n- **Dates:** July 20 – July 24, 2026\n- **Quote (for reference):** 4 days × $850/day = **$3,400**, with a **$3,000** security deposit required.\n- **Blocker:** An active legal/compliance hold is placed on this asset.\n\nHolds and their release are handled by the **Claims & Compliance assistant**. I'd recommend asking them to review and, if appropriate, release the hold on `ast_excv01` so the reservation can proceed. Once the hold is cleared, I can book it immediately using the quote above (`qt_5001`) to lock the price.\n\nWould you also like me to check if another excavator is available for those dates as a backup?"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24",
+          "includeDelivery": false,
+          "includeInsurance": false
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-on-hold",
+        "pass": true,
+        "reasoning": "Reads availability, refuses to book ast_excv01 citing the active legal hold, makes no createBooking call and never claims a reservation."
+      }
+    ]
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Here's what you'd be cancelling:\n\n| | |\n|---|---|\n| **Booking** | bk_1001 |\n| **Asset** | Kubota KX040 Mini Excavator (ast_excv02) |\n| **Customer** | Redstone Construction LLC |\n| **Dates** | 2026-07-10 → 2026-07-15 (5 days) |\n| **Status** | Confirmed |\n\n**Effects:**\n- Frees the Kubota KX040 back to available.\n- Voids any technician dispatch tied to this booking.\n- Irreversible — cannot be undone.\n- A $1,500 security deposit is currently held; its release is handled by the **Billing** assistant after cancellation.\n\nDo you want to proceed with the cancellation?",
+      "Done — booking **bk_1001** has been cancelled.\n\n- The Kubota KX040 Mini Excavator is now available again.\n- Any technician dispatch tied to this booking has been voided.\n\n**One follow-up:** there's a **$1,500 security deposit** still held on this booking. Releasing it is handled by the **Billing** assistant — let them know the booking is cancelled and they can process the deposit refund."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getAsset",
+      "getCustomer",
+      "cancelBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv02"
+        }
+      },
+      {
+        "name": "getCustomer",
+        "args": {
+          "customerId": "cust_2001"
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "asks-then-cancels",
+        "pass": true,
+        "reasoning": "Turn 1 relays the cancellation preview with cancelBooking(confirmed=false) and stops; turn 2 after go-ahead calls cancelBooking(confirmed=true) and confirms bk_1001 cancelled."
+      }
+    ]
+  }
+]

@@ -1,0 +1,144 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Booked successfully after confirming availability.\n\n- **Asset:** Godwin CD100 Trash Pump (`ast_pump01`)\n- **Customer:** Redstone Construction LLC\n- **Rental dates:** July 20–23, 2026\n- **Booking:** `bk_2001`\n- **Status:** Confirmed\n- **Required security deposit:** **$500**; currently **$0 held**"
+    ],
+    "actualTrace": [
+      "getAsset",
+      "getCustomer",
+      "checkAvailability",
+      "getPlanUsage",
+      "listHolds",
+      "listHolds",
+      "listHolds",
+      "getWorkspace",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "getCustomer",
+        "args": {
+          "customerId": "cust_2001"
+        }
+      },
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "workspace"
+        }
+      },
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nI can't complete that reservation right now — the CAT 320 (ast_excv01) is currently **under an active hold**, so the booking is blocked at the system level.\n\nFor reference, if/when the hold is cleared:\n- Daily rate: **$850**\n- Required deposit: **$3,000**\n- Requested window: 2026-07-20 → 2026-07-24\n\nTo move forward, the **Claims & Compliance** assistant needs to review and release the hold on this asset. Once they confirm it's clear, ping me back and I'll re-check availability and book it for Redstone Construction (cust_2001)."
+    ],
+    "actualTrace": [
+      "checkAvailability"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\n cancelling **bk_1001** will do:\n\n- Rental window: **2026-07-10 → 2026-07-15**\n- Frees the asset for those dates\n- Voids any technician dispatch on the booking\n- Cannot be undone\n\nShall I proceed with the cancellation?",
+      "Cancelled **bk_1001**. The asset is freed for the window and any dispatch is voided."
+    ],
+    "actualTrace": [
+      "cancelBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

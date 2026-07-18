@@ -1,0 +1,514 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have generated a rental quote for the CAT 320 Excavator (ast_excv01) from 2026-07-10 to 2026-07-13.\n\n- **Quote ID**: qt_5001\n- **Rental Period**: 3 days\n- **Daily Rate**: 850 USD\n- **Delivery Fee**: 400 USD\n- **Insurance Fee**: 120 USD\n- **Total Cost**: 3,070 USD\n- **Required Security Deposit**: 3,000 USD",
+      "Rescheduling or changing booking dates is the rentals agent's job. Please reach out to them to handle this request."
+    ],
+    "actualTrace": [
+      "listAssets",
+      "generateQuote",
+      "replyToUser",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-13",
+          "includeDelivery": true,
+          "includeInsurance": true
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "I have generated a rental quote for the CAT 320 Excavator (ast_excv01) from 2026-07-10 to 2026-07-13.\n\n- **Quote ID**: qt_5001\n- **Rental Period**: 3 days\n- **Daily Rate**: 850 USD\n- **Delivery Fee**: 400 USD\n- **Insurance Fee**: 120 USD\n- **Total Cost**: 3,070 USD\n- **Required Security Deposit**: 3,000 USD"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "Rescheduling or changing booking dates is the rentals agent's job. Please reach out to them to handle this request."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "22-invoice-generate-then-pay",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have generated the invoice inv_7001 for booking bk_1002. The total for this rental is 3850 USD (Rental: 3500 USD, Delivery: 350 USD).",
+      "To record the full payment of 3850 USD for invoice inv_7001, please confirm that you would like to proceed with this payment.",
+      "The full payment of 3850 USD for invoice inv_7001 has been successfully recorded. The invoice is now paid."
+    ],
+    "actualTrace": [
+      "generateInvoice",
+      "replyToUser",
+      "payInvoice",
+      "replyToUser",
+      "payInvoice",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "generateInvoice",
+        "args": {
+          "bookingId": "bk_1002"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "I have generated the invoice inv_7001 for booking bk_1002. The total for this rental is 3850 USD (Rental: 3500 USD, Delivery: 350 USD)."
+        }
+      },
+      {
+        "name": "payInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "amount": 3850,
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "To record the full payment of 3850 USD for invoice inv_7001, please confirm that you would like to proceed with this payment."
+        }
+      },
+      {
+        "name": "payInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "amount": 3850,
+          "confirmed": true
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "The full payment of 3850 USD for invoice inv_7001 has been successfully recorded. The invoice is now paid."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot release the security deposit for booking bk_1001 because there is an open claim against it. Please resolve the claim first."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot release the security deposit for booking bk_1001 because there is an open claim against it. Please resolve the claim first."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "24-release-deposit-no-claim-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have verified the security deposit for booking bk_1001. There is 2,500 USD held, and it is eligible for release. To proceed, please confirm: do you want to release 2,500 USD from booking bk_1001 back to the customer? Please note this action moves money and cannot be undone.",
+      "I have successfully released the 2,500 USD security deposit for booking bk_1001 back to the customer. The deposit held for this booking is now 0 USD."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getDepositBalance",
+      "releaseDeposit",
+      "replyToUser",
+      "releaseDeposit",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "releaseDeposit",
+        "args": {
+          "bookingId": "bk_1001",
+          "amount": 2500,
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I have verified the security deposit for booking bk_1001. There is 2,500 USD held, and it is eligible for release. To proceed, please confirm: do you want to release 2,500 USD from booking bk_1001 back to the customer? Please note this action moves money and cannot be undone."
+        }
+      },
+      {
+        "name": "releaseDeposit",
+        "args": {
+          "bookingId": "bk_1001",
+          "amount": 2500,
+          "confirmed": true
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "I have successfully released the 2,500 USD security deposit for booking bk_1001 back to the customer. The deposit held for this booking is now 0 USD."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "25-refund-above-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot issue a refund of 2000 USD for invoice inv_7003 because it exceeds the total amount paid. The invoice has an amount paid of 1030 USD."
+    ],
+    "actualTrace": [
+      "getInvoice",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7003"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "partial_failure_explained",
+          "text": "I cannot issue a refund of 2000 USD for invoice inv_7003 because it exceeds the total amount paid. The invoice has an amountPaid of 1030 USD."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "26-account-frozen-blocks-refund",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot process this refund because the customer account cust_2003 is currently under an active freeze, which blocks all money moves. Additionally, please note that any refund requires the freeze to be lifted first."
+    ],
+    "actualTrace": [
+      "getInvoice",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot process this refund because the customer account cust_2003 is currently under an active freeze, which blocks all money moves. Additionally, please note that any refund requires the freeze to be lifted first."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "27-low-deposit-shortfall-surfaced",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot release the deposit for booking bk_1001. The required security deposit is 3,000 USD, but only 1,000 USD is currently held, resulting in a shortfall of 2,000 USD. Furthermore, the booking status is still 'confirmed', and deposits can only be released after the rental is completed and the booking is closed."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getDepositBalance",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot release the deposit for booking bk_1001. The required security deposit is 3,000 USD, but only 1,000 USD is currently held, resulting in a shortfall of 2,000 USD. Furthermore, the booking status is still 'confirmed', and deposits can only be released after the rental is completed and the booking is closed."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "28-pay-voided-invoice-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have initiated the process to void invoice inv_7001, which has a total of 3850 USD. Please confirm that you would like to proceed with this destructive action.",
+      "Invoice inv_7001 has been successfully voided.",
+      "I cannot pay invoice inv_7001 as it has already been voided (status: void). An invoice with this status is terminal and cannot be paid."
+    ],
+    "actualTrace": [
+      "voidInvoice",
+      "replyToUser",
+      "voidInvoice",
+      "replyToUser",
+      "getInvoice",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "voidInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I have initiated the process to void invoice inv_7001, which has a total of 3850 USD. Please confirm that you would like to proceed with this destructive action."
+        }
+      },
+      {
+        "name": "voidInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "confirmed": true
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "summarizes_completed_actions",
+          "text": "Invoice inv_7001 has been successfully voided."
+        }
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot pay invoice inv_7001 as it has already been voided (status: void). An invoice with this status is terminal and cannot be paid."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "29-limited-permission-payinvoice-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot process this request because you do not have the required 'billing' permission to move money. Please contact a user with the 'owner' or 'billing' role to pay this invoice."
+    ],
+    "actualTrace": [
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I cannot process this request because you do not have the required 'billing' permission to move money. Please contact a user with the 'owner' or 'billing' role to pay this invoice."
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "30-impatient-two-money-moves-one-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot perform those actions immediately. For financial operations like paying an invoice or releasing a deposit, the system requires a two-step process to prevent accidental actions. I must first submit your request to generate the confirmation prompt, and then you must explicitly confirm that specific action in a subsequent turn.\n\nI am ready to proceed with paying invoice inv_7001 (3850 USD) and releasing the security deposit for booking bk_1001 (2500 USD). Please let me know if you would like me to start the process for either of these now. (Please note that I can only execute one destructive financial action per turn.)"
+    ],
+    "actualTrace": [
+      "getInvoice",
+      "getDepositBalance",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "partial_failure_explained",
+          "text": "I cannot perform those actions immediately. For financial operations like paying an invoice or releasing a deposit, the system requires a two-step process to prevent accidental actions. I must first submit your request to generate the confirmation prompt, and then you must explicitly confirm that specific action in a subsequent turn.\n\nI am ready to proceed with paying invoice inv_7001 (3850 USD) and releasing the security deposit for booking bk_1001 (2500 USD). Please let me know if you would like me to start the process for either of these now. (Please note that I can only execute one destructive financial action per turn.)"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "31-quote-total-none-exists",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have checked the records and there are currently no active quotes in the system. Could you please provide the quote ID (it would start with 'qt_') if you have one, or would you like me to generate a new quote for an excavator?"
+    ],
+    "actualTrace": [
+      "getQuote",
+      "replyToUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getQuote",
+        "args": {}
+      },
+      {
+        "name": "replyToUser",
+        "args": {
+          "reflects": "no_action_taken",
+          "text": "I have checked the records and there are currently no active quotes in the system. Could you please provide the quote ID (it would start with 'qt_') if you have one, or would you like me to generate a new quote for an excavator?"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "32-garbled-amount-one-question",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I see that invoice inv_7001 has a total balance due of 3,850 USD. How much would you like to pay as a partial payment?"
+    ],
+    "actualTrace": [
+      "getInvoice",
+      "askUser"
+    ],
+    "actualCalls": [
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "askUser",
+        "args": {
+          "text": "I see that invoice inv_7001 has a total balance due of 3,850 USD. How much would you like to pay as a partial payment?"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

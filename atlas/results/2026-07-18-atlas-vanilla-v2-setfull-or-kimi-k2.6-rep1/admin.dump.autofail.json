@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "82-update-member-role-happy",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall updateMemberRole({\"memberId\":\"mem_0002\",\"role\":\"admin\"}) missing — observed [getMember, listMembers]"
+  }
+]

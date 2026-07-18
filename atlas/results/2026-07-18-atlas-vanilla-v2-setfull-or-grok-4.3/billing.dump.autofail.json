@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "27-low-deposit-shortfall-surfaced",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall getDepositBalance({\"bookingId\":\"bk_1001\"}) missing — observed [getMember, getBooking]"
+  }
+]

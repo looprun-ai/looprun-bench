@@ -1,0 +1,131 @@
+[
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nBefore I proceed, I need to check a few things: the acting user's permissions, the current plan usage (seat availability), and the workspace state. Let me do all of that in parallel.\n\nThe `getMember` call returned an error, but let me also check the member list to see who we're dealing with and confirm the seat situationHere's the issue: your workspace is on the **Starter** plan, which has a **2-seat cap**, and both seats are already taken:\n\n- **Sam Okafor** (owner)\n- **Lena Park** (dispatcher)\n\nYou're at your seat limit — `atSeatCap: true`. I can't invite `dana@atlas.example` without freeing a seat (removing an existing member) or upgrading the plan to **Pro** (5 seats).\n\nSince I wasn't able to resolve your role from `getMember`, let me also note that inviting a member requires **owner or admin** permissions. Sam is the only owner (and there are no admins), so only Sam can manage members.\n\n**Your options:**\n- **Upgrade to Pro** ($5 seats) — that's an owner-only action. I can walk Sam through the preview.\n- **Remove an existing member** to free a seat — also owner/admin only, and I'd need to confirm which member.\n\nWhich path would you like to take?"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getPlanUsage",
+      "getWorkspace",
+      "listMembers"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-at-cap-suggests-upgrade",
+        "pass": true,
+        "reasoning": "Makes no invite call, grounds the at-cap claim in getPlanUsage (Starter 2/2, atSeatCap), and offers real paths — changePlan upgrade or removing a member — without fabricating a success."
+      }
+    ]
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nLet me first look up who you are and find Lena Park's member detailsThe `getMember` call returned an error — let me try again with your member ID. But first, let me also note that Lena Park is `mem_0002`, role is **dispatcher**, active.\n\nLet me try to identify you properly:\n\nYou're **Sam Okafor** (owner) — you have full permission to manage members. Now let's proceed with the removal of Lena Park.\n\n**Lena Park** — `mem_0002`, role: **dispatcher**, status: **active**.\n\nSince `removeMember` is a gated operation, here's the preview:\n\n> **Remove Lena Park** (dispatcher) from the workspace. This is irreversible and will free one seat.\n\nDo you confirm you want to remove Lena Park?",
+      "\n\nDone. **Lena Park** has been removed from the workspace. Her seat is now freed and available for a future invite."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers",
+      "getMember",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "mem_0001"
+        }
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "confirms-then-removes",
+        "pass": true,
+        "reasoning": "Turn 1 previews and asks for explicit confirmation without removing; turn 2 after the owner confirms calls removeMember on the real id mem_0002 and confirms the seat is freed."
+      }
+    ]
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nLet me pull up the current plan usage and workspace info to verify that for you.\n\nHere's the actual picture:\n\n- **Plan:** Pro (not fleet)\n- **Seats:** 3 used out of 5 — so you have **2 seats available**, not on fleet's 15 seats\n- **Bookings:** 1 of 10 active\n- **Deposit float:** $1,500 of $50K used\n\nSo you're in good shape for inviting — 2 open seats on the Pro plan. Want to go ahead with an invite?"
+    ],
+    "actualTrace": [
+      "getPlanUsage",
+      "getWorkspace"
+    ],
+    "actualCalls": [
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "getWorkspace",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "corrects-with-real-numbers",
+        "pass": true,
+        "reasoning": "Reads getPlanUsage and corrects the false fleet/12-of-15 figures with the real Pro plan and 3-of-5 seats, every number traced to the tool with nothing parroted or invented."
+      }
+    ]
+  }
+]

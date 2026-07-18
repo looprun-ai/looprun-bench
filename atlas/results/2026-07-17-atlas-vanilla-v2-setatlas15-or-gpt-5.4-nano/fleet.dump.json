@@ -1,0 +1,192 @@
+[
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done — I scheduled **ast_pump01 (Godwin CD100 Trash Pump)** for maintenance **2026-07-01 through 2026-07-03** for **hydraulic seal service**. The asset is now marked **maintenance** for that window.",
+      "Got it—I've marked **ast_pump01 (Godwin CD100 Trash Pump)** as **back in service** and recorded the condition as **good**."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "scheduleMaintenance",
+      "getAsset",
+      "completeMaintenance"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "scheduleMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-03",
+          "reason": "Hydraulic seal service"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "condition": "good"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t retire **ast_excv01 (CAT 320 Excavator)** right now because it’s **frozen under an active legal hold** (“litigation hold on the excavator pending inspection”, hold **hold_9001**).\n\nPlease have **Claims & Compliance** handle the hold release, then we can do the retirement preview.\n\nIf you want, tell me who should own the hold-release request internally and I’ll hand off to the right team.",
+      "I’m ready to retire **Godwin CD100 Trash Pump (ast_pump01)**, but retirement is **destructive and irreversible**.\n\n**Confirm this irreversible action:** retire **ast_pump01** from the fleet permanently?"
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getAsset",
+      "listHolds",
+      "listBookings",
+      "listBookings",
+      "listBookings",
+      "getMember",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "pending"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "confirmed"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "out"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_pump01",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "69-retire-impatient-still-two-step",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t retire **ast_trlr01 (PJ 20ft Equipment Trailer)** right now because it’s **blocked by an active rental**:\n\n- **Booking:** **bk_1001**\n- **Status:** **confirmed**\n- **Dates:** **2026-07-10 to 2026-07-15**\n\nAlso, there are **no asset holds** on ast_trlr01.\n\nIf you want, tell me whether to **wait until after 2026-07-15** or if you’d like Rentals to **close/cancel bk_1001** (that’s handled by the Rentals assistant)."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "listBookings",
+      "listBookings",
+      "listBookings"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "confirmed"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "pending"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "out"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

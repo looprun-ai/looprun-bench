@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "61-register-asset-happy",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall registerAsset({\"category\":\"light_tower\",\"dailyRate\":95,\"requiredDeposit\":350}) missing — observed [askUser]"
+  },
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall completeMaintenance({\"assetId\":\"ast_pump01\",\"condition\":\"good\"}) missing — observed [getAsset, scheduleMaintenance, replyToUser, getMaintenanceLog, replyToUser]"
+  }
+]

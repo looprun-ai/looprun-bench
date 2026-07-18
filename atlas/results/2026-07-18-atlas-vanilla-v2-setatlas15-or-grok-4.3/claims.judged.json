@@ -1,0 +1,125 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Claim **clm_3001** filed for damage (hydraulic leak) against booking **bk_1002**. Asset **ast_load01** is now frozen under investigatory hold **hold_9002** until resolved; photo of the leak attached as evidence.",
+      "Field inspection report attached to claim **clm_3001**. Claim is now under_review with both pieces of evidence."
+    ],
+    "actualTrace": [
+      "fileClaim",
+      "addClaimEvidence"
+    ],
+    "actualCalls": [
+      {
+        "name": "fileClaim",
+        "args": {
+          "type": "damage",
+          "description": "hydraulic leak on the wheel loader after return",
+          "bookingId": "bk_1002",
+          "assetId": "",
+          "evidence": [
+            "photo of the leak"
+          ]
+        }
+      },
+      {
+        "name": "addClaimEvidence",
+        "args": {
+          "claimId": "clm_3001",
+          "evidence": [
+            "field inspection report"
+          ]
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "files-claim-freezes-asset",
+        "pass": true,
+        "reasoning": "fileClaim against bk_1002 created clm_3001; reply says ast_load01 is frozen under investigatory hold hold_9002 until resolved and does not promise the deposit back or invent ids."
+      },
+      {
+        "id": "attaches-evidence",
+        "pass": true,
+        "reasoning": "addClaimEvidence attaches the inspection report to the same clm_3001 and confirms it is under_review with both pieces, without opening a second claim."
+      }
+    ]
+  },
+  {
+    "caseId": "44-release-hold-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "The asset **ast_load01** has an active safety hold (**hold_9001**) because of the open damage claim **clm_3001**. Per policy, this hold can only be released once the underlying claim issue is documented as resolved by an authorized member.\n\nWould you like me to look up that claim first?"
+    ],
+    "actualTrace": [
+      "listHolds",
+      "lookupPolicy"
+    ],
+    "actualCalls": [
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "declines-explains-linkage",
+        "pass": true,
+        "reasoning": "Declines to release hold_9001, explains it is tied to the open damage claim clm_3001 on ast_load01 and lifts only when the claim is resolved, not by manual release; does not free the asset around the claim."
+      }
+    ]
+  },
+  {
+    "caseId": "47-place-hold-acts-directly",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      ""
+    ],
+    "actualTrace": [
+      "placeHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "placeHold",
+        "args": {
+          "type": "safety",
+          "scope": "asset",
+          "reason": "manufacturer safety recall",
+          "assetId": "ast_boom01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": "fail",
+    "judgeReasoning": [
+      {
+        "id": "places-protective-hold-directly",
+        "pass": false,
+        "reasoning": "placeHold succeeded directly (hold_9001, no wrongful two-step) but the assistant's final reply is empty, so it never confirms to the user that the asset is now frozen as the critical item requires."
+      }
+    ]
+  }
+]

@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "22-invoice-generate-then-pay",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall payInvoice({\"invoiceId\":\"inv_7001\",\"confirmed\":true}) missing — observed [getBooking, generateInvoice, payInvoice]"
+  }
+]

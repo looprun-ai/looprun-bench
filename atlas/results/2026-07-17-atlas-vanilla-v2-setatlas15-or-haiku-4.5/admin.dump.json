@@ -1,0 +1,102 @@
+[
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the acting user's permissions first, then verify we have a seat available, and add Dana.You're at your seat cap. The starter plan includes **2 seats**, and both are currently in use. To add Dana, you'll need to either:\n\n1. **Upgrade your plan** (I can help with that), or  \n2. **Free up a seat** by removing an existing member.\n\nWould you like to upgrade to the pro plan (5 seats, 10 bookings, $50k deposit float) or another tier, or should we remove someone first?"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll help you remove Lena Park. Let me first find her member ID and then preview the removal.Good — I'm Sam Okafor (owner), so I have permission to remove members. Now let me preview the removal of Lena Park (mem_0002, dispatcher):**Preview:**\nI'm about to remove **Lena Park** (dispatcher, mem_0002) from the workspace. This will free her seat and is irreversible.\n\nDo you want to proceed?",
+      "Done. **Lena Park** (mem_0002) has been removed from the workspace. Her seat is now free."
+    ],
+    "actualTrace": [
+      "listMembers",
+      "getMember",
+      "removeMember",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": ""
+        }
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me check your current plan and usage right now.Not quite — you're actually on the **pro plan**, not fleet. You're using **3 of 5 seats**, so you have room for 2 more members before hitting the cap.\n\nHere's your current state:\n- **Plan:** Pro\n- **Seats:** 3 used / 5 available\n- **Active bookings:** 1 / 10\n- **Deposit float:** $1,500 / $50,000\n\nYou've got breathing room to invite more people. Want to go ahead, or were you thinking of upgrading to fleet (which gives you 15 seats)?"
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall generateQuote({\"assetId\":\"ast_excv01\"}) missing — observed [listCustomers, listBookings, generateQuote, getMember]"
+  },
+  {
+    "caseId": "24-release-deposit-no-claim-allow",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall releaseDeposit({\"bookingId\":\"bk_1001\",\"confirmed\":true}) missing — observed [getMember, getBooking, getDepositBalance, listClaims, listHolds, getInvoice]"
+  }
+]

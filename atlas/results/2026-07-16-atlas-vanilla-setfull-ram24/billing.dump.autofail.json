@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall generateQuote({\"assetId\":\"ast_excv01\"}) missing — observed [listMembers, getWorkspace, listBookings, listInvoices, getBooking, listBookings, getQuote, generateQuote, generateQuote, generateQuote, generateQuote, getAuditLog, getAuditLog, generateQuote, generateQuote, generateQuote, getBooking, listHolds, generateQuote, generateQuote, generateQuote, generateQuote, generateQuote]"
+  }
+]

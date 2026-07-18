@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "22-invoice-generate-then-pay",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall payInvoice({\"invoiceId\":\"inv_7001\",\"confirmed\":true}) missing — observed [getBooking, generateInvoice, getMember, getBooking, getInvoice, payInvoice, getMember, listInvoices, payInvoice]"
+  },
+  {
+    "caseId": "24-release-deposit-no-claim-allow",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall releaseDeposit({\"bookingId\":\"bk_1001\",\"confirmed\":true}) missing — observed [getMember, getBooking, getDepositBalance, listHolds, listClaims, getInvoice, listHolds, getDepositBalance]"
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall generateQuote({\"assetId\":\"ast_excv01\"}) missing — observed [generateQuote, listBookings, getWorkspace, getBooking]"
+  },
+  {
+    "caseId": "22-invoice-generate-then-pay",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall payInvoice({\"invoiceId\":\"inv_7001\",\"confirmed\":true}) missing — observed [generateInvoice, payInvoice]"
+  }
+]

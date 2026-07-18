@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall removeMember({\"memberId\":\"mem_0002\",\"confirmed\":true}) missing — observed [getMember, listMembers, getMember, listMembers]"
+  }
+]

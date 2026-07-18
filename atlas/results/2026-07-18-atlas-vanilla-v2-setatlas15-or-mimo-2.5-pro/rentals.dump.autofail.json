@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall cancelBooking({\"bookingId\":\"bk_1001\",\"confirmed\":true}) missing — observed [getMember, getBooking, getCustomer, getAsset]"
+  }
+]

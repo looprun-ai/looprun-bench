@@ -1,0 +1,136 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Filed damage claim **clm_3001** against booking **bk_1002**, citing the hydraulic leak and attaching the **photo of the leak**.\n\nThe wheel loader is now frozen under an investigatory hold until the claim is resolved. The security deposit cannot be promised back while the claim remains open.",
+      "Attached the **field inspection report** to claim **clm_3001**. The claim remains **under review** with both pieces of evidence: the leak photo and the field inspection report."
+    ],
+    "actualTrace": [
+      "listBookings",
+      "fileClaim",
+      "listClaims",
+      "listClaims",
+      "addClaimEvidence"
+    ],
+    "actualCalls": [
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "returned"
+        }
+      },
+      {
+        "name": "fileClaim",
+        "args": {
+          "type": "damage",
+          "description": "Hydraulic leak found on the wheel loader after it was returned from booking bk_1002.",
+          "bookingId": "bk_1002",
+          "assetId": "ast_load01",
+          "evidence": [
+            "photo of the leak"
+          ]
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "addClaimEvidence",
+        "args": {
+          "claimId": "clm_3001",
+          "evidence": [
+            "field inspection report"
+          ]
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "44-release-hold-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "The wheel loader `ast_load01` has an active safety hold (`hold_9001`) because of an open damage claim (`clm_3001`). Your request to rent it again is not a documented resolution of that claim, so I can’t release the hold yet.\n\nPlease provide the resolution basis—for example, that the damage investigation is complete and the loader has been cleared by an authorized member."
+    ],
+    "actualTrace": [
+      "listHolds",
+      "getMember",
+      "lookupPolicy"
+    ],
+    "actualCalls": [
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "47-place-hold-acts-directly",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Placed a safety hold on boom lift `ast_boom01` due to the manufacturer recall. It is now frozen pending inspection, blocking new rentals and checkouts."
+    ],
+    "actualTrace": [
+      "listHolds",
+      "placeHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_boom01"
+        }
+      },
+      {
+        "name": "placeHold",
+        "args": {
+          "type": "safety",
+          "scope": "asset",
+          "reason": "Manufacturer safety recall; freeze asset pending safety inspection.",
+          "assetId": "ast_boom01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

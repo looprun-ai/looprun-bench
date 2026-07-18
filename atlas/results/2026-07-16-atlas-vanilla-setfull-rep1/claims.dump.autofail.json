@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "45-release-standalone-legal-hold-confirmed",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall releaseHold({\"holdId\":\"hold_9001\",\"confirmed\":true}) missing — observed [listHolds, lookupPolicy, getAuditLog, getMember, releaseHold]"
+  }
+]

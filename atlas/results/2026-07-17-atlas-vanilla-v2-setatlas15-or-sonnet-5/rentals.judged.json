@@ -1,0 +1,151 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the asset details and availability, plus verify the customer, in parallel.The Godwin CD100 Trash Pump is confirmed free for July 20–23, and Redstone Construction LLC (cust_2001) has no holds or outstanding balance. Creating the booking now.Booked! Here's the summary:\n\n- **Booking ID:** bk_2001\n- **Asset:** Godwin CD100 Trash Pump (ast_pump01)\n- **Customer:** Redstone Construction LLC\n- **Dates:** July 20 – July 23, 2026 (3 days)\n- **Status:** Confirmed\n- **Daily rate:** $140 | **Required deposit:** $500 (not yet held)\n\nNext steps before pickup: the required $500 deposit needs to be charged — that's handled by the Billing assistant — and checkout will be blocked until it's fully held. Let me know if you'd like anything else, like dispatching a technician for delivery."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "checkAvailability",
+      "listCustomers",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "listCustomers",
+        "args": {
+          "query": "Redstone Construction"
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "checks-then-books",
+        "pass": true,
+        "reasoning": "Calls checkAvailability for ast_pump01 over Jul 20-23, then createBooking for cust_2001 and confirms bk_2001 with asset/customer/date range grounded in the getAsset result."
+      }
+    ]
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can't book this — the CAT 320 excavator (ast_excv01) is currently under an active **legal hold** (litigation hold pending inspection), so it's not available for the July 20–24 dates or any dates while the hold is active.\n\nThis hold is owned by the Claims & Compliance assistant — they'd need to review/release it before this asset can be reserved again. Redstone Construction's account itself has no holds or outstanding balance, so once the asset hold clears, booking would be straightforward.\n\nWould you like me to check availability on a different excavator in the meantime?"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "getCustomer",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      },
+      {
+        "name": "getCustomer",
+        "args": {
+          "customerId": "cust_2001"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-on-hold",
+        "pass": true,
+        "reasoning": "listHolds surfaces the active legal hold on ast_excv01, the reply refuses to book citing that hold and makes no createBooking call and no claim of reservation."
+      }
+    ]
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll pull up the booking details and preview the cancellation.Here's what will happen if you cancel **bk_1001**:\n\n- Asset `ast_excv02`, booked 2026-07-10 → 2026-07-15, will be freed up.\n- No dispatch is currently attached, so nothing to void there.\n- This has a $1,500 deposit held — note that cancelling the booking doesn't release it automatically; that would be a separate step with Billing if needed.\n- **This action is irreversible.**\n\nShall I proceed with the cancellation?",
+      "Booking **bk_1001** has been cancelled. The asset is now free for other bookings.\n\nNote: the deposit is still held — if you'd like it released, that needs to go through the Billing assistant."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "cancelBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "asks-then-cancels",
+        "pass": true,
+        "reasoning": "Turn 1 previews the cancellation and asks to proceed with cancelBooking(confirmed:false); turn 2 after go-ahead calls cancelBooking(confirmed:true) and confirms bk_1001 cancelled."
+      }
+    ]
+  }
+]

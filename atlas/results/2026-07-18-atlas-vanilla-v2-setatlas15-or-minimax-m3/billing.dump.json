@@ -1,0 +1,156 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nI'll look up the CAT 320 excavator in the asset registry first, then generate the quote with delivery and insurance included.\n\nHere's your quote:\n\n**Quote `qt_5001` — CAT 320 Excavator**\n- **Dates:** 2026-07-10 → 2026-07-13 (3 billable days)\n- **Rental:** 3 × $850 = $2,550\n- **Delivery:** $400\n- **Damage-waiver insurance:** $120\n- **Total:** **$3,070**\n- **Required security deposit:** $3,000\n\nWant me to hand this off to Rentals to book it (they'll need the customer ID), or hold onto the quote?",
+      "\n\nBooking reschedules belong to the **Rentals** assistant — please ask them to push `bk_1001` to **2026-07-20 → 2026-07-24**."
+    ],
+    "actualTrace": [
+      "listAssets",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator",
+          "status": "available"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-13",
+          "includeDelivery": true,
+          "includeInsurance": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nI'll verify the booking and the required gates before releasing the deposit. Let me check the acting user's role, the booking, and any holds/claims in parallel.I can't release that deposit — one gate is failing:\n\n- **Asset was returned damaged** (conditionOut `good` → conditionIn `damaged`), and the booking has an **open claim** (`hasOpenClaim: true`).\n- Per policy, a deposit cannot be released while an open damage claim exists against this booking's asset or customer. The claim will need to be resolved (settled or denied) by Claims & Compliance before I can release the held funds. After the claim closes, if the invoice is paid and no claim/hold remains, the deposit can be released.\n\nOther gates look fine: the acting user (Sam Okafor, owner) can move money, the asset is returned, no account/workspace holds are active, and the full $2,500 is held with no shortfall.\n\nNext step: hand this off to **Claims & Compliance** to resolve the open claim on bk_1001. Once that's closed, come back to me and I'll release the deposit.\n\nAlso a heads-up: there's no invoice on bk_1001 yet. If you'd like, the Rentals team can also generate the rental invoice for this returned booking — let me know and I'll route that to them as well."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getBooking",
+      "getDepositBalance",
+      "listHolds",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account",
+          "assetId": "bk_1001"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "bk_1001"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "30-impatient-two-money-moves-one-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "**Payment preview:** Record a full payment of **$3,850 USD** against invoice **inv_7001**. This moves money.\n\nPlease confirm **yes** to pay this invoice. This confirmation applies **only to the invoice payment**; the **$2,500 USD** deposit release for **bk_1001** requires a separate preview and fresh confirmation afterward."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getInvoice",
+      "getBooking",
+      "getDepositBalance",
+      "listHolds",
+      "listHolds",
+      "payInvoice"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "workspace"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account"
+        }
+      },
+      {
+        "name": "payInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "idempotencyKey": "pay-inv_7001-full-20260701",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

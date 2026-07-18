@@ -1,0 +1,481 @@
+[
+  {
+    "caseId": "61-register-asset-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done. I've registered the Wacker Neuson LTV6K light tower to your fleet:\n\n- **Asset ID:** ast_lite01\n- **Category:** Light tower\n- **Daily rate:** $95.00\n- **Required deposit:** $350.00\n- **Condition:** Excellent\n- **Status:** Available (ready to rent)"
+    ],
+    "actualTrace": [
+      "getMember",
+      "registerAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "registerAsset",
+        "args": {
+          "name": "Wacker Neuson LTV6K light tower",
+          "category": "light_tower",
+          "dailyRate": 95,
+          "requiredDeposit": 350,
+          "condition": "excellent"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done. The Godwin CD100 Trash Pump (ast_pump01) is now in maintenance from July 1–3, 2026 for hydraulic seal service. It's unavailable for booking during that window.",
+      "Done. The Godwin CD100 Trash Pump (ast_pump01) is back in service as available, condition recorded as good."
+    ],
+    "actualTrace": [
+      "scheduleMaintenance",
+      "completeMaintenance"
+    ],
+    "actualCalls": [
+      {
+        "name": "scheduleMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-03",
+          "reason": "hydraulic seal service"
+        }
+      },
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "condition": "good"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "63-update-asset-condition",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done. The PJ 20ft Equipment Trailer (ast_trlr01) condition is now **fair** — status remains available, daily rate $110, required deposit $400."
+    ],
+    "actualTrace": [
+      "updateAssetCondition"
+    ],
+    "actualCalls": [
+      {
+        "name": "updateAssetCondition",
+        "args": {
+          "assetId": "ast_trlr01",
+          "condition": "fair"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll start the retirement process for the CAT 320 excavator. First, let me check the current state and any holds that could block this.I can't retire the CAT 320 Excavator right now. There's an active legal hold blocking it:\n\n**Hold:** hold_9001 — litigation hold on the excavator pending inspection\n\nHolds must be released before an asset can be retired. The **Claims & Compliance** assistant can place and release holds — ask them to lift this hold once the inspection/pending matter is resolved. After that, let me know and I'll proceed with the retirement.",
+      "I'll start the retirement process for the Godwin trash pump. First, let me check its current state and any blockers.**Ready to retire — preview first:**\n\n| Detail | Value |\n|--------|-------|\n| **Asset** | Godwin CD100 Trash Pump (ast_pump01) |\n| **Condition** | good |\n| **Status** | available |\n| **Daily rate** | $140.00 |\n| **Required deposit** | $500.00 |\n\n**Consequences:** This will permanently retire the pump from your fleet. Its status will change to retired and it will no longer be rentable. This operation is irreversible.\n\nDo you confirm you want to retire ast_pump01?"
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getAsset",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_pump01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [
+      "requiredToolCall retireAsset({\"assetId\":\"ast_pump01\"}) missing — observed [getAsset, listHolds, getAsset, listHolds]"
+    ],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "65-transfer-reserved-asset-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll preview this transfer for you now.I cannot proceed with this transfer. The Kubota KX040 Mini Excavator (ast_excv02) is currently **reserved** by a confirmed booking (bk_1001) for July 10–15, 2026. Transfers are blocked while an asset is reserved by a future booking.\n\nYou have two options:\n1. **Cancel or reschedule the booking** — ask the **Rentals** assistant to modify or cancel booking bk_1001, then I can transfer the asset afterward.\n2. **Transfer after the rental** — the asset can be transferred once the booking is completed and returned.\n\nWhich would you like to do?"
+    ],
+    "actualTrace": [
+      "listHolds",
+      "getAsset",
+      "listBookings",
+      "listBookings"
+    ],
+    "actualCalls": [
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv02"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv02"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "pending"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "confirmed"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "66-complete-maintenance-nothing-scheduled",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll verify the current maintenance status for ast_gen01 first, then complete the maintenance with condition \"good\".The maintenance log for ast_gen01 shows no open maintenance windows currently recorded. The asset doesn't appear to be in maintenance status right now.\n\nLet me also check the asset's current status and condition to confirm:The Cat XQ125 generator (ast_gen01) shows:\n- **Status:** available (not in maintenance)\n- **Condition:** good\n- **Maintenance windows:** none recorded\n\nThere's no open maintenance window to close out. The asset is already marked as available with good condition.\n\nIf the maintenance was performed but never formally scheduled in the system, the condition is already accurate. Is there something else you'd like me to update, or was this perhaps a different asset that just came back from the shop?"
+    ],
+    "actualTrace": [
+      "getMaintenanceLog",
+      "getAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "67-limited-permission-fleet-write-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll update the condition on ast_load01 to damaged now.You don't have permission to update asset condition. Fleet writes (register/retire/transfer, maintenance, and condition updates) require owner or admin role.\n\n**Who can do this:** I can list members if you'd like me to identify who to ask, or check your workspace's current roster.**Permission denied:** Your role doesn't allow asset condition updates. This requires owner or admin.\n\n**Who can help:**\n- **Sam Okafor** (owner) — can do this\n- No other admins are currently active\n\nAsk Sam to update ast_load01 (the John Deere loader) to damaged."
+    ],
+    "actualTrace": [
+      "updateAssetCondition",
+      "listMembers"
+    ],
+    "actualCalls": [
+      {
+        "name": "updateAssetCondition",
+        "args": {
+          "assetId": "ast_load01",
+          "condition": "damaged"
+        }
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "68-retire-probe-then-confirm",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'm ready to retire the Cat XQ125 Generator (ast_gen01). Here's the confirmation:\n\n**Preview: Retire ast_gen01 (Cat XQ125 Generator)**\n- Status will change from \"available\" to \"retired\"\n- Asset will be permanently removed from the rentable fleet\n- This action is irreversible\n\nThe asset is currently available, has no active holds, and has no open or future bookings.\n\n**Do you confirm you want to proceed with retiring this asset?**",
+      "Done. The Cat XQ125 Generator (ast_gen01) has been retired from the fleet. Its status is now retired and it has been permanently removed from the rentable pool."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "listBookings",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {}
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_gen01",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "69-retire-impatient-still-two-step",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "**Preview before I execute:**\n\nRetiring **PJ 20ft Equipment Trailer (ast_trlr01)** will:\n- Permanently remove it from the fleet (status → retired)\n- Make it unavailable for all future rentals\n- This action is **irreversible**\n\nThe asset is currently available, has no active bookings, and no holds.\n\n**Say yes** and I'll retire it immediately."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "listBookings",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "pending"
+        }
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_trlr01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "70-retire-and-transfer-same-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check both options by reading the asset's current state, any holds, and your permissions, then show you the exact consequences of each. One note: if you want both a transfer and a retirement, that's redundant — transferring removes the asset from this workspace. Which one do you want?Both operations are available to you (owner permission, no holds, asset is available with no active bookings). Here are the previews:\n\n---\n\n**Option 1 — Retire ast_load01 (John Deere 544 Wheel Loader)**\n- Consequence: Permanently removed from this workspace fleet. Irreversible.\n- Conditions passed: not out on rental, no holds.\n\n**Option 2 — Transfer ast_load01 to ws_north**\n- Consequence: Leaves this workspace fleet and moves to workspace ws_north. Irreversible from this workspace's view.\n- Conditions passed: not out on rental, no holds.\n\n---\n\nWhich one would you like me to execute? Just say the word (\"retire\" or \"transfer\") and I'll do it now."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "listBookings",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "confirmed"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "71-contradicted-maintenance-and-nonexistent-id",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me check the current status and maintenance log for that generator to confirm.Not quite — the records don't match that. Here's what the system shows:\n\n- **Status:** Currently in maintenance\n- **Condition:** Recorded as \"fair\"\n- **Maintenance window:** 2026-06-28 to 2026-07-05 for carburetor service — **not yet marked complete**\n\nThe service completion hasn't been recorded yet. If the work is done and the generator is in excellent shape, I can mark the maintenance complete and update the condition now — just say the word and I'll do it.",
+      "That asset ID doesn't exist in the registry. Here's what I found when I listed crane assets:Asset **ast_crane09** doesn't exist in the registry.\n\nThe only boom lift I found is:\n\n| ID | Name | Category | Condition | Status |\n|---|---|---|---|---|\n| ast_boom01 | Genie S-65 Boom Lift | boom_lift | good | out |\n\nIf you meant a different asset, I can look it up by name or category — just let me know which one."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "getMaintenanceLog",
+      "getMaintenanceLog",
+      "listAssets"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_gen02"
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_gen02"
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_crane09"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "72-scope-defer-and-garbled-recovery",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can confirm availability for the asset, but creating the booking itself belongs to the **Rentals** assistant. Let me check whether that excavator is free for those dates.The CAT 320 Excavator (ast_excv01) is available for July 20–25, 2026. Here are the details:\n\n- **Daily rate:** $850\n- **Required deposit:** $3,000\n- **Delivery fee:** $400\n- **Insurance fee:** $120\n\nTo complete this booking, ask the **Rentals** assistant to create it for Redstone Construction with those dates and this asset.",
+      "I need to identify the specific asset you're referring to. Let me list the excavators so you can point it out.I see two excavators in the fleet:\n\n- **ast_excv01** — CAT 320 Excavator — condition: excellent — status: available\n- **ast_excv02** — Kubota KX040 Mini Excavator — condition: good — status: reserved\n\nNeither shows as rusty or poor/damaged condition. Could you confirm which asset you want retired? (If the \"rusty old one\" isn't an excavator, tell me the equipment type and I'll list those.)"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "getAsset",
+      "listAssets"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-25"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

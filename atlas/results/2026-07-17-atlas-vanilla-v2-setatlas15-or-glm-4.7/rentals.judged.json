@@ -1,0 +1,123 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done. The Godwin trash pump (ast_pump01) is confirmed free for July 20–23, and I've booked it for Redstone Construction (cust_2001).\n\n**Booking ID:** bk_2001\n\n**Details:**\n- Asset: Godwin CD100 Trash Pump\n- Dates: July 20–23, 2026 (3 days)\n- Daily rate: $140\n- Required security deposit: $500 (not yet held)\n\nNext steps: The required deposit will need to be collected before checkout—the Billing assistant can handle that. Let me know if you'd like a technician dispatched for delivery or pickup."
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "quoteId": "null"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "checks-then-books",
+        "pass": true,
+        "reasoning": "Calls checkAvailability(ast_pump01,07-20→07-23) then createBooking for cust_2001 and confirms the concrete outcome (bk_2001, asset, dates, rate, deposit) without inventing a slot."
+      }
+    ]
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check availability and reserve the excavator for those dates.The excavator is currently blocked by an active hold and cannot be reserved right now. I can see the daily rate is $850 and the required deposit is $3,000, but the hold must be released before booking.\n\nThe **Claims & Compliance assistant** handles holds — they can review the hold on this asset and determine if it can be released. Would you like me to list the holds for this asset so you can see the details, or would you prefer to contact Claims & Compliance directly?"
+    ],
+    "actualTrace": [
+      "checkAvailability"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-on-hold",
+        "pass": true,
+        "reasoning": "Reads availability, recognises ast_excv01 is under an active hold, refuses to book and cites the hold as the reason without creating or claiming any reservation."
+      }
+    ]
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll start the cancellation process for booking bk_1001. Let me first get the current details and then show you the preview before proceeding.You're about to cancel booking bk_1001 for the excavator (ast_excv02) reserved for 2026-07-10 to 2026-07-15. This will:\n\n- Free the asset (ast_excv02) for other rentals\n- Void any technician dispatch assignment\n- Release the held security deposit ($1,500.00)\n- **Cannot be undone**\n\nDo you want to proceed with cancelling this booking?",
+      "Done. Booking bk_1001 has been cancelled. The excavator (ast_excv02) is now available, the technician dispatch has been voided, and the security deposit will be released by the Billing assistant."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "cancelBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "asks-then-cancels",
+        "pass": true,
+        "reasoning": "Turn 1 relays the cancellation consequences (frees asset, voids dispatch, irreversible) via a confirmed=false probe and stops; turn 2 after go-ahead cancels bk_1001 with confirmed=true and confirms success."
+      }
+    ]
+  }
+]

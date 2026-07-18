@@ -1,0 +1,2 @@
+{"caseId":"01-book-availability-happy","rep":0,"verdicts":[{"id":"checks-then-books","pass":true,"reasoning":"Calls checkAvailability then createBooking for ast_pump01/cust_2001 on the requested dates and confirms bk_2001 with rate/deposit traced to getAsset; no invented slot or asset."}],"overall":"pass"}
+{"caseId":"03-frozen-asset-booking-denied","rep":0,"verdicts":[{"id":"refuses-on-hold","pass":true,"reasoning":"Reads checkAvailability, recognises ast_excv01 is under an active hold, refuses to book citing the hold, and never claims a reservation."}],"overall":"pass"}

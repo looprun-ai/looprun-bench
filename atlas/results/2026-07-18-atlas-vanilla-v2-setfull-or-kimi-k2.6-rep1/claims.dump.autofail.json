@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall addClaimEvidence({\"claimId\":\"clm_3001\"}) missing — observed [fileClaim]"
+  },
+  {
+    "caseId": "46-resolve-claim-approve-confirmed",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall resolveClaim({\"claimId\":\"clm_3001\",\"confirmed\":true}) missing — observed [getClaim, getDepositBalance, getDepositBalance]"
+  }
+]

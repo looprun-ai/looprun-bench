@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall fileClaim({\"type\":\"damage\",\"bookingId\":\"bk_1002\"}) missing — observed [askUser, askUser]; requiredToolCall addClaimEvidence({\"claimId\":\"clm_3001\"}) missing — observed [askUser, askUser]"
+  },
+  {
+    "caseId": "45-release-standalone-legal-hold-confirmed",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall releaseHold({\"holdId\":\"hold_9001\",\"confirmed\":true}) missing — observed [listHolds, lookupPolicy, replyToUser, replyToUser]"
+  }
+]

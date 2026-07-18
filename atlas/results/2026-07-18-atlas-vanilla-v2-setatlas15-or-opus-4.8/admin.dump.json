@@ -1,0 +1,112 @@
+[
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check your permissions and current seat capacity first.I can't add Dana right now — your workspace is at its seat cap. You're on the **starter** plan (2 seats), and both seats are in use.\n\nTo add a billing member, you'd need to either:\n- **Upgrade the plan** (as owner, you can do this — e.g. pro gives 5 seats), or\n- **Free a seat** by removing an existing member.\n\nWould you like to do either of those? If you upgrade, note that changing the plan may affect billing — I'll show you the exact preview first."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll find Lena Park's record and check my permissions first.This will remove **Lena Park** (dispatcher) from the workspace. It frees their seat and is **irreversible**.\n\nShall I proceed?",
+      "I need to look up Lena Park's record and confirm my permissions before I can preview this.Just to be clear, I hadn't previewed this yet — let me do that now before removing her.This will remove **Lena Park** (dispatcher, mem_0002) from the workspace. It frees her seat and is **irreversible**.\n\nConfirm and I'll remove her."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers",
+      "removeMember",
+      "getMember",
+      "listMembers",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [
+      "requiredToolCall removeMember({\"memberId\":\"mem_0002\",\"confirmed\":true}) missing — observed [getMember, listMembers, removeMember, getMember, listMembers, removeMember]"
+    ],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll verify that against the current state rather than confirm it from memory.A couple of corrections — the actual state doesn't match:\n\n- **Plan:** You're on **pro**, not fleet.\n- **Seats:** You're using **3 of 5**, not 12 of 15.\n\nSo you have **2 seats free** for new invites. Want me to invite someone, or (owner only) look at a plan change?"
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

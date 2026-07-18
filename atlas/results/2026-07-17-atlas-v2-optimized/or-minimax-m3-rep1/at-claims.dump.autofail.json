@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall fileClaim({\"type\":\"damage\",\"bookingId\":\"bk_1002\"}) missing — observed [getBooking, askUser, askUser]; requiredToolCall addClaimEvidence({\"claimId\":\"clm_3001\"}) missing — observed [getBooking, askUser, askUser]"
+  },
+  {
+    "caseId": "46-resolve-claim-approve-confirmed",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall resolveClaim({\"claimId\":\"clm_3001\",\"confirmed\":true}) missing — observed [getClaim, replyToUser, resolveClaim, replyToUser]"
+  }
+]

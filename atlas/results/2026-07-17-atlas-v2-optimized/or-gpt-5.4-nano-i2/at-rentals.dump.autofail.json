@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "06-reschedule-conflict-then-allow",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall rescheduleBooking({\"bookingId\":\"bk_1001\",\"startDate\":\"2026-07-16\"}) missing — observed [checkAvailability, askUser, checkAvailability, askUser]"
+  }
+]

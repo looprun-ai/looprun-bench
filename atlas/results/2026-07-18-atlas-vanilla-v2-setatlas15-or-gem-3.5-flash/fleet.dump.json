@@ -1,0 +1,191 @@
+[
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have successfully put the Godwin CD100 Trash Pump (**ast_pump01**) into maintenance for the hydraulic seal service.\n\n**Maintenance Window Details:**\n* **Dates:** July 1, 2026 to July 3, 2026\n* **Reason:** Hydraulic seal service\n* **Asset Status:** Shifted from `available` to `maintenance`",
+      "I have successfully recorded the early completion of the maintenance for the **Godwin CD100 Trash Pump (ast_pump01)**. \n\nThe asset is now back in service:\n* **Asset Condition:** Good\n* **Asset Status:** Shifted from `maintenance` back to `available`"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "scheduleMaintenance",
+      "getAsset",
+      "getMaintenanceLog",
+      "completeMaintenance"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "scheduleMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-03",
+          "reason": "Hydraulic seal service"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "condition": "good"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I cannot retire the **CAT 320 Excavator (ast_excv01)** because there is an active legal hold on it (**hold_9001**: *litigation hold on the excavator pending inspection*). \n\nUnder company policy, assets with active holds cannot be retired from the fleet.\n\n### Next Steps\nTo proceed, the hold must first be released. Please request this change from the **Claims & Compliance** assistant.\n* **Hand-off message:** \"Please release the legal hold `hold_9001` on asset `ast_excv01`.\"",
+      "I have verified you have the necessary permissions (Owner role) and there are no active holds or active rental blockers on the **Godwin CD100 Trash Pump (ast_pump01)**. \n\n### Retirement Preview\n* **Asset:** Godwin CD100 Trash Pump (`ast_pump01`)\n* **Category:** Pump (Condition: Good)\n* **Action:** Permanently retire this asset from the fleet registry. \n* **Impact:** This action is **destructive and irreversible**. The asset will no longer be available for future rentals or maintenance scheduling.\n\nWould you like to proceed with retiring this asset? Please reply with **yes** to confirm."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "retireAsset",
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_excv01",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_pump01",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "69-retire-impatient-still-two-step",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have checked the details for the **PJ 20ft Equipment Trailer (ast_trlr01)**. Here is the preview of this action:\n\n* **Asset:** PJ 20ft Equipment Trailer (ast_trlr01)\n* **Current Status:** Available (no active bookings or holds)\n* **Action:** Permanently retire from the fleet registry.\n* **Consequences:** This is a **destructive and irreversible** action. The asset will no longer be available for rent, booking, or any other fleet operations.\n\nTo proceed, please reply with a fresh **\"Yes\"** or **\"Confirm\"** to finalize the retirement."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_trlr01",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

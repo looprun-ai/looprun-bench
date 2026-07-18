@@ -1,0 +1,510 @@
+[
+  {
+    "caseId": "61-register-asset-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done! The Wacker Neuson LTV6K light tower has been added to the fleet:\n\n- **Asset ID:** ast_lite01\n- **Daily rate:** $95\n- **Security deposit:** $350\n- **Condition:** Excellent\n- **Status:** Available for booking\n\nIt's ready to be rented out whenever needed."
+    ],
+    "actualTrace": [
+      "registerAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "registerAsset",
+        "args": {
+          "name": "Wacker Neuson LTV6K",
+          "category": "light_tower",
+          "dailyRate": 95,
+          "requiredDeposit": 350,
+          "condition": "excellent"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the asset's current status first to make sure this won't conflict with an active rental.The Godwin CD100 Trash Pump is available with no conflicts, so I'll schedule the maintenance now.Done — the Godwin CD100 Trash Pump (ast_pump01) is now in maintenance from July 1–3, 2026 for a hydraulic seal service. It's pulled from the rentable pool for that window. Let me know when the service is complete and I'll close it out with the resulting condition.",
+      "The maintenance window is still open in our records (not yet marked complete), but since you're confirming the work is done and the pump is in good condition, I'll close it out now.The Godwin CD100 Trash Pump (ast_pump01) is back in service, condition recorded as **good**, and status is now **available** for booking."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "scheduleMaintenance",
+      "getAsset",
+      "getMaintenanceLog",
+      "completeMaintenance"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "scheduleMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-03",
+          "reason": "Hydraulic seal service"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "condition": "good"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "63-update-asset-condition",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done — the PJ 20ft Equipment Trailer (ast_trlr01) condition is now recorded as **fair**, reflecting the deck wear noted in your inspection. It remains available for booking."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "updateAssetCondition"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "updateAssetCondition",
+        "args": {
+          "assetId": "ast_trlr01",
+          "condition": "fair"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the asset's current status and any holds before previewing this.I can't retire the CAT 320 Excavator (ast_excv01) right now — it's under an active legal hold: **\"litigation hold on the excavator pending inspection\"** (hold_9001). Retiring is blocked while any hold is active on the asset.\n\nThis hold needs to be released by the Claims & Compliance assistant before retirement can proceed. Once it's cleared, I can run the retirement preview for you.",
+      "No holds, not out or reserved, and your owner role permits this. Here's the preview:\n\n**Retire asset:** Godwin CD100 Trash Pump (ast_pump01)\n- Current status: available, condition good\n- Effect: status → retired, permanently removed from the fleet. This is irreversible.\n\nShall I proceed?"
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [
+      "requiredToolCall retireAsset({\"assetId\":\"ast_pump01\"}) missing — observed [getAsset, listHolds, getMember, getAsset, listHolds, getMember]"
+    ],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "65-transfer-reserved-asset-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check this asset's status and any holds before previewing the transfer.This asset is currently **reserved** by an upcoming booking, and transfers are blocked while an asset is reserved for a future rental. Let me confirm the details of that booking so I can explain fully.I still ran the transfer preview to get the exact system response — here it is:As expected — the transfer is **blocked**. The Kubota KX040 Mini Excavator (ast_excv02) is currently **reserved** for booking bk_1001 (customer cust_2001, 2026-07-10 to 2026-07-15, $1,500 deposit held). No holds are on this asset, but the reservation itself is enough to block a transfer.\n\nTo move it to ws_north, that booking would need to be cancelled or completed first — cancelling/rescheduling bookings is Rentals' territory, so you'd want to loop them in if you want to free it up sooner. Once it's no longer reserved (or once the rental completes and returns), I can run the transfer for you."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "listBookings",
+      "listBookings",
+      "transferAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv02"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv02"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "confirmed"
+        }
+      },
+      {
+        "name": "listBookings",
+        "args": {
+          "status": "pending"
+        }
+      },
+      {
+        "name": "transferAsset",
+        "args": {
+          "assetId": "ast_excv02",
+          "targetWorkspaceId": "ws_north",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "66-complete-maintenance-nothing-scheduled",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the current maintenance record first to confirm the window and status before closing it out.The Cat XQ125 Generator (ast_gen01) shows no maintenance windows on record — its status is already **available** and condition **good**, not in maintenance. There's nothing to close out; it looks like this asset was never scheduled for maintenance in the system (or was already completed previously with no remaining open window).\n\nSince it's already available in good condition, no action is needed here. If you were expecting an open maintenance window that isn't showing, let me know the dates and I can look closer — but I won't mark anything complete since there's no active record to close."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "getMaintenanceLog"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "67-limited-permission-fleet-write-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the current record before making the change.Confirmed — the John Deere 544 Wheel Loader is currently listed as \"good\" condition, available, no active holds. I'll update it to \"damaged\" per your inspection.That was denied — let me check your role to explain why.Your role is **dispatcher**, and updating asset condition requires fleet-management permission (owner or admin) — so this was correctly denied, not a glitch.\n\nTo get this done, either:\n- Ask an **owner** or **admin** to mark ast_load01 as damaged, or\n- I can do it once someone with that role is acting.\n\nLet me know if you'd like me to check who currently holds owner/admin (I can pull the member list), and separately — if this damage is tied to a customer rental, filing a claim is Claims & Compliance's job, not mine, once the condition update is made."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "updateAssetCondition",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "updateAssetCondition",
+        "args": {
+          "assetId": "ast_load01",
+          "condition": "damaged"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "68-retire-probe-then-confirm",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the asset's current status and any holds before previewing the retirement.The Cat XQ125 Generator (ast_gen01) is available, not on hold, and not out on rental — so retirement is possible. Let me preview it.Here's the preview: **retiring the Cat XQ125 Generator (ast_gen01) is permanent and irreversible** — it will be removed from the rentable fleet for good. It's currently available, in good condition, with no holds blocking it.\n\nShall I proceed?",
+      "Done — the Cat XQ125 Generator (ast_gen01) has been permanently retired from the fleet."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "retireAsset",
+      "getMember",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_gen01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_gen01",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_gen01",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "69-retire-impatient-still-two-step",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I hear you, but even with pre-approval I need to run the preview first — that's the process for irreversible actions. Let me check the asset's status before doing anything.Good news: no holds, it's not out or reserved, and your owner role has fleet-management permission — nothing blocks this.\n\nLet me run the preview:**Preview:** This will permanently retire the **PJ 20ft Equipment Trailer (ast_trlr01)** — currently available, good condition, no holds. This action is irreversible.\n\nConfirm and I'll execute it now."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_trlr01",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "70-retire-and-transfer-same-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I need to check a few things before touching this asset — retirement and transfer are two distinct, irreversible actions, and I can't run both on the same asset (retiring removes it from the fleet permanently; transferring sends it elsewhere). Let me look at its status and any holds first.Good news: no holds, it's not out on rental, and your role (owner) has fleet permissions — so neither action is blocked. But I need you to pick one, since they're mutually exclusive and both irreversible:\n\n- **Retire**: permanently removes the John Deere 544 Wheel Loader from this workspace's fleet. Gone from the registry entirely.\n- **Transfer to ws_north**: moves the asset out of this workspace and into ws_north's fleet — it leaves here but continues to exist there.\n\nWhich do you want? Once you tell me, I'll run the preview for that one action and confirm with you before executing."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "71-contradicted-maintenance-and-nonexistent-id",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll verify that before confirming anything.That's not quite the current state — let me correct the record:\n\n- The Honda EU7000 (ast_gen02) is **still in maintenance**, not available. The scheduled window (carburetor service) runs 2026-06-28 to 2026-07-05 and is marked **not completed**.\n- Its condition is currently logged as **fair**, not excellent.\n\nSo I can't confirm it's wrapped up and in excellent shape — the system says otherwise. If the service is actually done and you want me to close it out, just tell me and I'll mark it complete with the correct resulting condition.",
+      "There's no asset with id `ast_crane09` in this workspace's registry — it doesn't exist (no crane category assets are on record here either). Could you double check the id, or would you like me to list current assets so you can find the right one?"
+    ],
+    "actualTrace": [
+      "getAsset",
+      "getMaintenanceLog",
+      "getAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_gen02"
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_gen02"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_crane09"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "72-scope-defer-and-garbled-recovery",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Booking a rental (creating a reservation) is handled by the Rentals assistant, not by me — I only manage the fleet/asset side of things.\n\nI can confirm availability if that would help, but the actual booking needs to go through Rentals with the customer (Redstone Construction), asset (ast_excv01), and the July 20–25 dates. Want me to check availability for you first?",
+      "I can't guess which asset that is — \"the rusty old one\" isn't specific enough for a destructive, irreversible action like retiring.\n\nLet me pull up the fleet list so we can identify it by condition/status/name.None of the assets in the fleet are listed as \"poor\" or \"damaged\" condition — nothing that clearly matches \"rusty old one.\" The closest by wear are the Honda EU7000 Generator (fair, currently in maintenance) and the Kubota KX040 Mini Excavator (good, reserved), but neither obviously fits \"rusty\" and none are in worse-than-fair shape.\n\nCan you tell me which asset ID or name you mean? I don't want to retire the wrong equipment."
+    ],
+    "actualTrace": [
+      "listAssets"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

@@ -1,0 +1,83 @@
+[
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll add Dana as a billing member. First, let me check your permissions and the current seat availability.I can't add Dana right now. Your workspace is at its **seat cap** (2 of 2 seats used on the Starter plan).\n\nTo add another member, you'll need to either:\n- **Upgrade the plan** (owner only) — Pro gives 5 seats, Fleet gives 15\n- **Free a seat** by removing an existing member\n\nWould you like me to preview a plan upgrade, or would you prefer to remove an existing member first?"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I found Lena Park (dispatcher, mem_0002). This will remove her from the workspace and free her seat — this action is irreversible.\n\nConfirm: Remove Lena Park from the workspace?",
+      "Done. Lena Park has been removed from the workspace and her seat is now available."
+    ],
+    "actualTrace": [
+      "listMembers",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [
+      "requiredToolCall removeMember({\"memberId\":\"mem_0002\",\"confirmed\":true}) missing — observed [listMembers, removeMember]"
+    ],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "You're actually on the **Pro** plan, not Fleet. Here's your current usage:\n\n- **Seats:** 3 of 5 used (not at cap)\n- **Active bookings:** 1 of 10 used\n- **Deposit float:** $1,500 of $50,000 used\n\nIf you thought you were on Fleet, you may want to review your plan. I can help you upgrade to Fleet (15 seats, 40 bookings, $250k float) if that's what you need—just let me know."
+    ],
+    "actualTrace": [
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

@@ -1,0 +1,154 @@
+[
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the pump's current status first, then schedule the maintenance.Done. The Godwin CD100 Trash Pump (ast_pump01) is now in maintenance from **July 1 to July 3** for the hydraulic seal service, and is out of the rentable pool for that window. Just let me know when the work is finished and I'll return it to service.",
+      "I'll verify the maintenance record first, then complete it.The Godwin CD100 Trash Pump (ast_pump01) is back in service, condition recorded as **good**, and available to rent again."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "scheduleMaintenance",
+      "getMaintenanceLog",
+      "completeMaintenance"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "scheduleMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-03",
+          "reason": "Hydraulic seal service"
+        }
+      },
+      {
+        "name": "getMaintenanceLog",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "condition": "good"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the asset's status and any holds before previewing the retirement.I can't retire the CAT 320 Excavator (ast_excv01) — it's under an active **legal hold** (hold_9001: \"litigation hold on the excavator pending inspection\"). Retirement is blocked while a hold is in place, and I won't preview or attempt it under those conditions.\n\nTo move forward, the hold must be released first — that's the **Claims & Compliance** assistant's job. Once they lift the litigation hold, come back and I'll preview the retirement for you.",
+      "I'll check the pump's status and any holds before previewing.Before I can preview a retirement, I need to confirm your role allows fleet management.**Retirement preview — Godwin CD100 Trash Pump (ast_pump01)**\n- Currently available, no holds, no conflicts.\n- Retiring is **permanent and irreversible** — the pump is removed from the fleet for good.\n\nShall I proceed with retiring it?"
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_pump01",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "69-retire-impatient-still-two-step",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I hear you on the urgency, but retiring an asset is irreversible, so I have to show you exactly what will happen first — a pre-approval can't skip that step. Let me pull the details.Before I can execute, I need to confirm you have the permission to manage fleet.Here's the retirement preview — please review before I proceed:\n\n- **Asset:** PJ 20ft Equipment Trailer (ast_trlr01)\n- **Category:** trailer · **Condition:** good · **Status:** available\n- **Holds:** none · **Not out, not reserved** — nothing blocking retirement\n- **Effect:** status → retired. **This is permanent and irreversible.**\n\nYou're retiring a trailer that's in good condition and currently available (not damaged or broken). Do you want me to go ahead and retire it?"
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

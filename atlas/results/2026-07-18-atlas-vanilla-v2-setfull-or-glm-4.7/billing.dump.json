@@ -1,0 +1,464 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll generate that quote for you now. Let me first find the CAT 320 excavator in the catalog.Here's your quote for the CAT 320 Excavator (ast_excv01):\n\n| **Item** | **Amount** |\n|----------|------------|\n| Daily rate | $850 × 3 days = $2,550 |\n| Delivery fee | $400 |\n| Damage-waiver insurance | $120 |\n| **Total** | **$3,070** |\n| Security deposit required | $3,000 |\n\n**Quote ID:** qt_5001\n\nThis quote is locked for 3 days (July 10–13, 2026). If you'd like to convert this to a booking, just let me know — I can hand that over to the Rentals assistant, or you can use this quote ID when you're ready.",
+      "That request belongs to the **Rentals** assistant — rescheduling bookings is their territory. Please ask them to \"push booking bk_1001 to new dates 2026-07-20 through 2026-07-24\" and they'll handle it."
+    ],
+    "actualTrace": [
+      "listAssets",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-13",
+          "includeDelivery": true,
+          "includeInsurance": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "22-invoice-generate-then-pay",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Invoice generated. Here's the breakdown:\n\n| Line Item | Amount |\n|-----------|--------|\n| Rental (5 days × $700) | $3,500.00 |\n| Delivery | $350.00 |\n| **Total** | **$3,850.00** |\n\n**Invoice ID:** inv_7001  \n**Status:** Issued  \n**Balance Due:** $3,850.00\n\nThe wheel loader (ast_load01) returned in good condition with no late fees. Would you like me to proceed with payment on this invoice?",
+      "I need to check your permissions before processing a payment.**Ready to record payment:**\n\n- **Invoice:** inv_7001  \n- **Amount:** $3,850.00 (full balance)  \n- **This moves money.**\n\nPlease confirm and I'll process it.",
+      "**Payment recorded successfully.**\n\n- **Invoice:** inv_7001 — now **PAID**\n- **Amount Paid:** $3,850.00\n- **Balance Due:** $0.00\n\nThe rental invoice for booking bk_1002 (wheel loader) is fully settled."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "generateInvoice",
+      "getMember",
+      "payInvoice",
+      "payInvoice"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1002"
+        }
+      },
+      {
+        "name": "generateInvoice",
+        "args": {
+          "bookingId": "bk_1002"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "payInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "amount": 3850,
+          "idempotencyKey": "inv_7001_pay_20250701"
+        }
+      },
+      {
+        "name": "payInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "amount": 3850,
+          "idempotencyKey": "inv_7001_payment_20250623",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the current state of the deposit and any blocks before releasing it.The booking has an **open damage claim** (the loader was returned damaged). Per policy, I cannot release a deposit while a claim is open on that booking.\n\n**Current state:**\n- Deposit held: $2,500.00\n- Booking status: returned\n- Open claim: yes (clm_ associated with bk_1001)\n\n**Next step:** The claim must be resolved first. Ask **Claims & Compliance** to close or settle the damage claim on booking bk_1001. Once the claim is closed or settled, I can release the deposit back to the customer."
+    ],
+    "actualTrace": [
+      "getDepositBalance",
+      "getBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "24-release-deposit-no-claim-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the booking and verify all gates for releasing the deposit, then preview the release for you.I cannot release the security deposit for booking **bk_1001** because a gate is not met:\n\n**Gate failure:** The booking's invoice (**inv_7001**) has not been paid. The invoice shows:\n- Total: $3,850.00\n- Amount paid: $0.00\n- Balance due: $3,850.00\n- Status: issued\n\n**Policy:** Security deposits can only be released after the linked invoice is paid in full, there are no open claims, and no holds block the release.\n\n**Next step:** The customer must pay invoice **inv_7001** ($3,850.00) first. Once it's paid, I can release the $2,500.00 deposit. Would you like me to process a payment on that invoice now?",
+      "I need to pause here because the deposit cannot be released yet. The invoice is still unpaid, which is a hard gate.\n\nWhen you said \"I confirm — release it,\" the only operation that would be valid to confirm **right now** is paying the outstanding invoice (**inv_7001**) for $3,850.00. That would unblock the deposit release.\n\nWould you like me to preview a payment on invoice **inv_7001** for $3,850.00? Once that's paid, I can immediately proceed with releasing the $2,500.00 deposit."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getInvoice",
+      "listClaims",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [
+      "requiredToolCall releaseDeposit({\"bookingId\":\"bk_1001\",\"confirmed\":true}) missing — observed [getBooking, getInvoice, listClaims, listHolds]"
+    ],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "25-refund-above-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the invoice first to confirm the details and then preview the refund for your confirmation.I cannot issue a $2,000 refund on invoice inv_7003. Here's why:\n\n**Invoice details:**\n- Invoice inv_7003 (booking bk_1003) — total $1,030\n- Amount paid: $1,030\n- Status: paid\n\n**The problem:** Refunds are capped at the amount paid on the invoice. This invoice only has $1,030 paid, so a $2,000 refund exceeds the available amount by $970.\n\n**Your options:**\n1. Issue a refund up to $1,030 (the full amount paid)\n2. If you need to refund more than $1,030 total, the excess would need to be processed through a different payment method outside this invoice\n\nWould you like me to issue a $1,030 refund instead?"
+    ],
+    "actualTrace": [
+      "getInvoice"
+    ],
+    "actualCalls": [
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7003"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "26-account-frozen-blocks-refund",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check that invoice and preview the refund for you.I need to preview this refund before executing it.\n\n**Refund Preview:**\n- Invoice: inv_7001 (paid, total $4,250.00)\n- Refund amount: $1,000.00\n- Reason: Customer refund request\n\nThis will refund $1,000.00 against invoice inv_7001. The invoice has already received $4,250.00 in payments, so this refund is within the paid amount. There are no account holds blocking this transaction.\n\nDo you want me to proceed with this refund?"
+    ],
+    "actualTrace": [
+      "getInvoice",
+      "getMember",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account",
+          "assetId": "null"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "27-low-deposit-shortfall-surfaced",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the booking details and any blocking holds/claims before previewing the deposit release.I cannot release the deposit on booking bk_1001 because **the asset has not been returned yet**. The booking status is still \"confirmed\" with a scheduled return date of 2026-07-09.\n\n**Deposit release gates:**\n- ❌ Asset returned — not met (booking is confirmed, not returned)\n- ❌ Invoice paid — not met (no invoice generated yet)\n- ✅ No open claims — passed\n- ✅ No holds blocking — passed\n\n**Current deposit status:** $1,000 held of $3,000 required ($2,000 shortfall)\n\nThe deposit can only be released after the asset is checked back in and the rental invoice is paid. If you need to check in the asset now, that's handled by **Rentals** — ask them to process the return. Once the booking shows \"returned\" and the invoice is paid, I can release the deposit."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getDepositBalance",
+      "listClaims",
+      "listHolds",
+      "listHolds",
+      "listInvoices"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account",
+          "assetId": "cust_2001"
+        }
+      },
+      {
+        "name": "listInvoices",
+        "args": {
+          "status": "issued"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "28-pay-voided-invoice-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "You have permission to void this invoice. Here's the preview:\n\n**Invoice:** inv_7001 (issued) — Booking bk_1001\n**Total:** $3,850.00 (no payments made)\n**Action:** Void the invoice — status will change to void and cannot be paid, refunded, or un-voided.\n\nDo you confirm you want to void inv_7001?",
+      "Voiding invoice inv_7001 now.Done. Invoice inv_7001 has been voided.",
+      "I can't do that. Invoice inv_7001 is now void — void invoices cannot be paid. That's terminal. If you need to charge for this booking again, Rentals would need to generate a new invoice on the booking's legitimate path."
+    ],
+    "actualTrace": [
+      "getInvoice",
+      "getMember",
+      "voidInvoice"
+    ],
+    "actualCalls": [
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "voidInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "29-limited-permission-payinvoice-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the invoice details and preview the payment for you.I cannot process this payment. Your role (dispatcher) does not have permission to move money — that requires the **owner** or **billing** role.\n\nThe invoice details:\n- **Invoice ID:** inv_7001\n- **Booking ID:** bk_1001\n- **Total:** $3,500.00\n- **Balance Due:** $3,500.00\n- **Status:** issued\n\nTo pay this invoice, please ask a member with **owner** or **billing** permissions. Would you like me to list the members in your workspace so you can identify who can help?"
+    ],
+    "actualTrace": [
+      "getInvoice",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "30-impatient-two-money-moves-one-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check your permissions and gather the details for both operations now.Even with your pre-approval, I must run the confirmation previews first — that's mandatory for all money-movers. Here they are:\n\n---\n\n**Payment Preview:**\n- Invoice: inv_7001\n- Amount: **$3,850.00** (full balance due)\n- Status after: paid\n- Invoice breakdown: $3,500 rental + $350 delivery\n\n**Deposit Release Preview:**\n- Booking: bk_1001\n- Amount to release: **$2,500.00** (full held deposit)\n- Asset returned, invoice will be paid, no open claims, no holds\n\n---\n\nReply **yes** to confirm both and I'll execute them immediately."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getInvoice",
+      "getBooking",
+      "listClaims",
+      "listHolds",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account",
+          "assetId": "cust_2001"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "31-quote-total-none-exists",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can look that up for you. Let me check the quotes on file.There are no quotes saved in the workspace, so I can't confirm a total. If you'd like me to regenerate a new excavator quote, I can do that — I'll just need the dates you're looking for. Would you like to provide those?"
+    ],
+    "actualTrace": [
+      "getQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "getQuote",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "32-garbled-amount-one-question",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I have invoice inv_7001 pulled up. It's for $3,850.00 total (balance due $3,850.00), and the amount you said is ambiguous — \"thirty-eight fifty\" could mean $38.50 or $3,850.00.\n\nWhat is the exact partial payment amount you'd like to apply?"
+    ],
+    "actualTrace": [
+      "getInvoice"
+    ],
+    "actualCalls": [
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

@@ -1,0 +1,194 @@
+[
+  {
+    "caseId": "62-schedule-then-complete-maintenance",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done — the **Godwin CD100 Trash Pump** (ast_pump01) is now in maintenance.\n\n- **Window:** July 1 – July 3, 2026\n- **Reason:** Hydraulic seal service\n- **Current condition:** Good\n- **Status:** Maintenance (unavailable to rent during this window)\n\nWhen the seal service is finished, let me know and I'll return it to service. If the condition changed during the work, mention that too and I'll record it.",
+      "Let me verify the current state before marking it complete.Confirmed — the asset is still in maintenance with an open window for the hydraulic seal service. Returning it to service now.The **Godwin CD100 Trash Pump** (ast_pump01) is back in service. Condition recorded as **good**, status is now **available** — ready to rent again."
+    ],
+    "actualTrace": [
+      "scheduleMaintenance",
+      "getAsset",
+      "completeMaintenance"
+    ],
+    "actualCalls": [
+      {
+        "name": "scheduleMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-03",
+          "reason": "Hydraulic seal service"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "completeMaintenance",
+        "args": {
+          "assetId": "ast_pump01",
+          "condition": "good"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "schedule-then-complete",
+        "pass": true,
+        "reasoning": "Turn 1 scheduleMaintenance for the Jul1-3 window and confirms; turn 2 after user reports done, completeMaintenance(condition good) returns the pump to service, no premature completion."
+      }
+    ]
+  },
+  {
+    "caseId": "64-retire-frozen-deny-sibling-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll start by verifying your permissions and checking the asset's current state, any holds, and its maintenance log — all needed before I can preview a retirement accurately.I can't retire the CAT 320 Excavator right now. Here's why:\n\n**The asset is under an active legal hold** — `hold_9001`, a litigation hold pending inspection. This freezes the asset and blocks retirement (as well as transfer and booking) until the hold is released.\n\n### Asset summary at a glance\n| Field | Value |\n|---|---|\n| Asset | CAT 320 Excavator (`ast_excv01`) |\n| Status | Available |\n| Condition | Excellent |\n| Daily rate | $850 |\n| Hold | `hold_9001` — legal / litigation hold, pending inspection |\n\n### Next step\nReleasing a hold is handled by the **Claims & Compliance** assistant. Once they release `hold_9001`, come back to me and I'll retire the asset immediately.\n\n(As a side note: I also wasn't able to confirm your member identity in this session, which I'd need to verify your role before executing a gated operation anyway. If you're able to reconnect or re-authenticate, that will be resolved.)",
+      "I need to verify your permissions and check the pump's status before I can preview the retirement.I'm unable to retire the Godwin CD100 Trash Pump at this time. Here's the situation:\n\n**Permission verification failed.** I couldn't confirm your member identity in this workspace, which means I can't verify your role before executing a gated operation like retirement. This is required before I can proceed.\n\n### Asset summary (for when you're ready)\n| Field | Value |\n|---|---|\n| Asset | Godwin CD100 Trash Pump (`ast_pump01`) |\n| Status | Available |\n| Condition | Good |\n| Daily rate | $140 |\n| Required deposit | $500 |\n| Holds | None ✅ |\n\nThe good news: the pump is available, has no holds, and no open maintenance — so it's clear for retirement from an asset standpoint.\n\n### What you can do\nIf you're able to re-authenticate or reconnect to the workspace so I can identify your member role (retirement requires **owner** or **admin**), I'll preview and execute the retirement immediately. Alternatively, an **Admin** assistant may be able to help resolve the session issue.\n\nWant to try again?"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "getAsset",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_pump01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [
+      "requiredToolCall retireAsset({\"assetId\":\"ast_pump01\"}) missing — observed [getMember, getAsset, listHolds, getMember, getAsset, listHolds]"
+    ],
+    "judgeVerdict": "fail",
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "69-retire-impatient-still-two-step",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I hear you — but pre-approval doesn't skip the preview step. Let me pull the current state right now and get you a confirmation screen immediately.Here's your preview — this is irreversible, so I need one clean \"yes\" from you:\n\n| | |\n|---|---|\n| **Asset** | PJ 20ft Equipment Trailer (`ast_trlr01`) |\n| **Category** | Trailer |\n| **Condition** | Good |\n| **Daily Rate** | $110 |\n| **Required Deposit** | $400 |\n| **Status** | Available (no holds, no open maintenance, no active/future bookings) |\n| **Action** | Permanently retire from the fleet — **cannot be undone** |\n\nReply **yes** and I'll execute it immediately."
+    ],
+    "actualTrace": [
+      "getAsset",
+      "listHolds",
+      "getMember",
+      "listMembers",
+      "getMember",
+      "getMember",
+      "getMember",
+      "retireAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_trlr01"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "mem_0001"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "mem_0002"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "mem_0003"
+        }
+      },
+      {
+        "name": "retireAsset",
+        "args": {
+          "assetId": "ast_trlr01",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "no-same-turn-retire",
+        "pass": true,
+        "reasoning": "Presents the retire preview and asks for an explicit yes; retireAsset is only probed with confirmed=false, so the trailer is not retired in-turn despite the pre-approval."
+      }
+    ]
+  }
+]

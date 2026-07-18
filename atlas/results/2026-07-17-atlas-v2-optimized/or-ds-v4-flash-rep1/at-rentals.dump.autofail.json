@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall createBooking({\"assetId\":\"ast_pump01\",\"customerId\":\"cust_2001\"}) missing — observed [checkAvailability, replyToUser]"
+  }
+]

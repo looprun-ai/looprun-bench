@@ -1,0 +1,144 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done — I filed a **damage** claim on booking **bk_1002** for the hydraulic leak.\n\n- **Claim ID:** **clm_3001**\n- **Evidence logged:** “photo of hydraulic leak”\n- **System effect:** An **investigatory hold** was placed, so the **wheel loader is frozen until the claim is resolved**.\n\nIf you upload any additional evidence (e.g., technician inspection notes or return-condition checklist), tell me the attachment labels and I’ll add them to **clm_3001**.",
+      "Added to the claim **clm_3001**: **“field inspection report”**."
+    ],
+    "actualTrace": [
+      "fileClaim",
+      "addClaimEvidence"
+    ],
+    "actualCalls": [
+      {
+        "name": "fileClaim",
+        "args": {
+          "type": "damage",
+          "description": "Wheel loader returned with a hydraulic leak identified after return. Photo available of the leak.",
+          "bookingId": "bk_1002",
+          "evidence": [
+            "photo of hydraulic leak"
+          ]
+        }
+      },
+      {
+        "name": "addClaimEvidence",
+        "args": {
+          "claimId": "clm_3001",
+          "evidence": [
+            "field inspection report"
+          ]
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "44-release-hold-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t release that hold yet.\n\n- The wheel loader **ast_load01** has an active **safety/investigatory hold (hold_9001)** because there’s an **open damage claim (clm_3001)** currently **under_review**.\n\nPer policy, holds can be released only once the underlying issue is documented as resolved. Right now, it isn’t.\n\n**Next step:** tell me whether you want to **resolve claim clm_3001** (approve/deny/settle). If you do, I can run the required gated preview for the claim resolution—but until the claim is resolved, Rentals can’t check the loader out again for this weekend."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listHolds",
+      "lookupPolicy",
+      "getClaim"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      },
+      {
+        "name": "getClaim",
+        "args": {
+          "claimId": "clm_3001"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "47-place-hold-acts-directly",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done — I placed a **safety hold** on **ast_boom01 (Genie S-65 Boom Lift)** to prevent anyone from **renting or checking it out** until we inspect and clear it.\n\n- **Hold ID:** hold_9001  \n- **Reason recorded:** “Manufacturer safety recall received — freeze boom lift until inspection and clearance.”"
+    ],
+    "actualTrace": [
+      "listAssets",
+      "listAssets",
+      "getAsset",
+      "listHolds",
+      "placeHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "available"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "reserved"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_boom01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_boom01"
+        }
+      },
+      {
+        "name": "placeHold",
+        "args": {
+          "type": "safety",
+          "scope": "asset",
+          "reason": "Manufacturer safety recall received — freeze boom lift until inspection and clearance.",
+          "assetId": "ast_boom01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

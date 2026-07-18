@@ -1,0 +1,12 @@
+[
+  {
+    "caseId": "02-dispatch-technician-happy",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall dispatchTechnician({\"bookingId\":\"bk_1001\",\"technicianId\":\"tech_01\"}) missing — observed [getTechnicianSchedule, getTechnicianSchedule, replyToUser]"
+  },
+  {
+    "caseId": "08-cancel-impatient-still-confirms",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall cancelBooking({\"bookingId\":\"bk_1001\"}) missing — observed [getBooking, replyToUser]"
+  }
+]

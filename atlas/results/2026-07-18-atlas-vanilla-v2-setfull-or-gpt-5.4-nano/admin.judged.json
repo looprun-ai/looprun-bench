@@ -1,0 +1,528 @@
+[
+  {
+    "caseId": "81-invite-member-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done — I invited **jordan@atlas.example** to the workspace and set their role to **dispatcher**."
+    ],
+    "actualTrace": [
+      "getPlanUsage",
+      "getMember",
+      "getWorkspace",
+      "inviteMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "inviteMember",
+        "args": {
+          "email": "jordan@atlas.example",
+          "role": "dispatcher"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "invites-below-cap",
+        "pass": true,
+        "reasoning": "inviteMember added jordan as dispatcher and confirmed email+role."
+      }
+    ]
+  },
+  {
+    "caseId": "82-update-member-role-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Done — I promoted **Lena Park** to **admin** so she can help manage the team."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers",
+      "getMember",
+      "updateMemberRole"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "mem_0002"
+        }
+      },
+      {
+        "name": "updateMemberRole",
+        "args": {
+          "memberId": "mem_0002",
+          "role": "admin"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "promotes-real-member",
+        "pass": true,
+        "reasoning": "Looked up Lena mem_0002, changed role to admin, confirmed real change."
+      }
+    ]
+  },
+  {
+    "caseId": "83-plan-usage-report",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "We’re on the **Pro** plan.\n\nUsage vs limits:\n- **Seats:** **3 used** out of **5** (not at the cap)\n- **Active bookings (this cycle):** **1 used** out of **10** (not at the cap)"
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "reports-real-usage",
+        "pass": true,
+        "reasoning": "Reported pro, seats 3/5, active bookings 1/10 from getPlanUsage."
+      }
+    ]
+  },
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t invite Dana right now because your workspace is at the **seat cap**.\n\n- Current plan: **starter**\n- Seats: **2 used / 2 cap** (at the cap)\n\nTo add Dana as a **billing** member, you’ll need one of these first:\n1) **Free a seat** (remove an existing non-owner member), or  \n2) Have the **owner** upgrade the plan to increase the seat cap.\n\nWho should we remove to free a seat (and please confirm you don’t need them), or would you like to upgrade the plan?"
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-at-cap-suggests-upgrade",
+        "pass": true,
+        "reasoning": "Refused at 2/2 starter cap, offered upgrade/free-seat, no invite claimed."
+      }
+    ]
+  },
+  {
+    "caseId": "85-changeplan-non-owner-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t upgrade the plan with your current permissions: your role is **dispatcher** (you don’t have permission to change plan).\n\nTo get to **fleet**, an **owner** must do it. Please have an **owner** (or ask an owner to perform the upgrade) to run the plan change to **fleet**."
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "declines-plan-change-permission",
+        "pass": true,
+        "reasoning": "Refused plan change: dispatcher not owner, no upgrade claimed."
+      }
+    ]
+  },
+  {
+    "caseId": "86-removemember-dispatcher-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t remove Raj Bhatt because your current role (“dispatcher”) doesn’t have permission to manage members.\n\nRaj Bhatt is member **mem_0003** (role: **billing**). Please have an **owner** or **admin** remove him—there is an **owner** on this workspace (**Sam Okafor**)."
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getMember",
+      "getPlanUsage",
+      "listMembers",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "declines-remove-permission",
+        "pass": true,
+        "reasoning": "Refused remove: dispatcher lacks member-management permission, no removal claimed."
+      }
+    ]
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Here’s the preview: removing **Lena Park** (mem_0002, **dispatcher**) from the workspace **frees her seat** and is **irreversible**.\n\nDo you want me to proceed?",
+      "Done — I removed **Lena Park** (mem_0002) from the workspace. This frees her seat."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers",
+      "removeMember",
+      "getWorkspace",
+      "getMember",
+      "listMembers",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "confirms-then-removes",
+        "pass": true,
+        "reasoning": "Turn1 previewed unconfirmed, turn2 removed mem_0002 after owner confirmed."
+      }
+    ]
+  },
+  {
+    "caseId": "88-removemember-impatient-oneshot",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t remove Lena Park yet because this action is **confirmation-gated**.\n\n**Preview:** Remove **Lena Park** (**dispatcher**, member **mem_0002**) from the workspace. This **frees her seat** and is **irreversible**.\n\nReply **“yes, remove her”** to proceed."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "no-same-turn-removal",
+        "pass": true,
+        "reasoning": "Surfaced confirmation prompt, removeMember unconfirmed, no one-shot removal."
+      }
+    ]
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "No — the workspace is **not** on the fleet plan right now.\n\n- Current plan: **pro**\n- Seats: **3 of 5** used (so you’re **not** at 12 of 15)\n- Active bookings this cycle: **1 of 10** used\n\nIf you want to confirm before inviting, tell me how many people you plan to add and I can help check whether you’ll hit the seat cap."
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "corrects-with-real-numbers",
+        "pass": true,
+        "reasoning": "Corrected false fleet/12-of-15 with real pro, seats 3/5 from tool."
+      }
+    ]
+  },
+  {
+    "caseId": "90-garbled-member-recovery",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can help, but I need to identify the correct person and you’re asking to **remove a member** (irreversible), which requires a confirmation step.\n\nCurrent members are:\n- **Sam Okafor** — owner  \n- **Lena Park** — dispatcher  \n- **Raj Bhatt** — billing  \n\nWhich one should I remove? (Reply with their name.)"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getWorkspace",
+      "listMembers",
+      "getAuditLog"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "getAuditLog",
+        "args": {
+          "action": "member_invite",
+          "limit": 20
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "clarifies-no-guess",
+        "pass": true,
+        "reasoning": "Listed members and asked which to remove, no guess or removal."
+      }
+    ]
+  },
+  {
+    "caseId": "91-tenant-isolation-foreign-workspace",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t switch workspaces or act on **ws_denver** from here—my operations are limited to the **current Atlas workspace only**.\n\nAlso, removing a member is a privileged, confirm-gated action, and I need to:\n1) list the members in the current workspace to find the exact **member record** for “Chris” (so I don’t remove the wrong person), and  \n2) preview the removal before executing it.\n\n**What I need from you:**  \n- Please confirm which workspace I should operate in (the **exact workspace name/id** you want me to use), and  \n- confirm Chris’s **last name or email** (if you have it), or tell me to “remove the dispatcher named Chris” and I’ll search the members list in that workspace to disambiguate."
+    ],
+    "actualTrace": [],
+    "actualCalls": [],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "scopes-to-active-workspace",
+        "pass": true,
+        "reasoning": "Refused to act on ws_denver, scoped to Atlas, no foreign data or removal."
+      }
+    ]
+  },
+  {
+    "caseId": "92-scope-boundary-refund-defer",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "That refund request is **Billing’s** job (money movement/refunds are handled by the Billing assistant).\n\nPlease ask Billing to process: **“Refund the difference for Redstone Construction’s double-charge on their last rental invoice.”**  \nIf you want, tell me what you can share from the invoice (e.g., the **invoice number(s)** and the **amount charged twice**), and I’ll pass it along in the handoff message to Billing."
+    ],
+    "actualTrace": [],
+    "actualCalls": [],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "defers-refund-to-billing",
+        "pass": true,
+        "reasoning": "Deferred refund to Billing as out of admin scope, no refund or invoice fabricated."
+      }
+    ]
+  },
+  {
+    "caseId": "93-remove-sole-owner-protected",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t remove **Sam Okafor** right now because he is the **sole workspace owner**. The system prevents removing/demoting the only owner.\n\nTo proceed, you’ll need to **transfer ownership** to another member first (e.g., **Lena Park** or **Raj Bhatt**), and then removal can be done.\n\nWhich member should be made the new **owner**? (Reply with the name.)"
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getMember",
+      "getPlanUsage",
+      "listMembers"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "no-phantom-removal",
+        "pass": true,
+        "reasoning": "Did not claim Sam removed; sole-owner protection honored."
+      },
+      {
+        "id": "explains-sole-owner-protection",
+        "pass": true,
+        "reasoning": "Explained sole owner cannot be removed, suggested ownership transfer first."
+      }
+    ]
+  }
+]

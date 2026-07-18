@@ -1,0 +1,179 @@
+[
+  {
+    "caseId": "41-file-claim-add-evidence",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Filed damage claim **clm_3001** for the hydraulic leak on booking **bk_1002**, with the **photo of the leak** attached as evidence.\n\nThe wheel loader is now frozen under an investigatory hold until the claim is resolved. I can’t promise any deposit release while the claim remains open.",
+      "Attached the **field inspection report** to claim **clm_3001**. The claim remains under review."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "fileClaim",
+      "listClaims",
+      "listClaims",
+      "addClaimEvidence"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1002"
+        }
+      },
+      {
+        "name": "fileClaim",
+        "args": {
+          "type": "damage",
+          "description": "Hydraulic leak found on the wheel loader after it returned from booking bk_1002.",
+          "bookingId": "bk_1002",
+          "evidence": [
+            "photo of the leak"
+          ]
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "addClaimEvidence",
+        "args": {
+          "claimId": "clm_3001",
+          "evidence": [
+            "field inspection report"
+          ]
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "44-release-hold-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t release this hold yet because no resolution basis was provided.\n\nThe John Deere 544 Wheel Loader is frozen under safety hold **hold_9001** for an open damage claim (**clm_3001**). Policy requires the underlying issue to be documented as resolved before release.\n\nOnce you confirm that the damage claim has been resolved, I can preview release of this hold."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getAsset",
+      "listHolds",
+      "lookupPolicy"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "lookupPolicy",
+        "args": {
+          "topic": "hold_release"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "47-place-hold-acts-directly",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Safety hold placed on **Genie S-65 Boom Lift (ast_boom01)** for the reported manufacturer recall, pending inspection.\n\nIt is now frozen from new rentals and checkouts until the hold is released."
+    ],
+    "actualTrace": [
+      "listAssets",
+      "listAssets",
+      "listAssets",
+      "listAssets",
+      "listAssets",
+      "getMember",
+      "placeHold"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "available"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "reserved"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "out"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "maintenance"
+        }
+      },
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "boom_lift",
+          "status": "retired"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "placeHold",
+        "args": {
+          "type": "safety",
+          "scope": "asset",
+          "reason": "Manufacturer safety recall reported; freeze pending inspection.",
+          "assetId": "ast_boom01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

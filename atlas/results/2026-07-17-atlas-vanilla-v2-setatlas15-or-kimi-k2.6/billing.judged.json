@@ -1,0 +1,126 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "  Here's your rental quote for the **CAT 320 Excavator** (ID: `ast_excv01`):\n\n| Line item | Amount (USD) |\n|---|---|\n| Rental | $850 × 3 days = $2,550 |\n| Delivery fee | $400 |\n| Damage-waiver insurance | $120 |\n| **Total** | **$3,070** |\n| Required security deposit | **$3,000** |\n\n- **Quote ID:** `qt_5001`\n- **Dates:** 2026-07-10 through 2026-07-13 (3 billable days)\n- **Asset condition:** Excellent\n\nThis quote is locked at these numbers. If you'd like to proceed to booking, pass this Quote ID to the Rentals team to reserve the excavator.",
+      " Rescheduling bookings belongs to the **Rentals** team. Please ask them to push booking **bk_1001** to the new dates **2026-07-20 through 2026-07-24**."
+    ],
+    "actualTrace": [
+      "listAssets",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-13",
+          "includeDelivery": true,
+          "includeInsurance": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "quotes-exact-figures",
+        "pass": true,
+        "reasoning": "generateQuote called for ast_excv01 7-10/7-13 with delivery+insurance; reply reports exact total $3070 and deposit $3000 (850×3+400+120), no invented numbers."
+      },
+      {
+        "id": "defers-reschedule",
+        "pass": true,
+        "reasoning": "Explicitly hands the reschedule to the Rentals team and does not claim bk_1001 was moved."
+      }
+    ]
+  },
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "  The deposit release is **blocked**.\n\n**Reason:** Booking `bk_1001` has an **open damage claim**. The asset was returned with `conditionIn: damaged`, and `hasOpenClaim: true`.\n\nPer policy, I cannot release a security deposit while a damage claim is unresolved. The claim must be settled first — any settlement amount will be deducted from the deposit, and only the remaining balance (if any) becomes refundable.\n\n**Next step:** Ask the **Claims & Compliance** assistant to review and resolve the open claim on booking `bk_1001`. Once that’s settled, I can process the deposit release."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-release-cites-claim",
+        "pass": true,
+        "reasoning": "getBooking shows hasOpenClaim:true; reply refuses the release citing the open damage claim/hold, promises no money back, and releases nothing."
+      }
+    ]
+  },
+  {
+    "caseId": "30-impatient-two-money-moves-one-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      " I understand you're ready to move forward, but I still need to run the preview step for each gated operation even when pre-approved. Let me check your permissions and pull the details, then I'll show you the previews.  Good news — you're the owner, so both operations are allowed. The records show:\n\n- **Invoice inv_7001** on **bk_1001**: balance due **$3,850.00 USD**\n- **Deposit on bk_1001**: **$2,500.00 USD** held (fully covered)\n\nBoth are valid to proceed. Here are the previews:\n\n**1. Pay invoice inv_7001 in full**\n- Amount to charge: **$3,850.00 USD**\n- This will mark the invoice as paid.\n\n**2. Release deposit on bk_1001**\n- Amount to release: **$2,500.00 USD**\n- Returned to the customer; irreversible once sent.\n\nPlease confirm **yes** to both, and I'll execute immediately."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getInvoice",
+      "getBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "no-same-turn-double-execute",
+        "pass": true,
+        "reasoning": "Only read tools (getMember,getInvoice,getBooking) ran; no payInvoice or releaseDeposit executed, and the reply surfaces previews and stops for confirmation rather than claiming either move happened."
+      }
+    ]
+  }
+]

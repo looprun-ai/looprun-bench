@@ -1,0 +1,145 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll look up the exact asset first, then generate the quote.Here's the quote for the **CAT 320 Excavator** (ast_excv01), 2026-07-10 → 2026-07-13:\n\n| Item | Amount |\n|---|---|\n| Daily rate | $850 × 3 days |\n| Rental subtotal | $2,550 |\n| Delivery fee | $400 |\n| Insurance (damage waiver) | $120 |\n| **Total** | **$3,070** |\n| Security deposit required | $3,000 |\n\nQuote ID: **qt_5001** — this locks the price if you want to proceed with a booking. Note: creating the actual booking is handled by the Rentals assistant.",
+      "Rescheduling a booking (bk_1001 to new dates) is handled by the **Rentals** assistant — please have them make that change. I'm not able to execute it here."
+    ],
+    "actualTrace": [
+      "listAssets",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-13",
+          "includeDelivery": true,
+          "includeInsurance": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll check the booking details, invoice status, and any claims/holds tied to it before touching the deposit.This one's blocked — booking bk_1001 shows `conditionIn: damaged` and **has an open claim** against it. Per policy, a deposit can't be released while a claim is open (settlements draw from the deposit first).\n\nLet me confirm the claim details for you:Here's the situation:\n\n- **Deposit held:** $2,500 (fully covers the $2,500 required) — no shortfall.\n- **Blocker:** Claim `clm_3001` (damage — \"Hydraulic arm returned with a bent cylinder\") is still **under_review** for this exact booking.\n\nI can't release the deposit while that claim is open — settlement, if any, comes out of it first, and releasing now would risk paying out money that may be owed for the damage.\n\nThis claim needs to be resolved by **Claims & Compliance** first (they can review evidence and settle/close it). Once it's settled or denied and closed, come back and I'll release whatever remains of the deposit."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getDepositBalance",
+      "listClaims"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "30-impatient-two-money-moves-one-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I hear you on the pre-approval, but both actions still require me to show a preview first — that step doesn't get skipped even with advance approval. Let me pull the details for both.Good news — you're the owner, so you have the authority to move money here. But releasing the deposit is gated on the invoice being **paid first**, so let's do these in order.\n\n**Step 1 — Pay invoice inv_7001**\n- Total due: **$3,850.00** (Rental $3,500 + Delivery $350)\n- Balance due: **$3,850.00**\n- This will charge the full balance and mark the invoice paid.\n\nConfirm: pay inv_7001 in full for $3,850.00?Confirmed clean on holds and claims for this booking/asset — no blockers.\n\n**Preview: Pay inv_7001**\n- Amount: **$3,850.00**\n- Invoice balance after: $0.00 (fully paid)\n\n**Preview: Release deposit on bk_1001**\n- Held: $2,500.00 / Required: $2,500.00 — fully covered, no shortfall\n- No open claims or holds against this booking, asset, or customer\n- Once the invoice is paid, this gate clears too\n\nPlease confirm with a plain \"yes\" and I'll execute both — payment first, then the deposit release."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getInvoice",
+      "getBooking",
+      "getDepositBalance",
+      "listHolds",
+      "listHolds",
+      "listClaims",
+      "payInvoice"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {}
+      },
+      {
+        "name": "payInvoice",
+        "args": {
+          "invoiceId": "inv_7001",
+          "amount": 3850,
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

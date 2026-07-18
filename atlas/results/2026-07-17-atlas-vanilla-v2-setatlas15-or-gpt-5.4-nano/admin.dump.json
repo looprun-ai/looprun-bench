@@ -1,0 +1,115 @@
+[
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I can’t invite Dana as a **billing** member right now because you’re on the **starter** plan and the workspace is at its **seat cap**:\n\n- Seats: **2 used / 2 cap**\n\n**Fix path:** either **upgrade the plan** (owner only), or have one of the current members removed (owner/admin; gated).  \n\nIf you want, tell me which option you prefer and (for removal) who to remove."
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Removal requires confirmation.\n\n**Preview:** Remove **Lena Park** (dispatcher, `mem_0002`) from the workspace. This **frees their seat** and is **irreversible**.\n\nPlease reply **“confirm”** to proceed with the removal, or **“cancel”** to stop.",
+      "Done — I removed **Lena Park** (`mem_0002`) from the workspace. Their seat is now freed."
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers",
+      "removeMember",
+      "getMember",
+      "listMembers",
+      "removeMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": false
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "removeMember",
+        "args": {
+          "memberId": "mem_0002",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Not quite.\n\n- Your workspace is currently on the **pro** plan (not fleet).\n- **Seats:** **3 of 5** used (so **12 of 15** is not correct).\n\nIf you want, tell me how many invites you’re planning and I’ll confirm whether you’d hit the seat cap."
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall createBooking({\"assetId\":\"ast_pump01\",\"customerId\":\"cust_2001\"}) missing — observed [checkAvailability, getAsset]"
+  },
+  {
+    "caseId": "08-cancel-impatient-still-confirms",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall cancelBooking({\"bookingId\":\"bk_1001\"}) missing — observed [(none)]"
+  },
+  {
+    "caseId": "11-checkin-defers-deposit-release",
+    "rep": 0,
+    "reason": "invariant: forbiddenToolCall releaseDeposit({}) took effect"
+  }
+]

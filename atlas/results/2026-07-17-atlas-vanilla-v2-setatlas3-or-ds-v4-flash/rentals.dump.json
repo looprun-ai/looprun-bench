@@ -1,0 +1,49 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me check availability and the asset details first.\n\nThe Godwin trash pump is **available** from July 20–23. Let me go ahead and generate a quote, then book it.\n\nHere's the quote and I'll book it now:\n\n- **Asset:** Godwin Trash Pump (ast_pump01)\n- **Customer:** Redstone Construction (cust_2001)\n- **Dates:** July 20 → July 23, 2026 (3 days)\n- **Total:** **$420.00** ($140/day × 3 days)\n- **Security deposit:** $500.00\n\nAll done! Here's your booking summary:\n\n| Detail | Value |\n|---|---|\n| **Booking ID** | bk_2002 |\n| **Asset** | Godwin CD100 Trash Pump |\n| **Customer** | Redstone Construction |\n| **Dates** | July 20 – July 23, 2026 |\n| **Status** | ✅ Confirmed |\n| **Total (no extras)** | **$420.00** |\n| **Required deposit** | **$500.00** |\n\nThe $500 security deposit will need to be collected before checkout. When you're ready to check the asset out to the customer, the **Billing assistant** can handle charging the deposit, and then I can mark it as checked out. Let me know what's next!"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "generateQuote",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "includeDelivery": false,
+          "includeInsurance": false
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

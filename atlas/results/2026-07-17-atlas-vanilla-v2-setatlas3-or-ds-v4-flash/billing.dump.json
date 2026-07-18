@@ -1,0 +1,75 @@
+[
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me start by checking the booking details and the deposit balance, and see who's acting.\n\nLet me check a few things before proceeding. The booking has **hasOpenClaim: true**, and there's no invoice yet. Let me investigate.\n\nSam, I can't release the deposit on **bk_1001** right now. Here are the gates blocking it:\n\n1. **Open damage claim** — **clm_3001** is under review for a bent cylinder on the hydraulic arm (returned damaged).\n2. **Active safety hold** — **hold_9001** is tied to that claim, freezing the asset.\n3. **No invoice** — the booking hasn't been invoiced yet. For deposit release, the booking's invoice needs to be paid.\n\n**The fix path:**\n- The **Claims & Compliance** team needs to resolve **clm_3001** first (the damage claim). Under policy, if a claim is approved, the settlement amount deducts from the deposit — so the full $2,500 may not come back until that's finalized.\n- **Billing** (me) can generate the invoice once **Rentals** confirms the booking is fully closed — but the deposit release itself is blocked by the open claim/hold regardless.\n\nWould you like me to generate the invoice for the booking in the meantime? And would you like me to hand this off to Claims & Compliance regarding **clm_3001**?"
+    ],
+    "actualTrace": [
+      "getMember",
+      "getBooking",
+      "getDepositBalance",
+      "listClaims",
+      "listClaims",
+      "listClaims",
+      "listHolds",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {}
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "approved"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]

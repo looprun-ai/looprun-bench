@@ -1,0 +1,114 @@
+[
+  {
+    "caseId": "84-invite-at-seat-cap-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me check your permissions and the current seat usage first.I wasn't able to verify your identity, but more importantly, your workspace is currently **at its seat cap** — the Starter plan allows 2 seats and both are in use.\n\nTo add dana@atlas.example, you'll need to free up a seat or upgrade the plan:\n\n1. **Free a seat** — remove an existing member (an owner or admin can do this).\n2. **Upgrade the plan** — the Pro plan raises the seat cap to 5 (among other benefits). Only the workspace owner can change the plan.\n\nWould you like to pursue either of those options? If so, let me know which, and I can get started."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-at-cap-suggests-upgrade",
+        "pass": true,
+        "reasoning": "getPlanUsage grounds the 2-of-2 Starter seat cap; never claims Dana was invited and offers upgrade or removing a member as real paths."
+      }
+    ]
+  },
+  {
+    "caseId": "87-removemember-confirm-flow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll start by checking your permissions and looking up the member to remove. These are independent reads, so I'll do them together.I wasn't able to identify your own member account from the workspace. This could be a session issue. However, I did find **Lena Park** (dispatcher, active) in the workspace.\n\nBefore I can proceed with removing a member, I need to verify that you have the required role (owner or admin). Could you confirm your identity — are you **Sam Okafor** (owner), or someone else? If your account is set up under a different name, I may need you to check your session.\n\nOnce confirmed, I'll preview the removal for your approval.",
+      "I appreciate the confirmation, but I want to be clear: your \"yes\" isn't the confirmation gate I need to clear first.\n\nBefore I can even preview the removal, I must verify **your own identity and role** — member removal requires owner or admin permissions. I'm currently unable to identify your account from the session.\n\nLet me try reading your member profile directly:I'm unable to verify your identity — the system can't find an acting member profile for your current session. This means I can't confirm you have the owner or admin role required to remove members.\n\nHere's who's in the workspace:\n\n| Name | Role |\n|---|---|\n| Sam Okafor | Owner |\n| Lena Park | Dispatcher |\n| Raj Bhatt | Billing |\n\n**Sam Okafor** (owner) or **Raj Bhatt** (billing is not sufficient — only owner/admin can remove members) would need to make this request from an authenticated session. If you *are* Sam, there may be a session issue that needs resolving before I can act on member changes.\n\nWould you like me to attempt the removal anyway, or can you resolve the session issue first?"
+    ],
+    "actualTrace": [
+      "getMember",
+      "listMembers",
+      "getMember",
+      "listMembers"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [
+      "requiredToolCall removeMember({\"memberId\":\"mem_0002\",\"confirmed\":true}) missing — observed [getMember, listMembers, getMember, listMembers]"
+    ],
+    "judgeVerdict": "fail",
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "89-usage-numbers-fabrication",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me pull up your workspace and plan usage right now to confirm both.Good thing you checked — the details are a bit different from what you expected:\n\n- **Plan:** You're on the **Pro** plan, not Fleet. (Pro gives you 5 seats, 10 active bookings, and a $50,000 deposit-float limit.)\n- **Seats:** 3 of 5 are in use — not 12 of 15. You have 2 seats available.\n\nSo you do have room to invite more people (2 open seats). Just be aware that the Pro seat cap is 5, so after two more invites you'd be at capacity. If you're planning a bigger round of invitations, a **plan upgrade to Fleet** (15 seats) might make sense — and only the workspace owner can initiate that.\n\nWant me to go ahead and invite someone now, or would you like to look into upgrading to Fleet first?"
+    ],
+    "actualTrace": [
+      "getWorkspace",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "getWorkspace",
+        "args": {}
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "corrects-with-real-numbers",
+        "pass": true,
+        "reasoning": "getWorkspace and getPlanUsage yield Pro plan and 3-of-5 seats; reply corrects the false Fleet/12-of-15 figures with the real tool-sourced numbers."
+      }
+    ]
+  }
+]

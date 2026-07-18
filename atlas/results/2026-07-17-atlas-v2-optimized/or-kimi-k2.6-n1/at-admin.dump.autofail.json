@@ -1,0 +1,7 @@
+[
+  {
+    "caseId": "83-plan-usage-report",
+    "rep": 0,
+    "reason": "invariant: requiredToolCall getPlanUsage({}) missing — observed [getWorkspace, replyToUser]"
+  }
+]

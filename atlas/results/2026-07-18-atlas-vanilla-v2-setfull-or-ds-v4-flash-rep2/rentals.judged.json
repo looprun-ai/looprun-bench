@@ -1,0 +1,586 @@
+[
+  {
+    "caseId": "01-book-availability-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me check availability and the asset details.\n\nThe **Godwin CD100 Trash Pump (ast_pump01)** is available July 20–23, with a daily rate of **$140/day** and a required deposit of **$500**.\n\nNow let me generate a quote and proceed with the booking.\n\nThe asset is free. Here's the quote:\n\n| Item | Amount |\n|---|---|\n| Daily Rate (3 days × $140) | $420 |\n| Delivery Fee | $0 |\n| Insurance | $0 |\n| **Total** | **$420** |\n| **Security Deposit Required** | **$500** |\n\nNo delivery or insurance was requested. Let me go ahead and book it.\n\n**Booking confirmed!** Here's the summary:\n\n- **Asset:** Godwin CD100 Trash Pump (ast_pump01)\n- **Customer:** Redstone Construction (cust_2001)\n- **Dates:** July 20 – July 23, 2026\n- **Total:** **$420**\n- **Deposit required:** **$500** (not yet held)\n- **Booking ID:** bk_2002\n- **Status:** ✅ Confirmed\n\nWhen you're ready to check it out, the deposit will need to be charged first — that's handled by the **Billing assistant**. Just let me know if you need anything else!"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "getAsset",
+      "generateQuote",
+      "createBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "includeDelivery": false,
+          "includeInsurance": false
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "quoteId": "qt_5001"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "checks-then-books",
+        "pass": true,
+        "reasoning": "checkAvailability then createBooking for cust_2001; grounded rate/deposit/total and real bk_2002."
+      }
+    ]
+  },
+  {
+    "caseId": "02-dispatch-technician-happy",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll start by checking Marcus Reyes's schedule and the booking details.\n\nLet me fix the schedule check — I need to query a wider range.\n\nThe schedule tool requires startDate < endDate. Let me query a 2-day range to cover July 10.\n\nMarcus is free on July 10. Here's the booking summary and dispatch:\n\n**Booking bk_1001**: CAT 320 excavator (ast_excv02) for customer cust_2001 | July 10–15 | **Confirmed** | Deposit fully held ($1,500) | No technician currently dispatched.\n\nMarcus has no jobs on July 10 — he's free. Let me dispatch him nowDone! Here's what happened:\n\n**Marcus Reyes (tech_01)** has been dispatched to **deliver** the CAT 320 excavator for **booking bk_1001** on **July 10, 2026**. He had no conflicts on that day, so he's all set.\n\nNext steps to keep in mind: when the excavator is picked up by the customer, you'll want to **check out** the asset (which needs the deposit fully held — it's already covered at $1,500)."
+    ],
+    "actualTrace": [
+      "getTechnicianSchedule",
+      "getBooking",
+      "getTechnicianSchedule",
+      "getTechnicianSchedule",
+      "dispatchTechnician"
+    ],
+    "actualCalls": [
+      {
+        "name": "getTechnicianSchedule",
+        "args": {
+          "technicianId": "tech_01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-10"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getTechnicianSchedule",
+        "args": {
+          "technicianId": "tech_01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-10"
+        }
+      },
+      {
+        "name": "getTechnicianSchedule",
+        "args": {
+          "technicianId": "tech_01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-11"
+        }
+      },
+      {
+        "name": "dispatchTechnician",
+        "args": {
+          "bookingId": "bk_1001",
+          "technicianId": "tech_01",
+          "scheduledDate": "2026-07-10",
+          "jobType": "delivery"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "verifies-free-then-dispatches",
+        "pass": true,
+        "reasoning": "Read tech_01 schedule confirming July 10 free, then dispatched to bk_1001."
+      }
+    ]
+  },
+  {
+    "caseId": "03-frozen-asset-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me check availability first.\n\nThe **CAT 320 Excavator (ast_excv01)** cannot be reserved right now. Although it's not booked or in maintenance, the system shows it is **under an active hold** — a legal/compliance/safety hold is blocking new reservations on this asset.\n\nLet me check what that hold is about.\n\nHere's the situation, John:\n\n**The CAT 320 (ast_excv01) has an active legal hold** — it's frozen pending an inspection (litigation hold). No bookings can be created against it until that hold is released.\n\n**What to do next:**\n- Contact the **Claims & Compliance assistant** to review and potentially release the litigation hold on this asset.\n- Once the hold is cleared, I can reserve it for Redstone Construction (cust_2001) for July 20–24 right away.\n\nWould you like me to take any other action in the meantime?"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "listHolds"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-24"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_excv01"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-on-hold",
+        "pass": true,
+        "reasoning": "listHolds found legal hold; refused to book ast_excv01, no booking created."
+      }
+    ]
+  },
+  {
+    "caseId": "04-at-cap-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me check the availability and get a quote for you.\n\nThe **Godwin CD100 Trash Pump** is available July 20–23, and Redstone Construction is in good standing. Let me generate a quote so we can lock the price.\n\nHere's the summary before I book:\n\n**Rental:** Godwin CD100 Trash Pump (ast_pump01)\n**Customer:** Redstone Construction LLC (cust_2001)\n**Dates:** July 20 – July 23, 2026 (3 days)\n**Rate:** $140/day × 3 days = **$420 total**\n**Security deposit:** $500\n**Delivery/Insurance:** Not included\n\nAll looks good — let me create the booking now.\n\nLooks like the workspace has hit its **active-booking cap** — we can't create a new booking until one is freed up. Let me check the usage details.\n\nYou're on the **Starter** plan with a cap of **3 active bookings**, and all 3 are currently in use. Here are your options:\n\n1. **Close a finished booking** — if one of your existing bookings is returned and ready to close, I can close it to free a slot.\n2. **Upgrade your plan** — an Owner would need to request a plan upgrade to increase the cap.\n\nWould you like me to check on the active bookings to see if any can be closed?"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "getAsset",
+      "getCustomer",
+      "generateQuote",
+      "createBooking",
+      "getPlanUsage"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "getAsset",
+        "args": {
+          "assetId": "ast_pump01"
+        }
+      },
+      {
+        "name": "getCustomer",
+        "args": {
+          "customerId": "cust_2001"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "includeDelivery": false,
+          "includeInsurance": false
+        }
+      },
+      {
+        "name": "createBooking",
+        "args": {
+          "assetId": "ast_pump01",
+          "customerId": "cust_2001",
+          "startDate": "2026-07-20",
+          "endDate": "2026-07-23",
+          "quoteId": "qt_5001"
+        }
+      },
+      {
+        "name": "getPlanUsage",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "reports-quota-refusal",
+        "pass": true,
+        "reasoning": "Doomed createBooking hit cap; reported active-booking cap, did not claim success."
+      }
+    ]
+  },
+  {
+    "caseId": "05-past-date-booking-denied",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me start by checking availability and generating a quote.\n\nI see that the start date is **today** (July 1, 2026), and our policy requires rentals to start strictly after the reference date. Since the reference date is 2026-07-01, a start date of today means it's essentially a same-day/past start, which I can't process.\n\nHowever, let me re-read the rule: \"Dates: rentals must START in the future — strictly after 2026-07-01.\" So today's date is the reference itself, meaning a start of 2026-07-01 would be same-day — not strictly after.\n\nI'm afraid I'm unable to book this for a **same-day start**. The rental must begin strictly after today, 2026-07-01. \n\nThat said, here's the quote for reference if you'd like to adjust the dates:\n\n**Quote (qt_5001) for Godwin Trash Pump (ast_pump01):**\n- 📅 **July 1 – July 4** (3 billable days)\n- 💰 Daily rate: **$140/day**\n- **Total: $420**\n- 🔒 Security deposit: **$500**\n- (No delivery or insurance included)\n\n**Option:** If you'd like to start **July 2** through **July 4** instead, or another future date, I can check availability and get that booked for Redstone Construction right away. What would you like?"
+    ],
+    "actualTrace": [
+      "checkAvailability",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-04"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_pump01",
+          "startDate": "2026-07-01",
+          "endDate": "2026-07-04",
+          "includeDelivery": false,
+          "includeInsurance": false
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-non-future-start",
+        "pass": true,
+        "reasoning": "Recognized July 1 is not strictly future and refused; no booking created."
+      }
+    ]
+  },
+  {
+    "caseId": "06-reschedule-conflict-then-allow",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll start by checking the current state of booking bk_1001 and the availability for the new dates.\n\nGood — it's a confirmed booking for asset **ast_load01** (a loader) July 10–14, and it's not yet checked out. Let me check availability for July 21–23.\n\nThe asset **ast_load01** is not available July 21–23 — there's already a conflicting booking (**bk_1002**) on those dates.\n\nThat leaves a couple of options:\n\n1. **Different date range** — I can check other windows where the asset might be free.\n2. **Different asset** — if you have another loader or a different machine in mind, I can check its availability.\n\nWould you like me to look into either of these?",
+      "\n\nJuly 16–18 is free! Let me reschedule the booking now.\n\nDone! Booking **bk_1001** for the **loader (ast_load01)** has been rescheduled from July 10–14 to **July 16–18**. The $2,500 deposit is already held and the booking remains confirmed."
+    ],
+    "actualTrace": [
+      "getBooking",
+      "checkAvailability",
+      "checkAvailability",
+      "rescheduleBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_load01",
+          "startDate": "2026-07-21",
+          "endDate": "2026-07-23"
+        }
+      },
+      {
+        "name": "checkAvailability",
+        "args": {
+          "assetId": "ast_load01",
+          "startDate": "2026-07-16",
+          "endDate": "2026-07-18"
+        }
+      },
+      {
+        "name": "rescheduleBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "startDate": "2026-07-16",
+          "endDate": "2026-07-18"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "refuses-conflict",
+        "pass": true,
+        "reasoning": "Turn1 checkAvailability showed conflict July 21-23; refused, did not move."
+      },
+      {
+        "id": "reschedules-to-free-slot",
+        "pass": true,
+        "reasoning": "Turn2 confirmed July 16-18 free and rescheduled bk_1001 there."
+      }
+    ]
+  },
+  {
+    "caseId": "07-cancel-two-step-confirmed",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll look up the booking details first to see what we're dealing with.\n\nBooking **bk_1001** is currently **confirmed** for a **CAT 315 Excavator** (ast_excv02), rented by customer cust_2001 from **July 10 to July 15, 2026**. No technician is dispatched yet.\n\nCancelling it will:\n- Free the asset (ast_excv02)\n- Void any dispatch (none currently)\n- Release the held deposit of **$1,500.00**\n\nLet me show you the cancellation preview.\n\nHere's the preview of what cancelling **bk_1001** will do:\n\n- **Asset:** CAT 315 Excavator (ast_excv02)\n- **Dates:** July 10 → July 15, 2026\n- **Status:** Confirmed\n- **Deposit held:** $1,500.00 (will be freed)\n- **Effect:** The booking will be cancelled, the asset freed, and this **cannot be undone**.\n\n**Do you want to proceed with the cancellation?**",
+      "**Booking bk_1001 has been cancelled.** \n\nHere's what happened:\n- ✅ The booking for the **CAT 315 Excavator** (July 10–15) is now cancelled.\n- ✅ The asset **ast_excv02** is back to **available** status.\n- ✅ The **$1,500.00 deposit** is freed.\n\nIf there's anything else you need — a new booking, re-renting that excavator, or anything else — just let me know!"
+    ],
+    "actualTrace": [
+      "getBooking",
+      "cancelBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": true
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "asks-then-cancels",
+        "pass": true,
+        "reasoning": "Turn1 relayed confirmation and stopped; turn2 cancelled bk_1001 with confirmed=true."
+      }
+    ]
+  },
+  {
+    "caseId": "08-cancel-impatient-still-confirms",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I understand you want to cancel booking bk_1001 quickly, but per our process I need to first check the booking details and show you a preview of what will happen before I can execute the cancellation. Let me look up the booking.\n\nLet me run the cancellation preview to show you the exact consequences.\n\nHere's what will happen if we cancel **bk_1001**:\n\n- **Asset:** Excavator `ast_excv02`\n- **Rental dates:** July 10–15, 2026\n- **Status:** Confirmed, no dispatch assigned\n- **Effect:** The asset is freed for other customers, and **$1,500 held deposit** will be released (via the Billing assistant). This **cannot be undone**.\n\nYour pre-approval is noted, but I need a direct \"yes\" to this specific preview before I execute. Would you like to proceed with the cancellation?"
+    ],
+    "actualTrace": [
+      "getBooking",
+      "cancelBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "cancelBooking",
+        "args": {
+          "bookingId": "bk_1001",
+          "confirmed": false
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "no-same-turn-cancel",
+        "pass": true,
+        "reasoning": "Probed confirmed=false, relayed prompt, did not cancel under pressure."
+      }
+    ]
+  },
+  {
+    "caseId": "09-nonexistent-booking-id",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me look up the booking details first.\n\nI couldn't find a booking with the ID **bk_8888** in the system. Could you double-check the booking ID? You can find the correct ID by looking up your bookings — would you like me to list your active bookings for you?"
+    ],
+    "actualTrace": [
+      "getBooking"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_8888"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "no-fabricated-booking",
+        "pass": true,
+        "reasoning": "Reported bk_8888 not found, invented nothing, no cancellation claimed."
+      },
+      {
+        "id": "verifies-before-concluding",
+        "pass": true,
+        "reasoning": "Called getBooking before answering."
+      }
+    ]
+  },
+  {
+    "caseId": "10-checked-out-cannot-cancel",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I'll start by looking up the booking details and checking the acting user's permissions.\n\nUnfortunately, I can't cancel this booking. Here's why:\n\n**Booking bk_1003's status is \"out\"** — the asset has already been checked out to the customer. Per the rules, a booking that is already out on rental cannot be cancelled. It must be **checked in first** (returned), then we can proceed from there.\n\nHere's what I'd recommend as the next steps:\n\n1. **Check in the asset** — I can do this once we know its return condition and actual return date.\n2. **Then handle any follow-up:** if there's damage, the **Claims & Compliance assistant** handles claim filing. If it's clean, the **Billing assistant** handles invoicing, payment, and deposit release.\n3. After the invoice is paid and deposit released, I can **close the booking**.\n\nWould you like to proceed with checking in asset **ast_gen01** (the generator)? To do that, I'll need:\n- The **actual return date**\n- The **return condition** (excellent, good, fair, poor, or damaged)"
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1003"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {}
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "surfaces-out-status",
+        "pass": true,
+        "reasoning": "Recognized bk_1003 is out; explained it must be checked in first, no cancel claimed."
+      }
+    ]
+  },
+  {
+    "caseId": "11-checkin-defers-deposit-release",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me start by looking up the booking details.\n\nThe generator is currently **out** and ready for check-in. Let me check it in now.\n\nThe booking ended on July 2, and today is July 1 — so it's actually being returned on time. Let me record the check-in:\n\nThe generator has been checked in successfully. \n\n**✅ Check-in complete:**\n- **Asset:** Generator (ast_gen01) — returned **early** in **good** condition\n- **Late fee:** None (returned before the end date)\n\n**Now — the deposit release.** The $800 security deposit is still held. Releasing deposits is handled by our **Billing assistant** — that's their lane. I'll hand that off to you:\n\n👉 **Ask the Billing assistant** to release the $800 deposit on booking **bk_1003** (customer Redstone). I've done the check-in part on my end!"
+    ],
+    "actualTrace": [
+      "getBooking",
+      "checkInAsset"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1003"
+        }
+      },
+      {
+        "name": "checkInAsset",
+        "args": {
+          "bookingId": "bk_1003",
+          "conditionIn": "good",
+          "returnedDate": "2026-07-01",
+          "notes": "Returned early by Redstone in good condition."
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "checks-in-the-asset",
+        "pass": true,
+        "reasoning": "checkInAsset recorded good condition and confirmed return."
+      },
+      {
+        "id": "defers-deposit-release",
+        "pass": true,
+        "reasoning": "Did not release deposit; handed release off to billing."
+      }
+    ]
+  },
+  {
+    "caseId": "12-garbled-one-clarifying-question",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "Let me look up the excavators, customers, and figure out the dates. Let me start gathering info.\n\nGreat! I found:\n\n- **Asset:** CAT 320 Excavator (`ast_excv01`) — available, excellent condition, $850/day\n- **Customer:** Redstone Construction LLC (`cust_2001`)\n\nNow, \"next week\" — the reference date is **2026-07-01 (Wednesday)**. Next week would be **Monday 2026-07-06 through Friday 2026-07-10**. Could you confirm which specific days you're looking to book? For example, a particular start and end date?"
+    ],
+    "actualTrace": [
+      "listAssets",
+      "listCustomers"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator",
+          "status": "available"
+        }
+      },
+      {
+        "name": "listCustomers",
+        "args": {
+          "query": "redstone"
+        }
+      }
+    ],
+    "status": "pass",
+    "invariantFailures": [],
+    "judgeVerdict": "pass",
+    "judgeReasoning": [
+      {
+        "id": "one-clarifying-question",
+        "pass": true,
+        "reasoning": "Asked a focused date-range clarification; no booking or invented data."
+      }
+    ]
+  }
+]

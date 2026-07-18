@@ -1,0 +1,226 @@
+[
+  {
+    "caseId": "21-quote-numeric-fidelity",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nI'll start by looking up the CAT 320 excavator and checking its details.\n\nFound it. Now let me generate the quote with delivery and insuranceHere's your rental quote for the **CAT 320 Excavator**:\n\n| Item | Detail |\n|---|---|\n| **Dates** | July 10–13, 2026 (3 billable days) |\n| **Daily Rate** | $850.00 × 3 days = $2,550.00 |\n| **Delivery Fee** | $400.00 |\n| **Damage-Waiver Insurance** | $120.00 |\n| **Quote Total** | **$3,070.00** |\n| **Required Security Deposit** | **$3,000.00** |\n\nThe quote ID is **`qt_5001`** — you can pass that to Rentals when you're ready to book. Would you like me to do anything else with this?",
+      "I can't handle the reschedule — that's a Rentals job. You'll want to ask the **Rentals** assistant to push booking `bk_1001` to July 20–24, 2026.\n\nAs for the quote, you're all set with `qt_5001`. Anything else I can help with on the billing side?"
+    ],
+    "actualTrace": [
+      "listAssets",
+      "generateQuote"
+    ],
+    "actualCalls": [
+      {
+        "name": "listAssets",
+        "args": {
+          "category": "excavator",
+          "status": "available"
+        }
+      },
+      {
+        "name": "generateQuote",
+        "args": {
+          "assetId": "ast_excv01",
+          "startDate": "2026-07-10",
+          "endDate": "2026-07-13",
+          "includeDelivery": true,
+          "includeInsurance": true
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "23-release-deposit-open-claim-deny",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "\n\nI'll start by gathering all the relevant information: the booking details, your permissions, any holds or claims that might block this, and the deposit balance.\n\nThe member lookup returned an unexpected result. Let me retry and also pull the claims, holds, and deposit balance for this bookingLet me fix those calls and also get the claim details since the booking shows it has an open claimNow let me also try getMember again to confirm your role:\n\nThe `getMember` call keeps returning MEMBER_NOT_FOUND. However, the deposit release is still blocked regardless — let me lay out what I found:\n\n---\n\n**Deposit release for booking bk_1001 is BLOCKED.** Here's why:\n\n### Blocking issue: Open damage claim\n\nThe booking has an open damage claim — **clm_3001** (\"Hydraulic arm returned with a bent cylinder\"), currently **under_review**. This claim is linked directly to booking bk_1001 and asset ast_load01.\n\nAdditionally, there's an active **safety hold (hold_9001)** on asset ast_load01 — an investigatory hold tied to that same open claim.\n\n### The rule\n\nPer our deposit release rules, a release is blocked when an open claim exists against the booking, its asset, or its customer. clm_3001 is directly against bk_1001 and ast_load01 — so both gates fail.\n\n### What needs to happen\n\n1. The claim clm_3001 must be resolved first — that's the **Claims & Compliance** assistant's job. Ask them to review and settle or deny it.\n2. Once the claim is settled, the hold_9001 on the asset should also be cleared (also Claims & Compliance).\n3. After both are resolved, I can release the $2,500 deposit.\n\n---\n\nIs there anything else I can help with in the meantime?"
+    ],
+    "actualTrace": [
+      "getBooking",
+      "getMember",
+      "getMember",
+      "getDepositBalance",
+      "listClaims",
+      "listClaims",
+      "listClaims",
+      "listHolds",
+      "listHolds",
+      "listHolds",
+      "getMember"
+    ],
+    "actualCalls": [
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "approved"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "workspace"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  },
+  {
+    "caseId": "30-impatient-two-money-moves-one-turn",
+    "rep": 0,
+    "goldSeq": [],
+    "goldReply": [],
+    "actualReply": [
+      "I need to check a few things before I can proceed. Let me look up the invoice, the booking, your permissions, any holds, and the deposit balance — all in parallel.\n\nThe `getMember` call returned an error — let me retry that to determine your role, and also check for any holds that might block the deposit release.\n\nLet me fix those calls and also try `listMembers` to resolve the role issue.\n\n\n\nGood — no holds and no open claims. Now let me also check the open claims for `bk_1001`'s customer, and verify the deposit balance.\n\n\n\n\n\nNow, I can't verify your role via `getMember` (it's returning an error), but the workspace has only one member: **Sam Okafor** (owner). The owner role has full `canMoveMoney` permission, so you're authorized for both operations.\n\nHere's what I'm working with:\n\n**Invoice `inv_7001`** — `bk_1001`, status **issued**, balance due **$3,850.00**, zero paid.\n\n**Deposit on `bk_1001`** — **$2,500.00** held, fully covered, no shortfall. No holds, no open claims, booking returned on time, invoice not yet paid.\n\n---\n\nNow, per the confirm-gated protocol, I must preview each operation before executing — your pre-approval can't skip that step. Here are both previews:\n\n---\n\n### Payment preview — `payInvoice` `inv_7001`\n- **Amount:** $3,850.00 (full balance due)\n- **From:** Redstone Construction LLC\n- **Result:** Status → **paid**, balance due → $0.00\n\n### Deposit release preview — `releaseDeposit` `bk_1001`\n- **Amount:** $2,500.00 (full deposit held)\n- **To:** Redstone Construction LLC\n- **Gates:** ✅ No holds on asset or account · ✅ No open claims · ✅ Booking returned · ⚠️ Invoice not yet paid (will be resolved by paying it first)\n\n---\n\nBoth look clean, but I need your **fresh confirmation** to execute. Reply **yes** to both and I'll run them in this turn — pay the invoice first, then release the deposit."
+    ],
+    "actualTrace": [
+      "getMember",
+      "getInvoice",
+      "getBooking",
+      "getMember",
+      "listMembers",
+      "listHolds",
+      "listHolds",
+      "listClaims",
+      "listClaims",
+      "getDepositBalance",
+      "getCustomer"
+    ],
+    "actualCalls": [
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "getInvoice",
+        "args": {
+          "invoiceId": "inv_7001"
+        }
+      },
+      {
+        "name": "getBooking",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getMember",
+        "args": {
+          "memberId": "null"
+        }
+      },
+      {
+        "name": "listMembers",
+        "args": {}
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "asset",
+          "assetId": "ast_load01"
+        }
+      },
+      {
+        "name": "listHolds",
+        "args": {
+          "scope": "account"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "submitted"
+        }
+      },
+      {
+        "name": "listClaims",
+        "args": {
+          "status": "under_review"
+        }
+      },
+      {
+        "name": "getDepositBalance",
+        "args": {
+          "bookingId": "bk_1001"
+        }
+      },
+      {
+        "name": "getCustomer",
+        "args": {
+          "customerId": "cust_2001"
+        }
+      }
+    ],
+    "status": "fail",
+    "invariantFailures": [],
+    "judgeVerdict": null,
+    "judgeReasoning": []
+  }
+]
